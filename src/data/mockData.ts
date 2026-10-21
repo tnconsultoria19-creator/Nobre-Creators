@@ -132,22 +132,22 @@ export const mockAuthors: Author[] = [
         description: 'Organização das observações e recomendações acordadas.',
         deliverables: ['Relatório', 'Registo visual', 'Recomendações']
       }
-    ]
+    ],
     reviews: [
       {
         id: 'r-1',
-        authorName: 'Unitel Marketing',
+        authorName: 'Cliente demonstrativo',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=75&w=64&auto=format&fit=crop',
         rating: 5,
-        comment: 'A Kiara entregou um vídeo excecional para a nossa campanha Unitel Jovem. Seguiu rigorosamente o briefing e a qualidade técnica do áudio e vídeo ficou impecável.',
+        comment: 'Avaliação de exemplo. Substituir por feedback real do cliente antes da publicação.',
         date: 'Jul 15, 2025'
       },
       {
         id: 'r-2',
-        authorName: 'O Boticário Angola',
+        authorName: 'Cliente demonstrativo',
         avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=75&w=64&auto=format&fit=crop',
         rating: 5,
-        comment: 'Os ganchos criativos da Kiara dobraram o CTR dos nossos anúncios patrocinados de skincare no Instagram. Muito profissional!',
+        comment: 'Avaliação de exemplo. Substituir por feedback real do cliente antes da publicação.',
         date: 'Aug 2, 2025'
       }
     ]
@@ -193,14 +193,14 @@ export const mockAuthors: Author[] = [
         description: 'Preparação de desenhos de acordo com o escopo acordado.',
         deliverables: ['Plantas', 'Revisões acordadas', 'Ficheiros digitais']
       }
-    ]
+    ],
     reviews: [
       {
         id: 'r-1',
-        authorName: 'Cuca Benguela',
+        authorName: 'Cliente demonstrativo',
         avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=75&w=64&auto=format&fit=crop',
         rating: 5,
-        comment: 'O Edmilson produziu um material incrível de cobertura de evento na Praia Morena. Qualidade cinematográfica extraordinária.',
+        comment: 'Avaliação de exemplo. Substituir por feedback real do cliente antes da publicação.',
         date: 'Jun 20, 2025'
       }
     ]
@@ -245,14 +245,14 @@ export const mockAuthors: Author[] = [
         description: 'Proposta de materiais, cores e organização do espaço.',
         deliverables: ['Proposta visual', 'Selecção de acabamentos', 'Apresentação']
       }
-    ]
+    ],
     reviews: [
       {
         id: 'r-1',
-        authorName: 'Kiko Milano Angola',
+        authorName: 'Cliente demonstrativo',
         avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=75&w=64&auto=format&fit=crop',
         rating: 4.8,
-        comment: 'Excelente retorno de vendas no nosso sérum hidratante após a review profunda da Cláudia. Muito recomendada.',
+        comment: 'Avaliação de exemplo. Substituir por feedback real do cliente antes da publicação.',
         date: 'May 10, 2025'
       }
     ]
@@ -293,14 +293,14 @@ export const mockAuthors: Author[] = [
         description: 'Organização das medidas disponíveis para apoiar o planeamento.',
         deliverables: ['Mapa de medições', 'Lista de quantidades', 'Entrega digital']
       }
-    ]
+    ],
     reviews: [
       {
         id: 'r-1',
-        authorName: 'Estilo Huíla Atelier',
+        authorName: 'Cliente demonstrativo',
         avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=75&w=64&auto=format&fit=crop',
         rating: 5,
-        comment: 'O Mauro tem um olhar artístico incrível. As fotos do nosso catálogo de outono superaram todas as expectativas. Uma referência na Huíla!',
+        comment: 'Avaliação de exemplo. Substituir por feedback real do cliente antes da publicação.',
         date: 'Apr 28, 2025'
       }
     ]
@@ -345,14 +345,14 @@ export const mockAuthors: Author[] = [
         description: 'Apoio às etapas, comunicação entre intervenientes e prazos.',
         deliverables: ['Cronograma inicial', 'Registo de reuniões', 'Pendências']
       }
-    ]
+    ],
     reviews: [
       {
         id: 'r-1',
-        authorName: 'Talatona Shopping Mall',
+        authorName: 'Cliente demonstrativo',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=75&w=64&auto=format&fit=crop',
         rating: 5,
-        comment: 'A nossa ativação de Natal foi um sucesso absoluto de tráfego físico graças ao convite e engajamento da Yara. Excelente profissionalismo!',
+        comment: 'Avaliação de exemplo. Substituir por feedback real do cliente antes da publicação.',
         date: 'Jan 10, 2025'
       }
     ]
@@ -394,14 +394,14 @@ export const mockAuthors: Author[] = [
         description: 'Execução de tarefas acordadas após avaliação do local.',
         deliverables: ['Lista de materiais', 'Execução acordada', 'Verificação final']
       }
-    ]
+    ],
     reviews: [
       {
         id: 'r-1',
-        authorName: 'NCR Angola',
+        authorName: 'Cliente demonstrativo',
         avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=75&w=64&auto=format&fit=crop',
         rating: 4.9,
-        comment: 'O Bruno produziu um unboxing muito apelativo para o nosso novo teclado mecânico. As legendas dinâmicas capturaram excelente atenção nas nossas redes.',
+        comment: 'Avaliação de exemplo. Substituir por feedback real do cliente antes da publicação.',
         date: 'Jun 12, 2025'
       }
     ]
@@ -438,14 +438,14 @@ export const mockAuthors: Author[] = [
         description: 'Planeamento de peças conforme medidas, materiais e utilização.',
         deliverables: ['Medições', 'Proposta de materiais', 'Plano de execução']
       }
-    ]
+    ],
     reviews: [
       {
         id: 'r-1',
-        authorName: 'Mundo da Moda Luanda',
+        authorName: 'Cliente demonstrativo',
         avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=75&w=64&auto=format&fit=crop',
         rating: 5,
-        comment: 'A Filomena foi extremamente profissional durante a nossa sessão de estúdio no Huambo. Fotos impecáveis e ótima postura de trabalho.',
+        comment: 'Avaliação de exemplo. Substituir por feedback real do cliente antes da publicação.',
         date: 'Jul 29, 2025'
       }
     ]
@@ -479,14 +479,14 @@ export const mockAuthors: Author[] = [
         description: 'Identificação de opções de fornecimento conforme especificações e orçamento.',
         deliverables: ['Lista de especificações', 'Comparativo de fornecedores', 'Prazos sujeitos a confirmação']
       }
-    ]
+    ],
     reviews: [
       {
         id: 'r-1',
-        authorName: 'BFA Marketing',
+        authorName: 'Cliente demonstrativo',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=75&w=64&auto=format&fit=crop',
         rating: 5,
-        comment: 'O Délcio soube explicar as funcionalidades da nossa carteira digital de forma simples e apelativa para os jovens. Os downloads cresceram significativamente!',
+        comment: 'Avaliação de exemplo. Substituir por feedback real do cliente antes da publicação.',
         date: 'Aug 10, 2025'
       }
     ]
@@ -520,14 +520,14 @@ export const mockAuthors: Author[] = [
         description: 'Identificação inicial do problema e proposta de próximos passos.',
         deliverables: ['Visita técnica', 'Registo de observações', 'Orçamento preliminar']
       }
-    ]
+    ],
     reviews: [
       {
         id: 'r-1',
-        authorName: 'Kero Benguela',
+        authorName: 'Cliente demonstrativo',
         avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=75&w=64&auto=format&fit=crop',
         rating: 5,
-        comment: 'As receitas da Sílvia transmitem muita credibilidade e apetite. Os produtos em exposição esgotaram nas prateleiras locais. Um trabalho brilhante!',
+        comment: 'Avaliação de exemplo. Substituir por feedback real do cliente antes da publicação.',
         date: 'Jul 15, 2025'
       }
     ]
@@ -561,14 +561,14 @@ export const mockAuthors: Author[] = [
         description: 'Avaliação da área, preparação necessária e definição de materiais.',
         deliverables: ['Avaliação do local', 'Estimativa de materiais', 'Plano de execução']
       }
-    ]
+    ],
     reviews: [
       {
         id: 'r-1',
-        authorName: 'MegaGym Luanda',
+        authorName: 'Cliente demonstrativo',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=75&w=64&auto=format&fit=crop',
         rating: 4.8,
-        comment: 'Excelente promoção da nossa marca de proteína vegetal. O Afonso transmitiu uma energia contagiante e gerou ótimos leads qualificados.',
+        comment: 'Avaliação de exemplo. Substituir por feedback real do cliente antes da publicação.',
         date: 'Jun 28, 2025'
       }
     ]
