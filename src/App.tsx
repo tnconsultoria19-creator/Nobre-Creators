@@ -169,7 +169,7 @@ export default function App() {
       brandName: 'Cliente Kwanzaa North',
       creator: creator,
       budget: totalAOA || 150000,
-      deliverable: `${calcReels > 0 ? calcReels + ' Reels ' : ''}${calcTikToks > 0 ? calcTikToks + ' TikToks ' : ''}${calcPhotos > 0 ? calcPhotos + ' Fotos' : ''}`,
+      deliverable: `${calcReels > 0 ? calcReels + ' consultoria(s) ' : ''}${calcTikToks > 0 ? calcTikToks + ' vistoria(s) ' : ''}${calcPhotos > 0 ? calcPhotos + ' pranchas técnicas' : ''}`,
       brief: customBrief || 'Pedido de orçamento para serviços técnicos, com requisitos, entregas, prazos e condições a confirmar entre o cliente e o profissional.',
       status: 'proposta',
       date: 'Hoje'

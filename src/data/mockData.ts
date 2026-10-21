@@ -580,7 +580,7 @@ export const mockPosts: Post[] = [
     id: 'post-1',
     featuredImage: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?q=75&w=1200&auto=format&fit=crop',
     title: 'Avaliação estrutural e plano de intervenção residencial',
-    handle: 'unboxing-premium-oboticario-luanda',
+    handle: 'avaliacao-estrutural-residencial',
     excerpt: 'Exemplo demonstrativo de registo de condições visíveis, observações da visita e recomendações preliminares de manutenção.',
     date: 'Set 2, 2025',
     readingTime: 1,
@@ -591,15 +591,15 @@ export const mockPosts: Post[] = [
     likeCount: '8.2k',
     liked: true,
     postType: 'video',
-    author: mockAuthors[0], // Kiara de Sousa
-    categories: [mockCategories[0]], mockCategories[9]], // Beleza & Make-up, Skincare
+    author: mockAuthors[0],
+    categories: [mockCategories[0]],
     videoUrl: 'https://www.youtube.com/watch?v=VJg37fVPy9I'
   },
   {
     id: 'post-2',
     featuredImage: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=75&w=1200&auto=format&fit=crop',
     title: 'Estudo preliminar de arquitectura para moradia',
-    handle: 'sessao-audiovisual-cinematografica-baia',
+    handle: 'arquitectura-moradia',
     excerpt: 'Exemplo demonstrativo de organização de espaços, requisitos do cliente e apresentação de uma proposta preliminar.',
     date: 'Ago 28, 2025',
     readingTime: 3,
@@ -610,8 +610,8 @@ export const mockPosts: Post[] = [
     likeCount: '3.4k',
     liked: false,
     postType: 'gallery',
-    author: mockAuthors[1], // Edmilson Santos
-    categories: [mockCategories[1]], mockCategories[2]], // Moda, Lifestyle
+    author: mockAuthors[1],
+    categories: [mockCategories[1]],
     galleryImgs: [
       'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=75&w=640&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=75&w=640&auto=format&fit=crop',
@@ -622,7 +622,7 @@ export const mockPosts: Post[] = [
     id: 'post-3',
     featuredImage: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=75&w=1200&auto=format&fit=crop',
     title: 'Proposta de design de interiores para apartamento',
-    handle: 'demonstracao-uso-skincare-outono',
+    handle: 'design-interiores-apartamento',
     excerpt: 'Exemplo demonstrativo de layout, utilização do espaço e opções de materiais e acabamentos.',
     date: 'Ago 15, 2025',
     readingTime: 2,
@@ -633,15 +633,15 @@ export const mockPosts: Post[] = [
     likeCount: '6.1k',
     liked: false,
     postType: 'audio', // repurposed for podcast voice review
-    author: mockAuthors[2], // Cláudia Miguel
-    categories: [mockCategories[9]], mockCategories[9]], // Beleza, Skincare
+    author: mockAuthors[2],
+    categories: [mockCategories[9]],
     audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
   },
   {
     id: 'post-4',
     featuredImage: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=75&w=1200&auto=format&fit=crop',
     title: 'Levantamento de quantidades e sourcing de materiais',
-    handle: 'carteira-digital-bfa-ugc-case',
+    handle: 'procurement-materiais',
     excerpt: 'Exemplo demonstrativo de comparação de especificações, lista de materiais e pontos a confirmar com fornecedores.',
     date: 'Set 1, 2025',
     readingTime: 4,
@@ -652,14 +652,14 @@ export const mockPosts: Post[] = [
     likeCount: '1.2k',
     liked: false,
     postType: 'standard',
-    author: mockAuthors[7], // Délcio Morais
-    categories: [mockCategories[7]]], // Finanças & Negócios
+    author: mockAuthors[7],
+    categories: [mockCategories[7]],
   },
   {
     id: 'post-5',
     featuredImage: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=75&w=1200&auto=format&fit=crop',
     title: 'Acompanhamento de obra e controlo de qualidade',
-    handle: 'ativacao-turistica-vip-pululu-namibe',
+    handle: 'fiscalizacao-obra',
     excerpt: 'Exemplo demonstrativo de registo de progresso, pontos pendentes e coordenação das próximas etapas de execução.',
     date: 'Ago 10, 2025',
     readingTime: 2,
@@ -670,15 +670,15 @@ export const mockPosts: Post[] = [
     likeCount: '14.5k',
     liked: true,
     postType: 'video',
-    author: mockAuthors[4], // Yara Patrícia
-    categories: [mockCategories[2]], mockCategories[2]], // Viagens, Lifestyle
+    author: mockAuthors[4],
+    categories: [mockCategories[2]],
     videoUrl: 'https://www.youtube.com/watch?v=FBFcNPa36m8'
   },
   {
     id: 'post-6',
     featuredImage: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=75&w=1200&auto=format&fit=crop',
     title: 'Projecto de instalação eléctrica comercial',
-    handle: 'review-detalhado-unboxing-huawei',
+    handle: 'instalacao-electrica-comercial',
     excerpt: 'Exemplo demonstrativo de identificação de necessidades, planeamento de instalação e lista preliminar de materiais.',
     date: 'Jul 28, 2025',
     readingTime: 1,
@@ -689,15 +689,15 @@ export const mockPosts: Post[] = [
     likeCount: '2.1k',
     liked: true,
     postType: 'video',
-    author: mockAuthors[5], // Bruno Costa
-    categories: [mockCategories[3]]], // Tecnologia
+    author: mockAuthors[5],
+    categories: [mockCategories[3]],
     videoUrl: 'https://www.youtube.com/watch?v=oP1rIPkJte0'
   },
   {
     id: 'post-7',
     featuredImage: 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?q=75&w=1200&auto=format&fit=crop',
     title: 'Diagnóstico de canalização e abastecimento',
-    handle: 'receita-estetica-alimentos-kero',
+    handle: 'diagnostico-canalizacao',
     excerpt: 'Exemplo demonstrativo de diagnóstico para documentar condições e orientar a proposta de reparação.',
     date: 'Jul 15, 2025',
     readingTime: 1,
@@ -708,15 +708,15 @@ export const mockPosts: Post[] = [
     likeCount: '4.8k',
     liked: false,
     postType: 'video',
-    author: mockAuthors[8], // Sílvia Manuel
-    categories: [mockCategories[4]]], // Alimentação & Culinária
+    author: mockAuthors[8],
+    categories: [mockCategories[4]],
     videoUrl: 'https://www.youtube.com/watch?v=y7gKlzvg8xk'
   },
   {
     id: 'post-8',
     featuredImage: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=75&w=1200&auto=format&fit=crop',
     title: 'Carpintaria por medida e soluções de acabamento',
-    handle: 'rotina-musculacao-suplementos-megagym',
+    handle: 'carpintaria-acabamentos',
     excerpt: 'Exemplo demonstrativo de levantamento de medidas, escolha de materiais e planeamento de montagem.',
     date: 'Jul 5, 2025',
     readingTime: 2,
@@ -727,15 +727,15 @@ export const mockPosts: Post[] = [
     likeCount: '3.9k',
     liked: true,
     postType: 'video',
-    author: mockAuthors[6], // Afonso Lopes
-    categories: [mockCategories[5]]], // Fitness & Saúde
+    author: mockAuthors[6],
+    categories: [mockCategories[5]],
     videoUrl: 'https://www.youtube.com/watch?v=2CquRQiDzx8'
   },
   {
     id: 'post-9',
     featuredImage: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=75&w=1200&auto=format&fit=crop',
     title: 'Levantamento topográfico e análise do terreno',
-    handle: 'editorial-fotografico-boutique-talatona',
+    handle: 'levantamento-topografico',
     excerpt: 'Exemplo demonstrativo de recolha de medições e organização de dados para apoiar o planeamento.',
     date: 'Jun 20, 2025',
     readingTime: 3,
@@ -746,8 +746,8 @@ export const mockPosts: Post[] = [
     likeCount: '4.2k',
     liked: true,
     postType: 'gallery',
-    author: mockAuthors[3], // Filomena Neto
-    categories: [mockCategories[8]]], // Moda
+    author: mockAuthors[3],
+    categories: [mockCategories[8]],
     galleryImgs: [
       'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=75&w=640&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=75&w=640&auto=format&fit=crop',

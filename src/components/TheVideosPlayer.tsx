@@ -112,7 +112,7 @@ export default function TheVideosPlayer({ posts }: TheVideosPlayerProps) {
               <button className="p-2 hover:bg-neutral-850 rounded-full transition-colors text-neutral-400 hover:text-white cursor-pointer">
                 <Volume2 className="w-5 h-5" />
               </button>
-              <span className="text-xs text-neutral-400">0:00 / 1:00 (UGC Reel)</span>
+              <span className="text-xs text-neutral-400">0:00 / 1:00 (Demonstração técnica)</span>
             </div>
 
             <div className="flex items-center space-x-2">
