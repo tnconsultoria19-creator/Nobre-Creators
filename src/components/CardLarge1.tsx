@@ -30,7 +30,7 @@ export default function CardLarge1({ posts, onPlayAudio, playingPostId, onSelect
             Estrelas da Semana
           </h1>
           <h3 className="mt-3.5 max-w-3xl text-lg font-normal text-neutral-500 lg:text-xl dark:text-neutral-400 transition-colors">
-            Criadores com excelente performance e produções originais em destaque
+            Profissionais com experiência demonstrada e projectos técnicos em destaque
           </h3>
         </div>
       </div>
@@ -91,10 +91,10 @@ export default function CardLarge1({ posts, onPlayAudio, playingPostId, onSelect
             {/* Actions Panel */}
             <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-neutral-100 dark:border-neutral-800 pt-4 text-xs font-semibold">
               <span className="inline-flex items-center rounded-full bg-pink-50 dark:bg-pink-950/30 px-3 py-1.5 text-pink-600 dark:text-pink-400">
-                {activePost.author.followers} Seguidores
+                {activePost.author.followers} de experiência
               </span>
               <span className="inline-flex items-center rounded-full bg-blue-50 dark:bg-blue-950/30 px-3 py-1.5 text-blue-600 dark:text-blue-400">
-                {activePost.author.engagement} Engajamento
+                {activePost.author.engagement} projectos concluídos
               </span>
 
               <div className="flex items-center gap-x-2 text-xs text-neutral-500 dark:text-neutral-400 ms-auto font-medium">

@@ -31,10 +31,10 @@ export default function TheVideosPlayer({ posts }: TheVideosPlayerProps) {
       
       <div className="relative mb-12">
         <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-          Vídeos, Reels & Unboxings
+          Visitas de Obra e Demonstrações Técnicas
         </h1>
         <h3 className="mt-3.5 max-w-3xl text-lg font-normal text-neutral-400 lg:text-xl">
-          Demonstrações reais e reviews criativos gerados para marcas parceiras
+          Veja apresentações de projectos, demonstrações de serviços e registos de execução.
         </h3>
       </div>
 

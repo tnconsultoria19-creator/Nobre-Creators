@@ -29,7 +29,7 @@ export default function LatestArticlesSidebar({
   const widgetAuthors = authors.slice(0, 5);
   const widgetCategories = categories.slice(0, 6);
   const widgetPopularPosts = posts.filter(p => p.id === 'post-3' || p.id === 'post-4' || p.id === 'post-5').slice(0, 3);
-  const tags = ['UGC', 'ModaAngola', 'ReelsLuanda', 'MicroInfluencer', 'Maquilhagem', 'FotosProduto', 'Tecnologia', 'Huambo', 'Benguela', 'MarketingDigital'];
+  const tags = ['EngenhariaCivil', 'Arquitectura', 'FiscalizacaoDeObra', 'DesignDeInteriores', 'Electricidade', 'Canalizacao', 'MateriaisDeConstrucao', 'Luanda', 'Benguela', 'Huambo'];
 
   const handleShowMore = () => {
     setLoadingMore(true);
@@ -50,7 +50,7 @@ export default function LatestArticlesSidebar({
               Feed de Ideias & Entregas Recentes
             </h2>
             <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1.5">
-              Inspire-se nos briefings bem-sucedidos e novidades do ecossistema de criadores em Angola
+              Explore exemplos de projectos, escopos técnicos e novidades do sector de construção e serviços profissionais em Angola.
             </p>
           </div>
 
@@ -142,7 +142,7 @@ export default function LatestArticlesSidebar({
 
                       <div className="flex items-center gap-x-1 text-[10px] text-neutral-500 dark:text-neutral-400">
                         <Clock className="w-3 h-3" />
-                        <span>Métrica: {post.author.followers}</span>
+                        <span>Experiência: {post.author.followers}</span>
                         <button className="relative flex w-6 h-6 items-center justify-center rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-400 transition-colors cursor-pointer">
                           <Bookmark className="w-3.5 h-3.5" />
                         </button>
@@ -169,7 +169,7 @@ export default function LatestArticlesSidebar({
                   </>
                 ) : (
                   <>
-                    <span>Ver Mais Casos</span>
+                    <span>Ver mais projectos</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
@@ -226,7 +226,7 @@ export default function LatestArticlesSidebar({
                     {cat.name}
                   </span>
                   <span className="text-xs bg-neutral-50 dark:bg-neutral-800 px-2 py-1 rounded-full text-neutral-500">
-                    {cat.count} Criadores
+                    {cat.count} profissionais
                   </span>
                 </div>
               ))}

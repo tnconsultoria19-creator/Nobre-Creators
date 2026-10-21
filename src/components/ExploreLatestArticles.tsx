@@ -18,10 +18,10 @@ export default function ExploreLatestArticles({ posts, onPlayAudio, playingPostI
       <div className="relative mb-12 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight text-neutral-950 sm:text-4xl dark:text-white transition-colors">
-            Conteúdo em Destaque / UGC Showcase
+            Projectos em Destaque
           </h1>
           <h3 className="mt-3.5 max-w-3xl text-lg font-normal text-neutral-500 lg:text-xl dark:text-neutral-400 transition-colors">
-            Amostras reais de publicações UGC, fotografias profissionais e vídeos explicativos dos nossos criadores
+            Veja exemplos de obras, levantamentos, projectos técnicos, instalações e soluções apresentadas pelos profissionais.
           </h3>
         </div>
       </div>

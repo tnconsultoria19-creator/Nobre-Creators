@@ -54,10 +54,10 @@ export default function ExploreCategories({ categories, onSelectCategory, select
       <div className="relative mb-12 flex items-end justify-between gap-4">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight text-neutral-950 sm:text-4xl dark:text-white transition-colors">
-            Niches de Criadores
+            Especialidades Profissionais
           </h1>
           <h3 className="mt-3.5 max-w-3xl text-lg font-normal text-neutral-500 lg:text-xl dark:text-neutral-400 transition-colors">
-            Descubra talentos e perfis UGC por área de especialização em Angola
+            Explore profissionais por especialidade, tipo de serviço e área de actuação.
           </h3>
         </div>
 
@@ -118,7 +118,7 @@ export default function ExploreCategories({ categories, onSelectCategory, select
                     {category.name}
                   </p>
                   <p className="line-clamp-1 text-xs text-neutral-500 dark:text-neutral-400 font-medium">
-                    {category.count} Criadores Ativos
+                    {category.count} Profissionais activos
                   </p>
                 </div>
               </div>

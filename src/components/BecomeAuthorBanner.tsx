@@ -13,18 +13,18 @@ export default function BecomeAuthorBanner() {
         {/* Content column */}
         <div className="relative z-10 text-white max-w-xl text-left space-y-6">
           <span className="inline-flex items-center gap-x-2 rounded-full bg-white/20 text-white px-3.5 py-1 text-xs font-bold uppercase tracking-wider backdrop-blur-sm">
-            <Award className="w-4 h-4" /> JUNTE-SE À ELITE
+            <Award className="w-4 h-4" /> FAÇA PARTE DA REDE
           </span>
           <div className="space-y-4">
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-              Quero ser Criador Nobre
+              Quero listar o meu perfil profissional
             </h2>
             <p className="text-sm sm:text-base text-emerald-50 font-normal leading-relaxed">
-              Monetize a sua influência e produza conteúdos UGC de alto nível para marcas de prestígio em Angola. Oferecemos campanhas garantidas, contratos automáticos e pagamentos seguros com Nobre Escrow.
+              Apresente a sua experiência, especialidades, serviços e trabalhos anteriores. Ligue-se a clientes que procuram profissionais para construção, manutenção, instalações e projectos técnicos.
             </p>
           </div>
           <button className="inline-flex items-center justify-center gap-x-2 rounded-full bg-white text-emerald-600 px-6 py-3 text-sm font-bold shadow-lg hover:bg-neutral-50 hover:scale-[1.02] active:scale-[0.98] transition-all">
-            <span>Candidatar-me Agora</span>
+            <span>Registar perfil profissional</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
@@ -37,23 +37,23 @@ export default function BecomeAuthorBanner() {
                 <CheckCircle className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h4 className="font-bold text-sm">Diretrizes de Qualidade</h4>
-                <p className="text-[10px] text-emerald-100 font-medium">As 10 Exigências Nobres</p>
+                <h4 className="font-bold text-sm">Padrões Profissionais</h4>
+                <p className="text-[10px] text-emerald-100 font-medium">Critérios Kwanzaa North</p>
               </div>
             </div>
             
             <div className="space-y-3.5 text-xs text-emerald-50">
               <div className="flex items-start">
                 <span className="w-1.5 h-1.5 bg-white rounded-full mt-1.5 mr-2 shrink-0"></span>
-                <span>Gravação em vídeo vertical de alta resolução (4K / 1080p).</span>
+                <span>Perfil claro com especialidades, qualificações e área de actuação.</span>
               </div>
               <div className="flex items-start">
                 <span className="w-1.5 h-1.5 bg-white rounded-full mt-1.5 mr-2 shrink-0"></span>
-                <span>Áudio profissional, nítido e sem ruídos de fundo irritantes.</span>
+                <span>Portfólio com fotografias, plantas, relatórios ou exemplos de trabalhos.</span>
               </div>
               <div className="flex items-start">
                 <span className="w-1.5 h-1.5 bg-white rounded-full mt-1.5 mr-2 shrink-0"></span>
-                <span>Cumprimento rigoroso do briefing da campanha e cronograma.</span>
+                <span>Cumprimento do escopo acordado, dos prazos e das normas de segurança.</span>
               </div>
             </div>
           </div>

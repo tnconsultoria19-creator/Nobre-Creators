@@ -11,11 +11,11 @@ export default function Footer() {
           <div className="col-span-2 md:col-span-1">
             <a className="inline-block shrink-0 text-emerald-500 w-14 h-9" href="/">
               <span className="text-2xl font-black tracking-tight text-neutral-900 dark:text-white">
-                nobre<span className="text-emerald-500">:</span>
+                kwanzaa<span className="text-emerald-500">:</span>
               </span>
             </a>
             <p className="mt-4 text-xs text-neutral-500 dark:text-neutral-400">
-              A plataforma líder de marketing de influência e conteúdo UGC em Angola. Conectando marcas e criadores com segurança total.
+              A Kwanzaa North liga clientes a profissionais de engenharia, arquitectura, construção, manutenção e fornecimento de materiais.
             </p>
           </div>
           <div className="col-span-2 flex items-center md:col-span-3 lg:mt-4">
@@ -38,25 +38,25 @@ export default function Footer() {
 
         {/* Column 2: Niches */}
         <div className="text-sm">
-          <h2 className="font-semibold text-neutral-900 dark:text-neutral-100">Niches de Criadores</h2>
+          <h2 className="font-semibold text-neutral-900 dark:text-neutral-100">Especialidades Profissionais</h2>
           <ul className="mt-5 space-y-4 text-neutral-600 dark:text-neutral-400 font-medium">
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Moda & Vestuário</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Beleza & Make-up</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Lifestyle Urbano</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Tecnologia & Review</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Fitness & Bem-Estar</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Engenharia Civil & Fiscalização</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Arquitectura & Projectos</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Construção & Gestão de Obra</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Electricidade & Canalização</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Interiores & Acabamentos</a></li>
           </ul>
         </div>
 
         {/* Column 3: Soluções */}
         <div className="text-sm">
-          <h2 className="font-semibold text-neutral-900 dark:text-neutral-100">Soluções Nobre</h2>
+          <h2 className="font-semibold text-neutral-900 dark:text-neutral-100">Soluções Kwanzaa North</h2>
           <ul className="mt-5 space-y-4 text-neutral-600 dark:text-neutral-400 font-medium">
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Nobre Escrow (Garantia)</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Nobre Managed (Campanhas)</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Calculadora de Cachê</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Exigências de Qualidade</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Tabela de Preços</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Condições de Pagamento</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Pedidos de Projecto e Orçamentos</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Estimador de Orçamento</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Padrões de Qualidade Técnica</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Serviços e Orçamentos</a></li>
           </ul>
         </div>
 
@@ -64,11 +64,11 @@ export default function Footer() {
         <div className="text-sm">
           <h2 className="font-semibold text-neutral-900 dark:text-neutral-100">Recursos</h2>
           <ul className="mt-5 space-y-4 text-neutral-600 dark:text-neutral-400 font-medium">
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Blog de Marketing</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Modelos de Roteiro</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Minutas Contratuais</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Guias de UGC</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Métricas de Sucesso</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Guias de Engenharia e Construção</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Modelos de Escopo e Especificações</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Documentos de Projecto</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Guias para Clientes e Profissionais</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Boas Práticas de Obra</a></li>
           </ul>
         </div>
 
@@ -78,9 +78,9 @@ export default function Footer() {
           <ul className="mt-5 space-y-4 text-neutral-600 dark:text-neutral-400 font-medium">
             <li><a className="hover:text-black dark:hover:text-white" href="/">Termos de Uso</a></li>
             <li><a className="hover:text-black dark:hover:text-white" href="/">Política de Privacidade</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Regulamento Nobre</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Termos Kwanzaa North</a></li>
             <li><a className="hover:text-black dark:hover:text-white" href="/">Apoio ao Cliente</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">FAQ Angola</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Perguntas Frequentes</a></li>
           </ul>
         </div>
 

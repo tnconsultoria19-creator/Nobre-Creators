@@ -1,6 +1,6 @@
 {
-  "name": "Nobre Creators",
-  "description": "A plataforma e marketplace de marketing de influência e conteúdo UGC em Angola, conectando marcas corporativas com criadores digitais verificados.",
+  "name": "Kwanzaa North",
+  "description": "Hub profissional de engenharia, arquitectura, construção, manutenção e procurement, ligando clientes a prestadores de serviços e pedidos de orçamento.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

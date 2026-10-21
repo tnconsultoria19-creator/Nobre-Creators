@@ -19,10 +19,10 @@ export default function TopAuthors({ authors, onSelectCreator }: TopAuthorsProps
     <div className="section-top-authors py-16 border-t border-neutral-100 dark:border-neutral-800 transition-colors" id="top-creators">
       <div className="relative mb-12">
         <h1 className="text-3xl font-semibold tracking-tight text-neutral-950 sm:text-4xl dark:text-white transition-colors">
-          Criadores Nobres em Alta
+          Profissionais em Destaque
         </h1>
         <h3 className="mt-3.5 max-w-3xl text-lg font-normal text-neutral-500 lg:text-xl dark:text-neutral-400 transition-colors">
-          Descubra os perfis verificados com maior engajamento, consistência e avaliações positivas de Angola
+          Conheça profissionais com perfis verificados, experiência demonstrada e avaliações positivas de clientes.
         </h3>
       </div>
 
@@ -63,7 +63,7 @@ export default function TopAuthors({ authors, onSelectCreator }: TopAuthorsProps
                   {author.career}
                 </p>
                 <p className="text-[10px] text-neutral-400">
-                  {author.followers} seguidores
+                  {author.followers} de experiência
                 </p>
               </div>
 

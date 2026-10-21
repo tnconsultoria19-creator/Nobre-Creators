@@ -20,14 +20,14 @@ export default function NewsletterBanner() {
         {/* Left column Content & Sign-up Form */}
         <div className="max-w-xl text-left space-y-6 lg:w-1/2 relative z-10">
           <span className="inline-flex items-center gap-x-2 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 px-3.5 py-1 text-xs font-bold uppercase tracking-wider">
-            <Sparkles className="w-4 h-4 text-emerald-500" /> NEWSLETTER SEMANAL
+            <Sparkles className="w-4 h-4 text-emerald-500" /> ACTUALIZAÇÕES KWANZAA NORTH
           </span>
           <div className="space-y-4">
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-950 dark:text-white leading-tight">
-              Junte-se ao Nobre Digest
+              Receba o Radar Kwanzaa North
             </h2>
             <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400">
-              Receba relatórios mensais de tendências de marketing de influência, taxas de engajamento médias em Angola e cases de campanhas UGC de sucesso. Sem spam, cancele quando quiser.
+              Receba novidades sobre construção, manutenção, procurement, oportunidades de projecto e boas práticas técnicas em Angola. Sem spam; pode cancelar a subscrição quando quiser.
             </p>
           </div>
 
@@ -69,12 +69,12 @@ export default function NewsletterBanner() {
                 <Mail className="w-5 h-5" />
               </div>
               <div className="space-y-1.5">
-                <h4 className="font-bold text-neutral-900 dark:text-white text-sm">Nobre Digest #12</h4>
-                <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">Taxas de conversão do formato UGC em Angola superam posts estáticos em 180%.</p>
+                <h4 className="font-bold text-neutral-900 dark:text-white text-sm">Radar Kwanzaa North</h4>
+                <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">Guias práticos para planear obras, definir escopos, comparar propostas e escolher materiais com mais confiança.</p>
               </div>
               <div className="flex items-center space-x-2">
                 <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Enviado há 2 horas</span>
+                <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Actualização informativa</span>
               </div>
             </div>
             

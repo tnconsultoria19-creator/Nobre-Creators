@@ -46,36 +46,36 @@ export default function App() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([
     {
       id: 'camp-1',
-      title: 'Campanha Skincare Cuca (UGC)',
-      brandName: 'Cuca Cervejas S.A.',
+      title: 'Inspecção técnica de edifício residencial',
+      brandName: 'Condomínio Horizonte',
       creator: mockAuthors.find(a => a.id === 'author-1') || mockAuthors[0], // Roseana
       budget: 250000,
-      deliverable: '1 Reels no Instagram + 1 TikTok explicativo',
-      brief: 'Produzir conteúdo UGC dinâmico mostrando a rotina refrescante pós-praia de Luanda, associando a hidratação e bem-estar corporal.',
+      deliverable: 'Inspecção estrutural e relatório técnico',
+      brief: 'Avaliar o estado geral do edifício, identificar sinais visíveis de degradação e recomendar as próximas medidas de manutenção.',
       status: 'draft_enviado',
       draftVideoUrl: 'https://www.youtube.com/embed/vHBodN0Mirs',
-      draftNotes: 'Olá equipa Cuca! Enviei o primeiro rascunho vertical em 4K. Usei o microfone de lapela profissional conforme as 10 Exigências Nobres.',
+      draftNotes: 'Relatório preliminar e registo visual preparados para revisão do cliente. As conclusões finais dependem da validação técnica no local.',
       date: '02 Set 2026'
     },
     {
       id: 'camp-2',
-      title: 'Review Smartphone Unitel PRO',
-      brandName: 'Unitel Angola',
+      title: 'Instalação eléctrica para espaço comercial',
+      brandName: 'Comercial Kilamba',
       creator: mockAuthors.find(a => a.id === 'author-2') || mockAuthors[1], // Mauro
       budget: 180000,
-      deliverable: '1 Reels dinâmico de Unboxing',
-      brief: 'Fazer unboxing de alta qualidade técnica focando na câmara traseira de 108MP do novo Unitel Pro.',
+      deliverable: 'Diagnóstico eléctrico, plano de execução e orçamento',
+      brief: 'Avaliar os circuitos existentes, mapear pontos eléctricos, identificar necessidades de instalação e preparar uma proposta técnica.',
       status: 'briefing_revisado',
       date: '01 Set 2026'
     },
     {
       id: 'camp-3',
-      title: 'Editorial Jeans Coleção Cacimbo',
-      brandName: 'L’Espace Luanda',
+      title: 'Projecto de arquitectura e remodelação residencial',
+      brandName: 'Cliente Particular — Luanda',
       creator: mockAuthors.find(a => a.id === 'author-3') || mockAuthors[2], // Yara
       budget: 350000,
-      deliverable: 'Lookbook Pack de 12 Fotografias de Produto',
-      brief: 'Fotografar com luz natural no Calçadão da Ilha de Luanda, vestindo os novos casacos jeans da coleção.',
+      deliverable: 'Plantas técnicas, proposta espacial e acompanhamento inicial',
+      brief: 'Desenvolver uma proposta de organização dos espaços, documentar os requisitos do cliente e orientar as próximas fases da remodelação.',
       status: 'pagamento_libertado',
       date: '28 Ago 2026'
     }
@@ -97,10 +97,10 @@ export default function App() {
   // New campaign creator assignment state
   const [newCampaignModalOpen, setNewCampaignModalOpen] = useState(false);
   const [newCampTitle, setNewCampTitle] = useState('');
-  const [newCampBrand, setNewCampBrand] = useState('Unitel Angola');
+  const [newCampBrand, setNewCampBrand] = useState('Comercial Kilamba');
   const [newCampCreatorId, setNewCampCreatorId] = useState(mockAuthors[0].id);
   const [newCampBudget, setNewCampBudget] = useState(150000);
-  const [newCampDeliverable, setNewCampDeliverable] = useState('1 Reels de 30s');
+  const [newCampDeliverable, setNewCampDeliverable] = useState('1 visita técnica');
   const [newCampBrief, setNewCampBrief] = useState('');
 
   // Admin CRM verification queue
@@ -109,13 +109,13 @@ export default function App() {
       id: 'author-mock-1',
       name: 'Helena Mendes',
       handle: 'helenamendes',
-      career: 'Modelo & UGC',
+      career: 'Engenheira Civil',
       avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=75&w=100&auto=format&fit=crop',
       cover: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=75&w=400&auto=format&fit=crop',
       count: 2,
       followers: '15K',
       engagement: '4.8%',
-      niche: 'Moda & Beleza',
+      niche: 'Engenharia Civil & Fiscalização',
       location: 'Luanda, Angola',
       startingPrice: '75.000 Kz',
       verified: false,
@@ -125,13 +125,13 @@ export default function App() {
       id: 'author-mock-2',
       name: 'Wilson Castro',
       handle: 'wilsoncastro',
-      career: 'Videógrafo & Diretor',
+      career: 'Electricista & Técnico de Instalações',
       avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=75&w=100&auto=format&fit=crop',
       cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=75&w=400&auto=format&fit=crop',
       count: 4,
       followers: '8K',
       engagement: '6.2%',
-      niche: 'Tecnologia & Reels',
+      niche: 'Electricidade & Energia',
       location: 'Benguela, Angola',
       startingPrice: '120.000 Kz',
       verified: false,
@@ -165,12 +165,12 @@ export default function App() {
     const totalAOA = (calcReels * 120000) + (calcPhotos * 15000) + (calcTikToks * 95000);
     const newCamp: Campaign = {
       id: `camp-${Date.now()}`,
-      title: customBrief ? `Campanha: ${customBrief.slice(0, 30)}...` : `Campanha Especial UGC`,
-      brandName: 'Marca Associada S.A.',
+      title: customBrief ? `Projecto: ${customBrief.slice(0, 30)}...` : `Pedido de projecto técnico`,
+      brandName: 'Cliente Kwanzaa North',
       creator: creator,
       budget: totalAOA || 150000,
       deliverable: `${calcReels > 0 ? calcReels + ' Reels ' : ''}${calcTikToks > 0 ? calcTikToks + ' TikToks ' : ''}${calcPhotos > 0 ? calcPhotos + ' Fotos' : ''}`,
-      brief: customBrief || 'Briefing personalizado de vídeo UGC seguindo as 10 Exigências Nobres de gravação vertical, áudio lapela e roteiro homologado.',
+      brief: customBrief || 'Pedido de orçamento para serviços técnicos, com requisitos, entregas, prazos e condições a confirmar entre o cliente e o profissional.',
       status: 'proposta',
       date: 'Hoje'
     };
@@ -188,12 +188,12 @@ export default function App() {
     const targetCreator = verifiedAuthorsState.find(a => a.id === newCampCreatorId) || verifiedAuthorsState[0];
     const newCamp: Campaign = {
       id: `camp-${Date.now()}`,
-      title: newCampTitle || 'Campanha Institucional',
+      title: newCampTitle || 'Projecto técnico',
       brandName: newCampBrand,
       creator: targetCreator,
       budget: newCampBudget,
       deliverable: newCampDeliverable,
-      brief: newCampBrief || 'Gravar vídeo UGC focado em benefícios de produto com excelente captação vertical, luz natural e áudio limpo.',
+      brief: newCampBrief || 'Executar os serviços descritos no escopo acordado, documentar o progresso e comunicar eventuais alterações de prazo ou custo.',
       status: 'proposta',
       date: 'Hoje'
     };
@@ -225,7 +225,7 @@ export default function App() {
           ...c, 
           status: 'draft_enviado',
           draftVideoUrl: draftInputVideo,
-          draftNotes: draftInputNotes || 'Enviei o rascunho de vídeo UGC vertical em alta definição. Aguardo a vossa revisão de conformidade!'
+          draftNotes: draftInputNotes || 'Submeti a actualização do projecto para revisão. Aguardo feedback sobre o escopo e as entregas acordadas.'
         };
       }
       return c;
@@ -306,18 +306,18 @@ export default function App() {
               }}
             />
 
-            {/* Quality Statement Section ("As 10 Exigências Nobres" Framework Highlight) */}
+            {/* Quality Statement Section ("10 Princípios Kwanzaa North" Framework Highlight) */}
             <section className="py-12 border-y border-neutral-150 dark:border-neutral-800" id="exigencias">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                 <div className="lg:col-span-1 text-left space-y-4">
                   <span className="inline-flex items-center gap-x-1.5 rounded-full bg-[#52c1b9]/10 text-[#2b9d96] px-3 py-1 text-xs font-black uppercase tracking-wider">
-                    Selo Nobre de Qualidade
+                    Selo de Qualidade Kwanzaa North
                   </span>
                   <h2 className="text-3xl font-bold tracking-tight text-neutral-950 dark:text-white">
-                    As 10 Exigências Nobres
+                    10 Princípios Kwanzaa North
                   </h2>
                   <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
-                    Todos os criadores e marcas operam sob o nosso framework de conformidade estrita. Sem amadorismo: áudio nítido, vídeo calibrado e roteiro homologado antes de filmar.
+                    A Kwanzaa North aproxima clientes de profissionais qualificados. Perfis claros, escopos documentados, prazos definidos e entregas verificáveis ajudam cada projecto a avançar com confiança.
                   </p>
                   <button 
                     onClick={() => {
@@ -328,7 +328,7 @@ export default function App() {
                     }}
                     className="inline-flex items-center gap-x-1 text-xs font-bold text-[#52c1b9] hover:underline cursor-pointer"
                   >
-                    Ver o regulamento completo <ArrowRight className="w-4 h-4" />
+                    Ver os padrões de qualidade <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
 
@@ -336,32 +336,32 @@ export default function App() {
                   <div className="flex gap-4 p-5 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-150 dark:border-neutral-800 text-left">
                     <span className="flex w-10 h-10 items-center justify-center rounded-full bg-[#52c1b9]/10 text-[#52c1b9] font-black shrink-0 text-sm">01</span>
                     <div>
-                      <h4 className="font-bold text-sm text-neutral-900 dark:text-white">Som Limpo de Lapela</h4>
-                      <p className="text-xs text-neutral-500 mt-1">É proibida gravação de áudio com ruído, vento excessivo de fundo ou eco.</p>
+                      <h4 className="font-bold text-sm text-neutral-900 dark:text-white">Qualificações e experiência</h4>
+                      <p className="text-xs text-neutral-500 mt-1">Apresente qualificações relevantes, experiência e documentação técnica aplicável ao serviço.</p>
                     </div>
                   </div>
 
                   <div className="flex gap-4 p-5 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-150 dark:border-neutral-800 text-left">
                     <span className="flex w-10 h-10 items-center justify-center rounded-full bg-[#52c1b9]/10 text-[#52c1b9] font-black shrink-0 text-sm">02</span>
                     <div>
-                      <h4 className="font-bold text-sm text-neutral-900 dark:text-white">Vídeo Vertical 4K / 1080p</h4>
-                      <p className="text-xs text-neutral-500 mt-1">Lentes traseiras limpas, iluminação natural ou ring-light de suporte.</p>
+                      <h4 className="font-bold text-sm text-neutral-900 dark:text-white">Portfólio técnico verificável</h4>
+                      <p className="text-xs text-neutral-500 mt-1">Inclua fotografias, plantas, relatórios e exemplos de trabalhos realizados.</p>
                     </div>
                   </div>
 
                   <div className="flex gap-4 p-5 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-150 dark:border-neutral-800 text-left">
                     <span className="flex w-10 h-10 items-center justify-center rounded-full bg-[#52c1b9]/10 text-[#52c1b9] font-black shrink-0 text-sm">03</span>
                     <div>
-                      <h4 className="font-bold text-sm text-neutral-900 dark:text-white">Roteiro Aprovado Prévio</h4>
-                      <p className="text-xs text-neutral-500 mt-1">O roteiro de hooks, falas e CTAs deve ser homologado pela marca antes do take.</p>
+                      <h4 className="font-bold text-sm text-neutral-900 dark:text-white">Escopo e orçamento definidos</h4>
+                      <p className="text-xs text-neutral-500 mt-1">Defina as tarefas, os materiais, os custos, os prazos e os critérios de aceitação antes do início.</p>
                     </div>
                   </div>
 
                   <div className="flex gap-4 p-5 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-150 dark:border-neutral-800 text-left">
                     <span className="flex w-10 h-10 items-center justify-center rounded-full bg-[#52c1b9]/10 text-[#52c1b9] font-black shrink-0 text-sm">04</span>
                     <div>
-                      <h4 className="font-bold text-sm text-neutral-900 dark:text-white">Nobre Escrow Garantido</h4>
-                      <p className="text-xs text-neutral-500 mt-1">O pagamento só é libertado do cofre quando a marca aceita o draft final.</p>
+                      <h4 className="font-bold text-sm text-neutral-900 dark:text-white">Condições de pagamento claras</h4>
+                      <p className="text-xs text-neutral-500 mt-1">Registe as condições de pagamento e valide as entregas antes de encerrar cada etapa.</p>
                     </div>
                   </div>
                 </div>
@@ -391,7 +391,7 @@ export default function App() {
               <div className="p-4 rounded-2xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-[#52c1b9]/30 text-left flex items-center justify-between">
                 <div>
                   <p className="text-sm font-bold text-neutral-800 dark:text-white">Filtrado por: <span className="text-[#52c1b9] font-black">#{selectedCategory.name}</span></p>
-                  <p className="text-xs text-neutral-400">Mostrando {filteredCreators.length} criadores correspondentes.</p>
+                  <p className="text-xs text-neutral-400">A mostrar {filteredCreators.length} profissionais correspondentes.</p>
                 </div>
                 <button 
                   onClick={() => setSelectedCategory(null)}
@@ -492,22 +492,22 @@ export default function App() {
                 />
                 <div>
                   <div className="flex items-center gap-2">
-                    <h2 className="text-xl sm:text-2xl font-bold text-neutral-950 dark:text-white">Olá, Roseana!</h2>
-                    <span className="bg-[#52c1b9] text-white px-2 py-0.5 rounded-full text-[10px] font-black flex items-center gap-0.5">Criadora Verificada ✓</span>
+                    <h2 className="text-xl sm:text-2xl font-bold text-neutral-950 dark:text-white">Olá, Kiara de Sousa!</h2>
+                    <span className="bg-[#52c1b9] text-white px-2 py-0.5 rounded-full text-[10px] font-black flex items-center gap-0.5">Profissional verificada ✓</span>
                   </div>
-                  <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">Especialidade: UGC, Skincare, Beleza & Moda • Luanda, Angola</p>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">Especialidade: Engenharia Civil e fiscalização de obra • Luanda, Angola</p>
                 </div>
               </div>
 
               {/* Wallet overview */}
               <div className="flex items-center gap-6">
                 <div className="text-right">
-                  <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Livre em Carteira</p>
+                  <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Saldo disponível</p>
                   <p className="text-xl font-extrabold text-emerald-600">350.000 Kz</p>
                 </div>
                 <div className="h-10 border-l border-neutral-200 dark:border-neutral-800" />
                 <div className="text-right">
-                  <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Retido em Escrow</p>
+                  <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Orçamento em acompanhamento</p>
                   <p className="text-xl font-extrabold text-amber-500">250.000 Kz</p>
                 </div>
               </div>
@@ -519,7 +519,7 @@ export default function App() {
               {/* Left Column: List of campaigns */}
               <div className="lg:col-span-2 space-y-6 text-left">
                 <div className="flex items-center justify-between border-b border-neutral-100 dark:border-neutral-800 pb-3">
-                  <h3 className="font-bold text-lg text-neutral-900 dark:text-white">As Minhas Campanhas ({campaigns.length})</h3>
+                  <h3 className="font-bold text-lg text-neutral-900 dark:text-white">Os Meus Projectos ({campaigns.length})</h3>
                   <span className="text-xs text-neutral-400 font-semibold">Atualizado em tempo real</span>
                 </div>
 
@@ -539,27 +539,27 @@ export default function App() {
                         </div>
 
                         <p className="text-xs text-neutral-500 leading-relaxed bg-neutral-50 dark:bg-neutral-800/50 p-3 rounded-xl border border-neutral-100 dark:border-neutral-800">
-                          <span className="font-bold block text-neutral-800 dark:text-white text-[10px] uppercase mb-1">Briefing do Conteúdo:</span>
+                          <span className="font-bold block text-neutral-800 dark:text-white text-[10px] uppercase mb-1">Escopo do projecto:</span>
                           {camp.brief}
                         </p>
 
                         <div className="flex flex-wrap gap-2 text-xs">
                           <span className="bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 px-2.5 py-1 rounded-full font-bold">
-                            Entrega: {camp.deliverable}
+                            Serviço: {camp.deliverable}
                           </span>
                           
                           {/* Progress pill status mapping */}
                           {camp.status === 'proposta' && (
-                            <span className="bg-amber-500/10 text-amber-500 px-2.5 py-1 rounded-full font-black">Pendente Aceitação</span>
+                            <span className="bg-amber-500/10 text-amber-500 px-2.5 py-1 rounded-full font-black">A aguardar aceitação</span>
                           )}
                           {camp.status === 'briefing_revisado' && (
-                            <span className="bg-blue-500/10 text-blue-500 px-2.5 py-1 rounded-full font-black">Em Gravação / Produção</span>
+                            <span className="bg-blue-500/10 text-blue-500 px-2.5 py-1 rounded-full font-black">Em execução</span>
                           )}
                           {camp.status === 'draft_enviado' && (
-                            <span className="bg-yellow-500/10 text-yellow-500 px-2.5 py-1 rounded-full font-black">Draft Sob Revisão da Marca</span>
+                            <span className="bg-yellow-500/10 text-yellow-500 px-2.5 py-1 rounded-full font-black">Entrega em revisão pelo cliente</span>
                           )}
                           {camp.status === 'pagamento_libertado' && (
-                            <span className="bg-emerald-500/10 text-emerald-500 px-2.5 py-1 rounded-full font-black">✓ Escrow Pago & Libertado</span>
+                            <span className="bg-emerald-500/10 text-emerald-500 px-2.5 py-1 rounded-full font-black">✓ Pagamento aprovado</span>
                           )}
                         </div>
 
@@ -570,7 +570,7 @@ export default function App() {
                               onClick={() => handleCreatorAcceptCampaign(camp.id)}
                               className="bg-[#52c1b9] hover:bg-emerald-600 text-white rounded-full px-5 py-2 text-xs font-black cursor-pointer shadow"
                             >
-                              Aceitar Briefing & Reservar Escrow
+                              Aceitar pedido de projecto
                             </button>
                           )}
                           {camp.status === 'briefing_revisado' && (
@@ -578,16 +578,16 @@ export default function App() {
                               onClick={() => setSubmittingDraftCampId(camp.id)}
                               className="bg-yellow-500 hover:bg-yellow-600 text-neutral-950 rounded-full px-5 py-2 text-xs font-black cursor-pointer shadow"
                             >
-                              Submeter Vídeo Rascunho (UGC Draft)
+                              Enviar actualização do projecto
                             </button>
                           )}
                           {camp.status === 'draft_enviado' && (
-                            <p className="text-xs text-neutral-400 italic">O rascunho de vídeo foi submetido. A marca irá analisar e libertar os fundos em Escrow.</p>
+                            <p className="text-xs text-neutral-400 italic">A entrega foi submetida. O cliente poderá rever o trabalho e validar a conclusão desta etapa.</p>
                           )}
                           {camp.status === 'pagamento_libertado' && (
                             <div className="flex items-center gap-1.5 text-xs text-emerald-500 font-bold">
                               <CheckCircle className="w-4 h-4 text-emerald-500" />
-                              <span>250.000 Kz creditados com sucesso na sua carteira.</span>
+                              <span>O projecto foi concluído e o pagamento foi assinalado como aprovado.</span>
                             </div>
                           )}
                         </div>
@@ -595,9 +595,9 @@ export default function App() {
                         {/* Submitting draft nested sub-form */}
                         {submittingDraftCampId === camp.id && (
                           <div className="p-4 rounded-xl border border-yellow-500/20 bg-yellow-50/10 dark:bg-yellow-950/10 space-y-3.5 mt-2">
-                            <h5 className="font-bold text-xs text-neutral-900 dark:text-white uppercase tracking-wider">Submeter Rascunho UGC</h5>
+                            <h5 className="font-bold text-xs text-neutral-900 dark:text-white uppercase tracking-wider">Enviar entrega do projecto</h5>
                             <div className="grid grid-cols-1 gap-2.5">
-                              <label className="text-[10px] text-neutral-400 font-semibold uppercase">Vídeo URL (YouTube, Vimeo, Cloud link)</label>
+                              <label className="text-[10px] text-neutral-400 font-semibold uppercase">Link da entrega (vídeo, apresentação ou ficheiro alojado)</label>
                               <input
                                 type="text"
                                 value={draftInputVideo}
@@ -606,11 +606,11 @@ export default function App() {
                               />
                             </div>
                             <div className="grid grid-cols-1 gap-2.5">
-                              <label className="text-[10px] text-neutral-400 font-semibold uppercase">Notas / Mensagem para a Marca</label>
+                              <label className="text-[10px] text-neutral-400 font-semibold uppercase">Notas / mensagem para o cliente</label>
                               <textarea
                                 value={draftInputNotes}
                                 onChange={(e) => setDraftInputNotes(e.target.value)}
-                                placeholder="Indique detalhes sobre as exigências cumpridas, iluminação, etc..."
+                                placeholder="Registe o progresso, os materiais utilizados, as normas seguidas e os pontos por confirmar..."
                                 className="w-full px-3 py-1.5 border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 rounded-lg text-xs h-20"
                               />
                             </div>
@@ -625,7 +625,7 @@ export default function App() {
                                 onClick={() => handleCreatorSubmitDraft(camp.id)}
                                 className="px-5 py-1.5 rounded-full bg-yellow-500 text-neutral-950 text-xs font-black cursor-pointer shadow"
                               >
-                                Confirmar Envio de Draft
+                                Confirmar envio da entrega
                               </button>
                             </div>
                           </div>
@@ -642,15 +642,15 @@ export default function App() {
                 {/* Calculadora de Cachê Widget */}
                 <div className="rounded-3xl border border-neutral-200/60 dark:border-neutral-800 bg-white dark:bg-neutral-900/40 p-6 shadow-sm space-y-6">
                   <div className="border-b border-neutral-100 dark:border-neutral-800 pb-3">
-                    <h3 className="font-bold text-neutral-950 dark:text-white text-base">Calculadora de Cachê Nobre</h3>
-                    <p className="text-xs text-neutral-400 mt-1">Estime o seu preço de mercado de forma justa e transparente</p>
+                    <h3 className="font-bold text-neutral-950 dark:text-white text-base">Estimador de Orçamento Kwanzaa North</h3>
+                    <p className="text-xs text-neutral-400 mt-1">Prepare uma estimativa inicial dos serviços seleccionados.</p>
                   </div>
 
                   <div className="space-y-4">
                     {/* Range Slider Reels */}
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between text-xs font-bold">
-                        <span>Instagram Reels</span>
+                        <span>Consultoria / visita técnica</span>
                         <span className="text-[#52c1b9]">{calcReels} ({ (calcReels * 120000).toLocaleString() } Kz)</span>
                       </div>
                       <input 
@@ -666,7 +666,7 @@ export default function App() {
                     {/* Range Slider TikToks */}
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between text-xs font-bold">
-                        <span>TikToks Explicativos</span>
+                        <span>Vistoria técnica</span>
                         <span className="text-[#52c1b9]">{calcTikToks} ({ (calcTikToks * 95000).toLocaleString() } Kz)</span>
                       </div>
                       <input 
@@ -682,8 +682,8 @@ export default function App() {
                     {/* Range Slider Photo packs */}
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between text-xs font-bold">
-                        <span>Pacote de Fotos UGC</span>
-                        <span className="text-[#52c1b9]">{calcPhotos} fotos ({ (calcPhotos * 15000).toLocaleString() } Kz)</span>
+                        <span>Pranchas / desenhos técnicos</span>
+                        <span className="text-[#52c1b9]">{calcPhotos} pranchas ({ (calcPhotos * 15000).toLocaleString() } Kz)</span>
                       </div>
                       <input 
                         type="range" 
@@ -702,65 +702,65 @@ export default function App() {
                         <span>{calculatedTotal.toLocaleString()} Kz</span>
                       </div>
                       <div className="flex items-center justify-between font-bold text-neutral-500">
-                        <span>Comissão de Escrow Nobre (12%):</span>
+                        <span>Taxa de serviço indicativa (12%):</span>
                         <span>- {calculatedNobreFee.toLocaleString()} Kz</span>
                       </div>
                       <hr className="border-t border-neutral-150 dark:border-neutral-700 my-2" />
                       <div className="flex items-center justify-between font-black text-sm text-emerald-600">
-                        <span>Líquido a receber:</span>
+                        <span>Valor estimado a receber:</span>
                         <span>{calculatedCreatorNet.toLocaleString()} Kz</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Framework Checklist "As 10 Exigências Nobres" */}
+                {/* Framework Checklist "10 Princípios Kwanzaa North" */}
                 <div className="rounded-3xl border border-neutral-200/60 dark:border-neutral-800 bg-white dark:bg-neutral-900/40 p-6 shadow-sm space-y-5" id="quality-exigencias">
                   <div className="border-b border-neutral-100 dark:border-neutral-800 pb-3">
-                    <h3 className="font-bold text-neutral-950 dark:text-white text-base">As 10 Exigências Nobres</h3>
-                    <p className="text-xs text-neutral-400 mt-1">Checklist de gravação obrigatória para aprovação do rascunho</p>
+                    <h3 className="font-bold text-neutral-950 dark:text-white text-base">10 Princípios Kwanzaa North</h3>
+                    <p className="text-xs text-neutral-400 mt-1">Checklist de verificação antes da aprovação de uma entrega</p>
                   </div>
 
                   <div className="space-y-3.5 text-xs text-neutral-600 dark:text-neutral-400 font-medium">
                     <div className="flex items-start gap-2.5">
                       <input type="checkbox" defaultChecked disabled className="mt-0.5 rounded text-emerald-500 accent-emerald-500" />
-                      <span>1. Captação de áudio lapela, sem ruídos domésticos de fundo.</span>
+                      <span>1. Confirmar as qualificações e a documentação aplicável ao serviço.</span>
                     </div>
                     <div className="flex items-start gap-2.5">
                       <input type="checkbox" defaultChecked disabled className="mt-0.5 rounded text-emerald-500 accent-emerald-500" />
-                      <span>2. Filmagem em vertical (9:16), lentes limpas em 4K ou 1080p.</span>
+                      <span>2. Confirmar as medidas, condições do local e requisitos do cliente.</span>
                     </div>
                     <div className="flex items-start gap-2.5">
                       <input type="checkbox" defaultChecked disabled className="mt-0.5 rounded text-emerald-500 accent-emerald-500" />
-                      <span>3. Iluminação ideal contra o rosto (natural ou softbox).</span>
+                      <span>3. Identificar riscos e definir as medidas de segurança da actividade.</span>
                     </div>
                     <div className="flex items-start gap-2.5">
                       <input type="checkbox" defaultChecked disabled className="mt-0.5 rounded text-emerald-500 accent-emerald-500" />
-                      <span>4. Cenário de gravação organizado, estético e limpo.</span>
+                      <span>4. Especificar materiais, quantidades e requisitos de instalação.</span>
                     </div>
                     <div className="flex items-start gap-2.5">
                       <input type="checkbox" defaultChecked disabled className="mt-0.5 rounded text-emerald-500 accent-emerald-500" />
-                      <span>5. Cumprimento estrito do guião / roteiro aprovado prévio.</span>
+                      <span>5. Registar o escopo e os critérios de aceitação antes do início.</span>
                     </div>
                     <div className="flex items-start gap-2.5">
                       <input type="checkbox" defaultChecked disabled className="mt-0.5 rounded text-emerald-500 accent-emerald-500" />
-                      <span>6. Inserção clara de ganchos (hooks) nos primeiros 3 segundos.</span>
+                      <span>6. Definir prazos, etapas de execução e pontos de controlo.</span>
                     </div>
                     <div className="flex items-start gap-2.5">
                       <input type="checkbox" defaultChecked disabled className="mt-0.5 rounded text-emerald-500 accent-emerald-500" />
-                      <span>7. Pronúncia clara dos benefícios e do slogan da marca.</span>
+                      <span>7. Documentar alterações, limitações e decisões relevantes.</span>
                     </div>
                     <div className="flex items-start gap-2.5">
                       <input type="checkbox" defaultChecked disabled className="mt-0.5 rounded text-emerald-500 accent-emerald-500" />
-                      <span>8. Sem sobreposição de músicas de terceiros com direitos.</span>
+                      <span>8. Respeitar as normas técnicas e os requisitos legais aplicáveis.</span>
                     </div>
                     <div className="flex items-start gap-2.5">
                       <input type="checkbox" defaultChecked disabled className="mt-0.5 rounded text-emerald-500 accent-emerald-500" />
-                      <span>9. Upload do rascunho em link acessível para revisão.</span>
+                      <span>9. Entregar fotografias, plantas, relatórios ou outros ficheiros acordados.</span>
                     </div>
                     <div className="flex items-start gap-2.5">
                       <input type="checkbox" defaultChecked disabled className="mt-0.5 rounded text-emerald-500 accent-emerald-500" />
-                      <span>10. Resolução expedita de feedbacks em menos de 48h.</span>
+                      <span>10. Resolver dúvidas e comentários do cliente antes do encerramento.</span>
                     </div>
                   </div>
                 </div>
@@ -782,14 +782,14 @@ export default function App() {
               <div className="flex items-center space-x-4">
                 <div className="w-16 h-16 rounded-full bg-blue-600/15 flex items-center justify-center text-blue-600 font-extrabold text-2xl">C</div>
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-neutral-950 dark:text-white">Cuca Cervejas S.A.</h2>
-                  <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">Painel Corporativo de Campanhas e Nobre Escrow</p>
+                  <h2 className="text-xl sm:text-2xl font-bold text-neutral-950 dark:text-white">Condomínio Horizonte</h2>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">Painel de projectos, pedidos de orçamento e entregas</p>
                 </div>
               </div>
 
               <div className="flex items-center gap-6">
                 <div className="text-right">
-                  <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Verba Ativa Bloqueada em Escrow</p>
+                  <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Orçamento em acompanhamento</p>
                   <p className="text-xl font-extrabold text-[#52c1b9]">430.000 Kz</p>
                 </div>
                 <div className="h-10 border-l border-neutral-200 dark:border-neutral-800" />
@@ -797,7 +797,7 @@ export default function App() {
                   onClick={() => setNewCampaignModalOpen(true)}
                   className="bg-neutral-950 hover:bg-[#52c1b9] text-white rounded-full px-5 py-3 text-xs font-black cursor-pointer shadow flex items-center gap-1.5"
                 >
-                  <Plus className="w-4 h-4" /> Lançar Nova Campanha Escrow
+                  <Plus className="w-4 h-4" /> Publicar pedido de projecto
                 </button>
               </div>
             </div>
@@ -808,8 +808,8 @@ export default function App() {
               {/* Left Column: Campaigns table & verification */}
               <div className="lg:col-span-2 space-y-6 text-left">
                 <div className="flex items-center justify-between border-b border-neutral-100 dark:border-neutral-800 pb-3">
-                  <h3 className="font-bold text-lg text-neutral-900 dark:text-white">Controlo de Campanhas Recentes</h3>
-                  <span className="text-xs text-neutral-400 font-semibold">Fundos seguros no Cofre Nobre</span>
+                  <h3 className="font-bold text-lg text-neutral-900 dark:text-white">Acompanhar projectos recentes</h3>
+                  <span className="text-xs text-neutral-400 font-semibold">Acompanhe propostas, escopo e estado de execução</span>
                 </div>
 
                 <div className="space-y-4">
@@ -817,30 +817,30 @@ export default function App() {
                     <div key={camp.id} className="p-6 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800 shadow-sm space-y-4">
                       <div className="flex items-start justify-between">
                         <div>
-                          <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-widest">Criador Associado: <span className="text-pink-500">{camp.creator.name}</span></span>
+                          <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-widest">Profissional seleccionado: <span className="text-pink-500">{camp.creator.name}</span></span>
                           <h4 className="font-bold text-neutral-900 dark:text-white text-base sm:text-lg">{camp.title}</h4>
                         </div>
                         <span className="text-sm font-extrabold text-blue-600">{camp.budget.toLocaleString()} Kz</span>
                       </div>
 
                       <p className="text-xs text-neutral-500 leading-relaxed bg-neutral-50 dark:bg-neutral-800/50 p-3 rounded-xl border border-neutral-100 dark:border-neutral-800">
-                        <span className="font-bold block text-neutral-800 dark:text-white text-[10px] uppercase mb-1">Guião / Briefing Acordado:</span>
+                        <span className="font-bold block text-neutral-800 dark:text-white text-[10px] uppercase mb-1">Escopo técnico acordado:</span>
                         {camp.brief}
                       </p>
 
                       <div className="flex flex-wrap gap-2 text-xs">
                         <span className="bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 px-2.5 py-1 rounded-full font-bold">
-                          Entrega: {camp.deliverable}
+                          Serviço: {camp.deliverable}
                         </span>
                         
                         {camp.status === 'proposta' && (
                           <span className="bg-amber-500/10 text-amber-500 px-2.5 py-1 rounded-full font-black flex items-center gap-1">
-                            <AlertCircle className="w-3 h-3" /> Aguardando Aceitação do Criador
+                            <AlertCircle className="w-3 h-3" /> A aguardar aceitação do profissional
                           </span>
                         )}
                         {camp.status === 'briefing_revisado' && (
                           <span className="bg-blue-500/10 text-blue-500 px-2.5 py-1 rounded-full font-black flex items-center gap-1">
-                            <Clock className="w-3 h-3" /> Criador em Fase de Gravação UGC
+                            <Clock className="w-3 h-3" /> Profissional a executar o projecto
                           </span>
                         )}
                         {camp.status === 'draft_enviado' && (
@@ -850,7 +850,7 @@ export default function App() {
                         )}
                         {camp.status === 'pagamento_libertado' && (
                           <span className="bg-emerald-500/10 text-emerald-500 px-2.5 py-1 rounded-full font-black flex items-center gap-1">
-                            <CheckCircle className="w-3 h-3" /> Concluído • Escrow Pago & Libertado
+                            <CheckCircle className="w-3 h-3" /> Concluído • pagamento validado
                           </span>
                         )}
                       </div>
@@ -860,13 +860,13 @@ export default function App() {
                         <div className="p-4 rounded-xl border border-[#52c1b9]/30 bg-[#52c1b9]/5 space-y-4">
                           <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full bg-[#52c1b9] animate-ping" />
-                            <h5 className="font-bold text-xs text-neutral-900 dark:text-white uppercase tracking-wider">Rascunho de Vídeo Submetido para Verificação</h5>
+                            <h5 className="font-bold text-xs text-neutral-900 dark:text-white uppercase tracking-wider">Entrega do projecto submetida para revisão</h5>
                           </div>
                           
                           <div className="aspect-video rounded-lg overflow-hidden bg-black border border-neutral-800 relative max-w-md">
                             <iframe
                               src={camp.draftVideoUrl}
-                              title="Draft Preview"
+                              title="Pré-visualização da entrega"
                               className="w-full h-full"
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                               allowFullScreen
@@ -875,7 +875,7 @@ export default function App() {
 
                           {camp.draftNotes && (
                             <div className="text-xs text-neutral-600 bg-white dark:bg-neutral-900 border border-neutral-100 p-3 rounded-lg leading-relaxed">
-                              <span className="font-bold text-[10px] uppercase text-[#52c1b9] block mb-1">Mensagem do Criador:</span>
+                              <span className="font-bold text-[10px] uppercase text-[#52c1b9] block mb-1">Mensagem do profissional:</span>
                               "{camp.draftNotes}"
                             </div>
                           )}
@@ -883,7 +883,7 @@ export default function App() {
                           <div className="flex items-center gap-2.5 justify-end">
                             <button
                               onClick={() => {
-                                alert('O seu feedback foi enviado ao criador para ajustes em até 48h.');
+                                alert('O seu feedback foi enviado ao profissional para revisão em até 48 horas.');
                               }}
                               className="px-4 py-2 border border-neutral-300 rounded-full text-xs font-bold hover:bg-neutral-50 transition-colors"
                             >
@@ -893,7 +893,7 @@ export default function App() {
                               onClick={() => handleBrandReleaseEscrow(camp.id)}
                               className="px-5 py-2 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-black cursor-pointer shadow flex items-center gap-1"
                             >
-                              <ShieldCheck className="w-4 h-4" /> Aprovar & Libertar Pagamento
+                              <ShieldCheck className="w-4 h-4" /> Aprovar entrega e concluir etapa
                             </button>
                           </div>
                         </div>
@@ -910,11 +910,11 @@ export default function App() {
                 <div className="rounded-3xl border border-neutral-200/60 dark:border-neutral-800 bg-white dark:bg-neutral-900/40 p-6 shadow-sm space-y-5" id="escrow">
                   <div className="border-b border-neutral-100 dark:border-neutral-800 pb-3 flex items-center gap-1.5">
                     <ShieldCheck className="w-5 h-5 text-emerald-500" />
-                    <h3 className="font-bold text-neutral-950 dark:text-white text-base">Garantia Nobre Escrow</h3>
+                    <h3 className="font-bold text-neutral-950 dark:text-white text-base">Condições de pagamento e conclusão</h3>
                   </div>
 
                   <p className="text-xs text-neutral-500 leading-relaxed">
-                    Nobre Escrow é o nosso sistema de proteção financeira obrigatório. A marca deposita o orçamento contratual na plataforma ao propor a campanha. O dinheiro fica retido em total segurança e só é transferido ao criador após conformidade das entregas.
+                    Defina o orçamento, as etapas e os critérios de aceitação antes de iniciar. Confirme as condições de pagamento com as partes envolvidas e registe qualquer alteração ao escopo.
                   </p>
 
                   <div className="space-y-4 pt-3">
@@ -922,14 +922,14 @@ export default function App() {
                       <span className="w-5 h-5 bg-emerald-500/10 text-emerald-600 rounded-full flex items-center justify-center font-bold shrink-0 text-[10px]">1</span>
                       <div>
                         <p className="font-bold text-neutral-900 dark:text-white">Cofre de Garantia</p>
-                        <p className="text-neutral-400 text-[11px] mt-0.5">O orçamento é blindado contra quebras de acordo.</p>
+                        <p className="text-neutral-400 text-[11px] mt-0.5">As condições e os marcos de pagamento ficam documentados.</p>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-2 text-xs">
                       <span className="w-5 h-5 bg-emerald-500/10 text-emerald-600 rounded-full flex items-center justify-center font-bold shrink-0 text-[10px]">2</span>
                       <div>
-                        <p className="font-bold text-neutral-900 dark:text-white">Contrato Inteligente</p>
+                        <p className="font-bold text-neutral-900 dark:text-white">Termos acordados</p>
                         <p className="text-neutral-400 text-[11px] mt-0.5">Minutas automáticas de cessão de direitos de imagem geradas na hora.</p>
                       </div>
                     </div>
@@ -937,8 +937,8 @@ export default function App() {
                     <div className="flex items-start gap-2 text-xs">
                       <span className="w-5 h-5 bg-emerald-500/10 text-emerald-600 rounded-full flex items-center justify-center font-bold shrink-0 text-[10px]">3</span>
                       <div>
-                        <p className="font-bold text-neutral-900 dark:text-white">Moderação Nobre</p>
-                        <p className="text-neutral-400 text-[11px] mt-0.5">Disputas e desvios de briefing são arbitrados pela equipa de suporte em 24h.</p>
+                        <p className="font-bold text-neutral-900 dark:text-white">Resolução de divergências</p>
+                        <p className="text-neutral-400 text-[11px] mt-0.5">Divergências sobre escopo, qualidade ou prazo devem ser documentadas e encaminhadas para revisão.</p>
                       </div>
                     </div>
                   </div>
@@ -946,13 +946,13 @@ export default function App() {
 
                 {/* Checklist verifying lookbooks */}
                 <div className="rounded-3xl border border-neutral-200/60 dark:border-neutral-800 bg-white dark:bg-neutral-900/40 p-6 shadow-sm space-y-4">
-                  <h3 className="font-bold text-sm text-neutral-900 dark:text-white uppercase tracking-wider">Modelos de Briefing</h3>
+                  <h3 className="font-bold text-sm text-neutral-900 dark:text-white uppercase tracking-wider">Modelos de escopo técnico</h3>
                   <div className="space-y-2.5 text-xs text-neutral-600 dark:text-neutral-400 font-medium">
                     <p className="p-2.5 rounded-lg border border-neutral-100 bg-neutral-50 dark:bg-neutral-800 hover:text-[#52c1b9] cursor-pointer">
-                      📝 Roteiro UGC: Modelo Cosméticos e Skincare.docx
+                      📝 Escopo técnico: Modelo de inspecção residencial.docx
                     </p>
                     <p className="p-2.5 rounded-lg border border-neutral-100 bg-neutral-50 dark:bg-neutral-800 hover:text-[#52c1b9] cursor-pointer">
-                      📝 Unboxing: Roteiro Smartphone e Unboxing Tech.docx
+                      📝 Instalação eléctrica: checklist de execução.docx
                     </p>
                   </div>
                 </div>
@@ -972,7 +972,7 @@ export default function App() {
             {/* Global system overview */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
               <div className="p-6 rounded-3xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800 space-y-2">
-                <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Volume Total em Escrow</span>
+                <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Valor total em projectos</span>
                 <p className="text-2xl font-black text-neutral-950 dark:text-white">780.000 Kz</p>
                 <div className="flex items-center space-x-1 text-xs text-emerald-500 font-bold">
                   <span>✓ 100% Blindado</span>
@@ -988,7 +988,7 @@ export default function App() {
               </div>
 
               <div className="p-6 rounded-3xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800 space-y-2">
-                <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Criadores Ativos na Base</span>
+                <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Profissionais activos na base</span>
                 <p className="text-2xl font-black text-neutral-950 dark:text-white">12 Perfis</p>
                 <div className="flex items-center space-x-1 text-xs text-[#52c1b9] font-bold">
                   <span>★ 100% Qualificados</span>
@@ -1010,7 +1010,7 @@ export default function App() {
               {/* Left Column: Verification Badge pipeline */}
               <div className="lg:col-span-2 space-y-6 text-left">
                 <div className="flex items-center justify-between border-b border-neutral-100 dark:border-neutral-800 pb-3">
-                  <h3 className="font-bold text-lg text-neutral-900 dark:text-white">Fila de Moderação de Criadores (Selos Azuis)</h3>
+                  <h3 className="font-bold text-lg text-neutral-900 dark:text-white">Verificação de perfis profissionais</h3>
                   <span className="text-xs bg-amber-500/10 text-amber-500 px-2 py-0.5 rounded-full font-bold">
                     {verificationQueue.length} Pedidos Pendentes
                   </span>
@@ -1039,7 +1039,7 @@ export default function App() {
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => {
-                              alert('O perfil foi rejeitado com base na qualidade do som / iluminação.');
+                              alert('O perfil foi sinalizado por falta de informação técnica ou documentação relevante.');
                               setVerificationQueue(prev => prev.filter(q => q.id !== req.id));
                             }}
                             className="px-4 py-2 rounded-full border border-neutral-200 hover:bg-rose-50 hover:text-rose-600 text-xs font-bold transition-all cursor-pointer"
@@ -1050,7 +1050,7 @@ export default function App() {
                             onClick={() => handleAdminApproveCreator(req)}
                             className="px-5 py-2 rounded-full bg-[#52c1b9] hover:bg-emerald-600 text-white text-xs font-black cursor-pointer shadow flex items-center gap-1"
                           >
-                            <UserCheck className="w-4 h-4" /> Aprovar Selo
+                            <UserCheck className="w-4 h-4" /> Verificar perfil
                           </button>
                         </div>
                       </div>
@@ -1063,29 +1063,29 @@ export default function App() {
               <div className="space-y-8 text-left">
                 
                 <div className="rounded-3xl border border-neutral-200/60 dark:border-neutral-800 bg-white dark:bg-neutral-900/40 p-6 shadow-sm space-y-4">
-                  <h3 className="font-bold text-neutral-950 dark:text-white text-base border-b border-neutral-100 dark:border-neutral-800 pb-3">Disputas Nobre Escrow</h3>
+                  <h3 className="font-bold text-neutral-950 dark:text-white text-base border-b border-neutral-100 dark:border-neutral-800 pb-3">Revisão de projectos e pagamentos</h3>
                   
                   <div className="p-4 rounded-xl border border-rose-500/10 bg-rose-50/5 text-xs space-y-2.5">
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-rose-500 uppercase tracking-wider text-[10px]">Flagged Dispute</span>
+                      <span className="font-bold text-rose-500 uppercase tracking-wider text-[10px]">PENDENTE DE REVISÃO</span>
                       <span className="text-[10px] text-neutral-400">ID: #disp-98</span>
                     </div>
-                    <p className="font-bold text-neutral-950 dark:text-white">Campanha: Coleção Óculos Verão</p>
+                    <p className="font-bold text-neutral-950 dark:text-white">Projecto: Instalação eléctrica comercial</p>
                     <p className="text-neutral-500 dark:text-neutral-400 text-[11px]">
-                      A marca alega que o criador gravou o vídeo com áudio de lapela desligado, quebrando a exigência nº 1 do regulamento.
+                      O cliente reportou que a entrega não corresponde ao escopo acordado e aos requisitos técnicos definidos.
                     </p>
                     <div className="pt-2 flex items-center gap-1.5 justify-end">
                       <button 
-                        onClick={() => alert('Resolvido a favor da marca. Fundos restituídos à Cuca.')}
+                        onClick={() => alert('Revisão concluída a favor do cliente; rever os valores e condições acordadas.')}
                         className="px-2.5 py-1.5 rounded-lg border border-neutral-200 text-[10px] font-bold"
                       >
-                        Restituir Marca
+                        Rever valores
                       </button>
                       <button 
-                        onClick={() => alert('Resolvido a favor do criador. Fundos libertados.')}
+                        onClick={() => alert('Revisão concluída a favor do profissional; validar a conclusão do projecto.')}
                         className="px-2.5 py-1.5 rounded-lg bg-emerald-500 text-white text-[10px] font-bold"
                       >
-                        Libertar Creator
+                        Aprovar conclusão
                       </button>
                     </div>
                   </div>
@@ -1094,9 +1094,9 @@ export default function App() {
                 <div className="rounded-3xl border border-neutral-200/60 dark:border-neutral-800 bg-white dark:bg-neutral-900/40 p-6 shadow-sm space-y-4">
                   <h3 className="font-bold text-sm text-neutral-900 dark:text-white uppercase tracking-wider">Logs do Servidor</h3>
                   <div className="space-y-2 text-[10px] font-mono text-neutral-400">
-                    <p className="text-emerald-500">[02 Set 10:45] Depósito Escrow Garantido - 250Kz de Cuca</p>
-                    <p className="text-blue-500">[02 Set 09:21] Creator Roseana aceitou briefing de skincare</p>
-                    <p className="text-neutral-500">[01 Set 18:02] Roteiro Unitel homologado pelo Moderador</p>
+                    <p className="text-emerald-500">[21 Out 10:45] Pedido de orçamento registado — Condomínio Horizonte</p>
+                    <p className="text-blue-500">[21 Out 09:21] Profissional aceitou o escopo técnico do projecto</p>
+                    <p className="text-neutral-500">[21 Out 18:02] Escopo técnico revisto pelo administrador</p>
                   </div>
                 </div>
 
@@ -1156,10 +1156,10 @@ export default function App() {
                     {/* Basic details tags */}
                     <div className="flex flex-wrap gap-2 pt-2">
                       <span className="bg-pink-50 text-pink-600 dark:bg-pink-950/20 dark:text-pink-400 px-3 py-1 rounded-full text-xs font-bold">
-                        {selectedCreator.followers} seguidores
+                        {selectedCreator.followers} de experiência
                       </span>
                       <span className="bg-blue-50 text-blue-600 dark:bg-blue-950/20 dark:text-blue-400 px-3 py-1 rounded-full text-xs font-bold">
-                        {selectedCreator.engagement} engajamento
+                        {selectedCreator.engagement} projectos concluídos
                       </span>
                       <span className="bg-amber-50 text-amber-600 dark:bg-amber-950/20 dark:text-amber-400 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-0.5">
                         <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
@@ -1175,7 +1175,7 @@ export default function App() {
                     <div className="space-y-1.5">
                       <h4 className="font-bold text-xs text-neutral-400 uppercase tracking-wider">Apresentação</h4>
                       <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                        {selectedCreator.bio || 'Criador qualificado para produzir campanhas criativas baseadas em formato UGC e reviews em Luanda. Segue com afinco as 10 Exigências Nobres.'}
+                        {selectedCreator.bio || 'Perfil demonstrativo para serviços técnicos. Confirme especialidade, qualificações, disponibilidade, prazos e requisitos antes de contratar.'}
                       </p>
                     </div>
 
@@ -1184,7 +1184,7 @@ export default function App() {
                       <div className="border-b border-neutral-100 dark:border-neutral-800/80 pb-2 flex items-center justify-between">
                         <h4 className="font-bold text-sm text-neutral-900 dark:text-white flex items-center gap-1.5">
                           <Sliders className="w-4 h-4 text-[#52c1b9]" />
-                          <span>Calculadora de Cachê Nobre</span>
+                          <span>Estimador de Orçamento Kwanzaa North</span>
                         </h4>
                         <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Live Quotation</span>
                       </div>
@@ -1192,7 +1192,7 @@ export default function App() {
                       <div className="space-y-3.5">
                         <div className="space-y-1">
                           <div className="flex items-center justify-between text-xs font-bold">
-                            <span>Instagram Reels ({calcReels})</span>
+                            <span>Consultoria / visita técnica ({calcReels})</span>
                             <span>{ (calcReels * 120000).toLocaleString() } Kz</span>
                           </div>
                           <input 
@@ -1207,7 +1207,7 @@ export default function App() {
 
                         <div className="space-y-1">
                           <div className="flex items-center justify-between text-xs font-bold">
-                            <span>TikToks Explicativos ({calcTikToks})</span>
+                            <span>Vistoria técnica ({calcTikToks})</span>
                             <span>{ (calcTikToks * 95000).toLocaleString() } Kz</span>
                           </div>
                           <input 
@@ -1222,7 +1222,7 @@ export default function App() {
 
                         <div className="space-y-1">
                           <div className="flex items-center justify-between text-xs font-bold">
-                            <span>Fotos de Produto UGC ({calcPhotos})</span>
+                            <span>Pranchas / desenhos técnicos ({calcPhotos})</span>
                             <span>{ (calcPhotos * 15000).toLocaleString() } Kz</span>
                           </div>
                           <input 
@@ -1238,11 +1238,11 @@ export default function App() {
                         <div className="p-3.5 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 flex items-center justify-between text-xs">
                           <div>
                             <p className="font-black text-[#52c1b9] text-base">{calculatedTotal.toLocaleString()} Kz</p>
-                            <p className="text-[9px] text-neutral-400">Inclui Cessão de Direitos Corporativos</p>
+                            <p className="text-[9px] text-neutral-400">Estimativa indicativa, sujeita a validação pelo profissional</p>
                           </div>
                           <span className="bg-emerald-50 text-emerald-700 px-2 py-1 rounded text-[10px] font-extrabold flex items-center gap-1">
                             <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-                            <span>Seguro em Escrow</span>
+                            <span>Condições de pagamento</span>
                           </span>
                         </div>
                       </div>
@@ -1250,11 +1250,11 @@ export default function App() {
 
                     {/* Escrow Booking Form inside Slideover */}
                     <div className="space-y-4">
-                      <h4 className="font-bold text-xs text-neutral-400 uppercase tracking-wider">Aprovar Proposta de Campanha</h4>
+                      <h4 className="font-bold text-xs text-neutral-400 uppercase tracking-wider">Solicitar orçamento</h4>
                       
                       <div className="grid grid-cols-1 gap-3 text-xs">
                         <textarea
-                          placeholder="Fale resumidamente sobre a campanha: cores de look, produto a enviar, hook sugerido..."
+                          placeholder="Descreva o local, o serviço necessário, os materiais pretendidos, o prazo e qualquer requisito técnico relevante..."
                           value={customBrief}
                           onChange={(e) => setCustomBrief(e.target.value)}
                           className="w-full px-4 py-2 border border-neutral-200 dark:border-neutral-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#52c1b9] bg-transparent text-neutral-900 dark:text-white h-20"
@@ -1262,7 +1262,7 @@ export default function App() {
 
                         {bookingSuccess ? (
                           <div className="p-3 rounded-xl bg-emerald-50 text-emerald-700 font-bold text-xs text-center">
-                            Proposta enviada! O orçamento foi colocado em segurança no Nobre Escrow.
+                            Pedido enviado! No fluxo demonstrativo, o profissional pode analisar o escopo e confirmar disponibilidade e orçamento.
                           </div>
                         ) : (
                           <button
@@ -1274,16 +1274,16 @@ export default function App() {
                                 : 'bg-[#52c1b9] hover:bg-emerald-600'
                             }`}
                           >
-                            Bloquear Fundos & Contratar {selectedCreator.name}
+                            Enviar pedido a {selectedCreator.name}
                           </button>
                         )}
-                        <p className="text-[10px] text-neutral-400 text-center">Ao contratar, concorda com as 10 Exigências Nobres e minutas automáticas da plataforma.</p>
+                        <p className="text-[10px] text-neutral-400 text-center">Ao enviar, partilha o escopo para que o profissional confirme disponibilidade, custos e termos.</p>
                       </div>
                     </div>
 
                     {/* Reviews */}
                     <div className="space-y-4 pt-2">
-                      <h4 className="font-bold text-xs text-neutral-400 uppercase tracking-wider">Feedback de Marcas ({selectedCreator.reviews?.length || 0})</h4>
+                      <h4 className="font-bold text-xs text-neutral-400 uppercase tracking-wider">Avaliações de clientes ({selectedCreator.reviews?.length || 0})</h4>
                       <div className="space-y-3">
                         {selectedCreator.reviews?.map((rev) => (
                           <div key={rev.id} className="p-3.5 rounded-xl bg-neutral-50 dark:bg-neutral-800/40 text-xs text-left space-y-1.5 border border-neutral-100 dark:border-neutral-800">
@@ -1314,17 +1314,17 @@ export default function App() {
           <div className="fixed inset-0 bg-neutral-950/40 backdrop-blur-sm" onClick={() => setNewCampaignModalOpen(false)}></div>
           <div className="relative bg-white dark:bg-neutral-900 rounded-3xl p-6 sm:p-8 max-w-md w-full border border-neutral-150 dark:border-neutral-800 shadow-2xl z-10 text-left space-y-4 font-sans">
             <div className="flex items-center justify-between border-b border-neutral-100 dark:border-neutral-800 pb-3">
-              <h4 className="font-bold text-lg text-neutral-950 dark:text-white">Lançar Nova Campanha Escrow</h4>
+              <h4 className="font-bold text-lg text-neutral-950 dark:text-white">Publicar pedido de projecto</h4>
               <button onClick={() => setNewCampaignModalOpen(false)} className="text-neutral-400 hover:text-neutral-600"><X className="w-5 h-5" /></button>
             </div>
 
             <form onSubmit={handleCreateBrandCampaign} className="space-y-4 text-xs">
               <div className="grid grid-cols-1 gap-1.5">
-                <label className="font-bold text-neutral-400 uppercase tracking-widest text-[9px]">Nome da Campanha</label>
+                <label className="font-bold text-neutral-400 uppercase tracking-widest text-[9px]">Título do projecto</label>
                 <input
                   type="text"
                   required
-                  placeholder="Ex: Campanha de Lançamento Óculos L'Espace"
+                  placeholder="Ex.: remodelação de apartamento em Luanda"
                   value={newCampTitle}
                   onChange={(e) => setNewCampTitle(e.target.value)}
                   className="w-full px-4 py-2.5 border border-neutral-200 dark:border-neutral-700 bg-transparent rounded-xl text-xs dark:text-white"
@@ -1332,7 +1332,7 @@ export default function App() {
               </div>
 
               <div className="grid grid-cols-1 gap-1.5">
-                <label className="font-bold text-neutral-400 uppercase tracking-widest text-[9px]">Nome da Marca</label>
+                <label className="font-bold text-neutral-400 uppercase tracking-widest text-[9px]">Nome do cliente / empresa</label>
                 <input
                   type="text"
                   required
@@ -1343,7 +1343,7 @@ export default function App() {
               </div>
 
               <div className="grid grid-cols-1 gap-1.5">
-                <label className="font-bold text-neutral-400 uppercase tracking-widest text-[9px]">Atribuir a Criador Verificado</label>
+                <label className="font-bold text-neutral-400 uppercase tracking-widest text-[9px]">Atribuir a profissional verificado</label>
                 <select
                   value={newCampCreatorId}
                   onChange={(e) => setNewCampCreatorId(e.target.value)}
@@ -1357,7 +1357,7 @@ export default function App() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="grid grid-cols-1 gap-1.5">
-                  <label className="font-bold text-neutral-400 uppercase tracking-widest text-[9px]">Verba em Escrow (AOA)</label>
+                  <label className="font-bold text-neutral-400 uppercase tracking-widest text-[9px]">Orçamento estimado (AOA)</label>
                   <input
                     type="number"
                     required
@@ -1371,7 +1371,7 @@ export default function App() {
                   <input
                     type="text"
                     required
-                    placeholder="Ex: 1 Reels de 30s"
+                    placeholder="Ex: 1 visita técnica"
                     value={newCampDeliverable}
                     onChange={(e) => setNewCampDeliverable(e.target.value)}
                     className="w-full px-4 py-2.5 border border-neutral-200 dark:border-neutral-700 bg-transparent rounded-xl text-xs dark:text-white"
@@ -1380,7 +1380,7 @@ export default function App() {
               </div>
 
               <div className="grid grid-cols-1 gap-1.5">
-                <label className="font-bold text-neutral-400 uppercase tracking-widest text-[9px]">Briefing Técnico</label>
+                <label className="font-bold text-neutral-400 uppercase tracking-widest text-[9px]">Escopo e requisitos técnicos</label>
                 <textarea
                   placeholder="Descreva as exigências detalhadamente..."
                   value={newCampBrief}
@@ -1393,7 +1393,7 @@ export default function App() {
                 type="submit"
                 className="w-full py-3.5 bg-neutral-950 hover:bg-[#52c1b9] text-white rounded-full font-black cursor-pointer shadow text-center transition-colors"
               >
-                Bloquear Orçamento & Lançar Campanha
+                Guardar pedido de projecto
               </button>
             </form>
           </div>

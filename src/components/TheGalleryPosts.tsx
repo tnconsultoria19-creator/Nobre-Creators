@@ -15,7 +15,7 @@ export default function TheGalleryPosts({ posts, onSelectCreator }: TheGalleryPo
     <div className="section-gallery-showcase py-16 border-t border-neutral-100 dark:border-neutral-800 transition-colors">
       <div className="relative mb-12">
         <h1 className="text-3xl font-semibold tracking-tight text-neutral-950 sm:text-4xl dark:text-white transition-colors">
-          Portfólios Fotográficos & Lookbooks
+          Portfólios de Obras e Projectos
         </h1>
         <h3 className="mt-3.5 max-w-3xl text-lg font-normal text-neutral-500 lg:text-xl dark:text-neutral-400 transition-colors">
           Lookbooks de moda, sessões de produtos e ensaios criativos desenvolvidos pelos nossos fotógrafos e modelos
