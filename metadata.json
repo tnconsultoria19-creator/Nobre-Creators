@@ -1,0 +1,6 @@
+{
+  "name": "Nobre Creators",
+  "description": "A plataforma e marketplace de marketing de influência e conteúdo UGC em Angola, conectando marcas corporativas com criadores digitais verificados.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

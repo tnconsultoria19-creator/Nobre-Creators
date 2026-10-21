@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  --color-emerald-500: #52c1b9;
+  --color-emerald-600: #3da8a0;
+  --color-emerald-700: #2b9d96;
+  --color-primary-500: #52c1b9;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Sophisticated Pastel Aura Iridescent Gradient Backgrounds */
+.pastel-aura {
+  background: 
+    radial-gradient(circle at 15% 20%, rgba(254, 219, 219, 0.4) 0%, transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(255, 235, 210, 0.35) 0%, transparent 50%),
+    radial-gradient(circle at 50% 85%, rgba(230, 220, 255, 0.35) 0%, transparent 60%),
+    radial-gradient(circle at 80% 80%, rgba(215, 245, 245, 0.4) 0%, transparent 45%),
+    #fafafa;
+}
+
+.dark .pastel-aura {
+  background: 
+    radial-gradient(circle at 15% 20%, rgba(45, 25, 35, 0.4) 0%, transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(35, 30, 20, 0.35) 0%, transparent 50%),
+    radial-gradient(circle at 50% 85%, rgba(25, 20, 45, 0.4) 0%, transparent 60%),
+    radial-gradient(circle at 80% 80%, rgba(20, 35, 35, 0.4) 0%, transparent 45%),
+    #0a0a0f;
+}
+
+/* Utility to hide scrollbar while keeping functionality */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
