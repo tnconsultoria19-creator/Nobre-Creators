@@ -36,7 +36,7 @@ export default function AccountAccessModal({ requestedRole, onClose, onAuthentic
       });
       const result = await response.json().catch(() => null);
       if (!response.ok || !result?.user) throw new Error(result?.error || 'Não foi possível entrar. Verifique os dados e tente novamente.');
-      if (requestedRole !== 'admin' && result.user.role !== requestedRole) {
+      if (result.user.role !== requestedRole) {
         throw new Error(`Esta conta é de ${result.user.role === 'creator' ? 'criador' : result.user.role === 'brand' ? 'marca/cliente' : 'admin'}. Termine sessão e entre com a conta correcta.`);
       }
       onAuthenticated(result.user as AuthUser);
