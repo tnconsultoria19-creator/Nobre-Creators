@@ -328,7 +328,7 @@ async function api(request: Request, env: Env): Promise<Response> {
   if (path === "/api/profile" && method === "GET") {
     const auth = await requireUser(request, env);
     if (auth.response) return auth.response;
-    const profile = await db.prepare("SELECT id, handle, display_name, career, niche, bio, location, website, premium_enabled, premium_until, created_at, updated_at FROM profiles WHERE user_id = ?").bind(auth.user!.id).first();
+    const profile = await db.prepare("SELECT id, handle, display_name, career, niche, bio, location, website, avatar_asset_id, cover_asset_id, premium_enabled, premium_until, created_at, updated_at FROM profiles WHERE user_id = ?").bind(auth.user!.id).first();
     return profile ? json({ ok: true, profile }) : json({ ok: false, error: "Perfil não encontrado." }, 404);
   }
 
@@ -344,24 +344,31 @@ async function api(request: Request, env: Env): Promise<Response> {
     const bio = String(body.bio || "").trim().slice(0, 3000);
     const location = String(body.location || "").trim().slice(0, 160);
     let website = String(body.website || "").trim().slice(0, 500);
+    const avatarAssetId = body.avatar_asset_id ? String(body.avatar_asset_id).slice(0, 80) : "";
+    const coverAssetId = body.cover_asset_id ? String(body.cover_asset_id).slice(0, 80) : "";
     if (!displayName || !bio) return json({ ok: false, error: "O nome público e a biografia são obrigatórios." }, 400);
     if (website) {
       try { const parsed = new URL(website); if (!["https:", "http:"].includes(parsed.protocol)) throw new Error(); website = parsed.toString(); }
       catch { return json({ ok: false, error: "Indique um endereço de website válido." }, 400); }
     }
+    for (const assetId of [avatarAssetId, coverAssetId].filter(Boolean)) {
+      const selected = await db.prepare("SELECT id, content_type FROM media_assets WHERE id = ? AND owner_user_id = ? AND asset_type = 'portfolio'").bind(assetId, auth.user!.id).first<{id:string;content_type:string}>();
+      if (!selected || !selected.content_type.startsWith("image/")) return json({ ok: false, error: "A fotografia de perfil e a imagem de capa têm de ser imagens carregadas no seu próprio portfólio." }, 400);
+    }
     await db.batch([
       db.prepare("UPDATE users SET display_name = ?, updated_at = ? WHERE id = ?").bind(displayName, nowIso(), auth.user!.id),
-      db.prepare("UPDATE profiles SET display_name = ?, career = ?, niche = ?, bio = ?, location = ?, website = ?, updated_at = ? WHERE user_id = ?").bind(displayName, career, niche, bio, location, website, nowIso(), auth.user!.id),
+      db.prepare("UPDATE profiles SET display_name = ?, career = ?, niche = ?, bio = ?, location = ?, website = ?, avatar_asset_id = ?, cover_asset_id = ?, updated_at = ? WHERE user_id = ?").bind(displayName, career, niche, bio, location, website, avatarAssetId || null, coverAssetId || null, nowIso(), auth.user!.id),
+      ...(avatarAssetId ? [db.prepare("UPDATE media_assets SET visibility = 'public' WHERE id = ? AND owner_user_id = ?").bind(avatarAssetId, auth.user!.id)] : []),
+      ...(coverAssetId ? [db.prepare("UPDATE media_assets SET visibility = 'public' WHERE id = ? AND owner_user_id = ?").bind(coverAssetId, auth.user!.id)] : []),
     ]);
-    const profile = await db.prepare("SELECT id, handle, display_name, career, niche, bio, location, website, premium_enabled, premium_until, created_at, updated_at FROM profiles WHERE user_id = ?").bind(auth.user!.id).first();
+    const profile = await db.prepare("SELECT id, handle, display_name, career, niche, bio, location, website, avatar_asset_id, cover_asset_id, premium_enabled, premium_until, created_at, updated_at FROM profiles WHERE user_id = ?").bind(auth.user!.id).first();
     return json({ ok: true, profile });
   }
 
   if (path === "/api/creators" && method === "GET") {
     const result = await db.prepare(`
       SELECT p.id, p.handle, p.display_name, p.career, p.niche, p.bio, p.location, p.website,
-             p.avatar_asset_id, p.premium_enabled, p.premium_until, u.id AS user_id,
-             (SELECT a.id FROM media_assets a WHERE a.owner_user_id = u.id AND a.visibility = 'public' AND a.asset_type = 'portfolio' ORDER BY a.created_at DESC LIMIT 1) AS portfolio_asset_id
+             p.avatar_asset_id, p.cover_asset_id AS portfolio_asset_id, p.premium_enabled, p.premium_until, u.id AS user_id
       FROM profiles p JOIN users u ON u.id = p.user_id
       WHERE u.status = 'active' AND u.role = 'creator'
       ORDER BY p.premium_enabled DESC, p.updated_at DESC LIMIT 100
@@ -443,8 +450,10 @@ async function api(request: Request, env: Env): Promise<Response> {
     const user = await getSession(request, env);
     let allowed = Boolean(user && user.id === asset.owner_user_id);
     if (!allowed && asset.visibility === "public" && action === "preview") {
-      const ownerProfile = await db.prepare("SELECT premium_enabled, premium_until FROM profiles WHERE user_id = ?").bind(asset.owner_user_id).first<{premium_enabled:number;premium_until:string|null}>();
-      allowed = ownerProfile?.premium_enabled === 1 && (!ownerProfile.premium_until || ownerProfile.premium_until > nowIso());
+      const ownerProfile = await db.prepare("SELECT avatar_asset_id, cover_asset_id, premium_enabled, premium_until FROM profiles WHERE user_id = ?").bind(asset.owner_user_id).first<{avatar_asset_id:string|null;cover_asset_id:string|null;premium_enabled:number;premium_until:string|null}>();
+      const selectedProfileImage = ownerProfile?.avatar_asset_id === asset.id || ownerProfile?.cover_asset_id === asset.id;
+      const premiumActive = ownerProfile?.premium_enabled === 1 && (!ownerProfile.premium_until || ownerProfile.premium_until > nowIso());
+      allowed = Boolean(selectedProfileImage || premiumActive);
     }
     if (!allowed && user) {
       const owned = await db.prepare(`
