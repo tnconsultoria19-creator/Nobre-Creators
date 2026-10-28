@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { UploadCloud, FileImage, FileVideo, FileText, Download, Trash2, RefreshCw, UserRound, PackagePlus, CheckCircle2, AlertCircle, ExternalLink } from 'lucide-react';
+import { UploadCloud, FileImage, FileVideo, FileText, Download, Trash2, RefreshCw, UserRound, CheckCircle2, AlertCircle, ExternalLink } from 'lucide-react';
+import PremiumFeaturePanel from './PremiumFeaturePanel';
 
 type AssetType = 'portfolio' | 'downloadable' | 'video' | 'lesson';
 type Asset = {
@@ -134,6 +135,8 @@ export default function CreatorStudio() {
       <div className="p-5 sm:p-7">
         {error && <div role="alert" className="mb-4 flex items-start gap-2 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-950/30 dark:text-red-300"><AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />{error}</div>}
         {notice && <div role="status" className="mb-4 flex items-start gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-200"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />{notice}</div>}
+
+        <PremiumFeaturePanel />
 
         {activeTab === 'content' ? (
           <div className="grid gap-7 xl:grid-cols-[0.9fr_1.1fr]">
