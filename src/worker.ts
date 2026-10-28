@@ -835,7 +835,7 @@ export default {
         return json({ ok: false, error: "Ocorreu um erro no servidor. Tente novamente mais tarde." }, 500);
       }
     }
-    const fallbackRoutes = ["/api/newsletter", "/api/jobs", "/api/magazine/send"];
+    const fallbackRoutes = ["/api/newsletter", "/api/magazine/send"];
     if (env.STATE && fallbackRoutes.includes(url.pathname)) {
       const state = env.STATE.get(env.STATE.idFromName("nobre-creators-shared"));
       return state.fetch(request);
