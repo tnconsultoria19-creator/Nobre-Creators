@@ -32,9 +32,10 @@ interface R2ObjectLike {
   size: number;
   httpMetadata?: R2HttpMetadata;
 }
+interface R2RangeLike { offset?: number; length?: number; suffix?: number }
 interface R2BucketLike {
   put(key: string, body: ReadableStream<Uint8Array> | ArrayBuffer | string, options?: { httpMetadata?: R2HttpMetadata }): Promise<unknown>;
-  get(key: string): Promise<R2ObjectLike | null>;
+  get(key: string, options?: { range?: R2RangeLike }): Promise<R2ObjectLike | null>;
   delete(key: string): Promise<void>;
 }
 interface Env {
@@ -493,17 +494,42 @@ async function api(request: Request, env: Env): Promise<Response> {
     }
     if (!allowed) return json({ ok: false, error: "Este ficheiro é privado. Compre o material ou entre na conta proprietária." }, user ? 403 : 401);
     if (!env.MEDIA) return json({ ok: false, error: "O armazenamento R2 não está configurado." }, 503);
-    const object = await env.MEDIA.get(asset.object_key);
+    const rangeHeader = request.headers.get("Range");
+    let range: { start:number; end:number } | null = null;
+    if (rangeHeader) {
+      const match = /^bytes=(\\d*)-(\\d*)$/.exec(rangeHeader.trim());
+      if (!match || rangeHeader.includes(",")) {
+        return new Response(null, { status:416, headers:{ "content-range": `bytes */${asset.size_bytes}`, "accept-ranges":"bytes" } });
+      }
+      let start: number;
+      let end: number;
+      if (match[1] === "") {
+        const suffixLength = Number(match[2]);
+        if (!Number.isSafeInteger(suffixLength) || suffixLength <= 0) return new Response(null,{status:416,headers:{"content-range":`bytes */${asset.size_bytes}`,"accept-ranges":"bytes"}});
+        start = Math.max(0, asset.size_bytes - suffixLength);
+        end = asset.size_bytes - 1;
+      } else {
+        start = Number(match[1]);
+        end = match[2] === "" ? asset.size_bytes - 1 : Math.min(Number(match[2]), asset.size_bytes - 1);
+      }
+      if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end) || start < 0 || start >= asset.size_bytes || end < start) {
+        return new Response(null, { status:416, headers:{ "content-range": `bytes */${asset.size_bytes}`, "accept-ranges":"bytes" } });
+      }
+      range = { start, end };
+    }
+    const object = await env.MEDIA.get(asset.object_key, range ? { range:{ offset:range.start, length:range.end-range.start+1 } } : undefined);
     if (!object) return json({ ok: false, error: "O ficheiro já não está disponível." }, 404);
     const filename = cleanFilename(asset.file_name);
     const headers = new Headers({
       "content-type": object.httpMetadata?.contentType || asset.content_type || "application/octet-stream",
-      "content-length": String(object.size),
+      "content-length": String(range ? range.end-range.start+1 : asset.size_bytes),
+      "accept-ranges": "bytes",
       "x-content-type-options": "nosniff",
       "cache-control": action === "preview" && asset.visibility === "public" ? "public, max-age=300" : "private, no-store",
       "content-disposition": action === "download" ? `attachment; filename="${filename.replace(/"/g, "")}"; filename*=UTF-8''${encodeURIComponent(filename)}` : "inline",
     });
-    return new Response(object.body, { status: 200, headers });
+    if (range) headers.set("content-range", `bytes ${range.start}-${range.end}/${asset.size_bytes}`);
+    return new Response(object.body, { status: range ? 206 : 200, headers });
   }
 
   if (path === "/api/premium" && method === "GET") {
