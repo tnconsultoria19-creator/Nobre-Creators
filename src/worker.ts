@@ -497,7 +497,7 @@ async function api(request: Request, env: Env): Promise<Response> {
     const rangeHeader = request.headers.get("Range");
     let range: { start:number; end:number } | null = null;
     if (rangeHeader) {
-      const match = /^bytes=(\\d*)-(\\d*)$/.exec(rangeHeader.trim());
+      const match = /^bytes=(\d*)-(\d*)$/.exec(rangeHeader.trim());
       if (!match || rangeHeader.includes(",")) {
         return new Response(null, { status:416, headers:{ "content-range": `bytes */${asset.size_bytes}`, "accept-ranges":"bytes" } });
       }
