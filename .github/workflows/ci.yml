@@ -20,5 +20,7 @@ jobs:
         run: bun install
       - name: Build frontend
         run: bun run build
+      - name: Bundle Cloudflare Worker (dry run)
+        run: npx wrangler deploy --dry-run
       - name: Typecheck application and Worker
         run: bun run lint
