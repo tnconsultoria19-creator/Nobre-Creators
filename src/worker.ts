@@ -46,6 +46,7 @@ interface Env {
   PROXYPAY_API_KEY?: string;
   PROXYPAY_OPG_TOKEN?: string;
   PROXYPAY_POS_ID?: string;
+  PREMIUM_PRICE_AOA?: string;
   PAYMENT_CALLBACK_SECRET?: string;
   RESEND_API_KEY?: string;
   NEWSLETTER_FROM?: string;
@@ -239,6 +240,11 @@ async function markInvoicePaid(env: Env, invoiceId: string, provider: string, pr
   }
   await db.prepare("UPDATE invoices SET status = 'paid', paid_at = COALESCE(paid_at, ?), updated_at = ? WHERE id = ? AND status <> 'paid'").bind(nowIso(), nowIso(), invoiceId).run();
   await db.prepare("UPDATE orders SET status = 'paid', updated_at = ? WHERE id = ? AND status <> 'paid'").bind(nowIso(), invoice.order_id).run();
+  const premiumItem = await db.prepare("SELECT creator_user_id FROM order_items WHERE order_id = ? AND item_type = 'premium' LIMIT 1").bind(invoice.order_id).first<{ creator_user_id: string }>();
+  if (premiumItem?.creator_user_id) {
+    const premiumUntil = new Date(Date.now() + 30 * 86400000).toISOString();
+    await db.prepare("UPDATE profiles SET premium_enabled = 1, premium_until = ?, updated_at = ? WHERE user_id = ?").bind(premiumUntil, nowIso(), premiumItem.creator_user_id).run();
+  }
   return true;
 }
 
@@ -353,7 +359,8 @@ async function api(request: Request, env: Env): Promise<Response> {
   if (path === "/api/creators" && method === "GET") {
     const result = await db.prepare(`
       SELECT p.id, p.handle, p.display_name, p.career, p.niche, p.bio, p.location, p.website,
-             p.premium_enabled, p.premium_until, u.id AS user_id
+             p.avatar_asset_id, p.premium_enabled, p.premium_until, u.id AS user_id,
+             (SELECT a.id FROM media_assets a WHERE a.owner_user_id = u.id AND a.visibility = 'public' AND a.asset_type = 'portfolio' ORDER BY a.created_at DESC LIMIT 1) AS portfolio_asset_id
       FROM profiles p JOIN users u ON u.id = p.user_id
       WHERE u.status = 'active' AND u.role = 'creator'
       ORDER BY p.premium_enabled DESC, p.updated_at DESC LIMIT 100
@@ -455,6 +462,48 @@ async function api(request: Request, env: Env): Promise<Response> {
       "content-disposition": action === "download" ? `attachment; filename="${filename.replace(/"/g, "")}"; filename*=UTF-8''${encodeURIComponent(filename)}` : "inline",
     });
     return new Response(object.body, { status: 200, headers });
+  }
+
+  if (path === "/api/premium" && method === "GET") {
+    const auth = await requireUser(request, env, ["creator"]);
+    if (auth.response) return auth.response;
+    const profile = await db.prepare("SELECT premium_enabled, premium_until FROM profiles WHERE user_id = ?").bind(auth.user!.id).first<{ premium_enabled:number; premium_until:string|null }>();
+    const active = profile?.premium_enabled === 1 && (!profile.premium_until || profile.premium_until > nowIso());
+    const priceAoa = Number(env.PREMIUM_PRICE_AOA || 0);
+    return json({ ok:true, active, premiumUntil:profile?.premium_until || null, priceAoa:Number.isSafeInteger(priceAoa) && priceAoa > 0 ? priceAoa : null, billingConfigured:Number.isSafeInteger(priceAoa) && priceAoa > 0 });
+  }
+
+  if (path === "/api/premium/checkout" && method === "POST") {
+    if (!isSafeSameOrigin(request)) return json({ ok:false,error:"Pedido de origem não permitida." },403);
+    const auth = await requireUser(request, env, ["creator"]);
+    if (auth.response) return auth.response;
+    const profile = await db.prepare("SELECT premium_enabled, premium_until FROM profiles WHERE user_id = ?").bind(auth.user!.id).first<{ premium_enabled:number; premium_until:string|null }>();
+    if (profile?.premium_enabled === 1 && (!profile.premium_until || profile.premium_until > nowIso())) return json({ok:false,error:"O seu destaque Premium já está activo."},409);
+    const price = Number(env.PREMIUM_PRICE_AOA || 0);
+    if (!Number.isSafeInteger(price) || price <= 0) return json({ok:false,error:"O preço do recurso Premium ainda precisa de ser definido pelo administrador."},503);
+    let body:{paymentMethod?:string;mobile?:string};
+    try { body = await request.json() as typeof body; } catch { return json({ok:false,error:"Dados de pagamento inválidos."},400); }
+    const method = body.paymentMethod === "mcx_express" ? "mcx_express" : "multicaixa_reference";
+    const orderId=newId(), invoiceId=newId(), stamp=nowIso();
+    const orderNumber=`NC-${new Date().toISOString().slice(0,10).replace(/-/g,"")}-${crypto.randomUUID().slice(0,6).toUpperCase()}`;
+    const invoiceNumber=`FNC-${new Date().toISOString().slice(0,10).replace(/-/g,"")}-${crypto.randomUUID().slice(0,6).toUpperCase()}`;
+    const dueDate=datePlusDays(3);
+    await db.batch([
+      db.prepare("INSERT INTO orders (id, order_number, buyer_user_id, total_aoa, status, payment_method, created_at, updated_at) VALUES (?, ?, ?, ?, 'pending_payment', ?, ?, ?)").bind(orderId,orderNumber,auth.user!.id,price,method,stamp,stamp),
+      db.prepare("INSERT INTO order_items (id, order_id, product_id, item_type, creator_user_id, title_snapshot, price_aoa, created_at) VALUES (?, ?, NULL, 'premium', ?, ?, ?, ?)").bind(newId(),orderId,auth.user!.id,"Destaque Premium de perfil — 30 dias",price,stamp),
+      db.prepare("INSERT INTO invoices (id, order_id, invoice_number, amount_aoa, status, due_date, payment_method, created_at, updated_at) VALUES (?, ?, ?, ?, 'pending', ?, ?, ?, ?)").bind(invoiceId,orderId,invoiceNumber,price,dueDate,method,stamp,stamp),
+    ]);
+    const invoice:InvoiceRow={id:invoiceId,order_id:orderId,invoice_number:invoiceNumber,amount_aoa:price,status:"pending",due_date:dueDate,payment_method:method,provider:null,provider_reference_id:null,provider_transaction_id:null,multicaixa_entity_id:null,multicaixa_reference_number:null};
+    let payment:Record<string,unknown>;
+    try {
+      payment = method === "mcx_express"
+        ? await createMcxExpressPayment(env,request,invoice,orderNumber,String(body.mobile||"").trim())
+        : await createMulticaixaReference(env,request,invoice,orderNumber);
+    } catch {
+      payment={status:"provider_error",method,message:"A factura foi criada, mas a referência de pagamento não foi emitida."};
+    }
+    const fresh=await db.prepare("SELECT id, order_id, invoice_number, amount_aoa, status, due_date, payment_method, provider, provider_reference_id, provider_transaction_id, multicaixa_entity_id, multicaixa_reference_number FROM invoices WHERE id = ?").bind(invoiceId).first<InvoiceRow>();
+    return json({ok:true,order:{id:orderId,order_number:orderNumber,status:"pending_payment"},invoice:fresh||invoice,payment},201);
   }
 
   if (path === "/api/products" && method === "GET") {
