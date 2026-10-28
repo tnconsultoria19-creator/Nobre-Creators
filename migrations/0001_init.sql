@@ -88,7 +88,8 @@ CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status, created_at DESC);
 CREATE TABLE IF NOT EXISTS order_items (
   id TEXT PRIMARY KEY,
   order_id TEXT NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
-  product_id TEXT NOT NULL REFERENCES products(id),
+  product_id TEXT REFERENCES products(id),
+  item_type TEXT NOT NULL DEFAULT 'product' CHECK (item_type IN ('product', 'premium')),
   creator_user_id TEXT NOT NULL REFERENCES users(id),
   title_snapshot TEXT NOT NULL,
   price_aoa INTEGER NOT NULL CHECK (price_aoa >= 0),
