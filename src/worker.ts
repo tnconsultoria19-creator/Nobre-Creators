@@ -568,7 +568,7 @@ async function api(request: Request, env: Env): Promise<Response> {
       "SELECT o.id, o.order_number, o.total_aoa, o.status AS order_status, o.payment_method, " +
       "o.created_at, i.id AS invoice_id, i.invoice_number, i.status AS invoice_status, i.due_date, " +
       "i.multicaixa_entity_id, i.multicaixa_reference_number, oi.title_snapshot AS product_title, " +
-      "oi.product_id, p.asset_id FROM orders o JOIN invoices i ON i.order_id = o.id " +
+      "oi.product_id, p.asset_id, p.product_type AS product_type FROM orders o JOIN invoices i ON i.order_id = o.id " +
       "JOIN order_items oi ON oi.order_id = o.id LEFT JOIN products p ON p.id = oi.product_id " +
       "WHERE o.buyer_user_id = ? ORDER BY o.created_at DESC LIMIT 100"
     ).bind(auth.user!.id).all();
