@@ -30,7 +30,7 @@ export default function CardLarge1({ posts, onPlayAudio, playingPostId, onSelect
             Estrelas da Semana
           </h1>
           <h3 className="mt-3.5 max-w-3xl text-lg font-normal text-neutral-500 lg:text-xl dark:text-neutral-400 transition-colors">
-            Profissionais com experiência demonstrada e projectos técnicos em destaque
+            Criadores, produtores e parceiros com talento para dar vida às marcas.
           </h3>
         </div>
       </div>
