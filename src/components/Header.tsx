@@ -4,7 +4,6 @@ import { Menu, X, ChevronDown, Users, UserRound, BriefcaseBusiness, Settings } f
 interface HeaderProps {
   currentRole?: string;
   onChangeRole?: (role: string) => void;
-  onOpenInquiryModal?: () => void;
 }
 
 const roles = [
