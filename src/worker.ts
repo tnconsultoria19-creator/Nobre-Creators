@@ -244,6 +244,7 @@ async function markInvoicePaid(env: Env, invoiceId: string, provider: string, pr
   if (premiumItem?.creator_user_id) {
     const premiumUntil = new Date(Date.now() + 30 * 86400000).toISOString();
     await db.prepare("UPDATE profiles SET premium_enabled = 1, premium_until = ?, updated_at = ? WHERE user_id = ?").bind(premiumUntil, nowIso(), premiumItem.creator_user_id).run();
+    await db.prepare("UPDATE media_assets SET visibility = 'public' WHERE owner_user_id = ? AND asset_type = 'portfolio'").bind(premiumItem.creator_user_id).run();
   }
   return true;
 }
@@ -427,6 +428,8 @@ async function api(request: Request, env: Env): Promise<Response> {
     const id = decodeURIComponent(assetMatch[1]);
     const asset = await db.prepare("SELECT id, owner_user_id, object_key FROM media_assets WHERE id = ?").bind(id).first<Pick<AssetRow, "id"|"owner_user_id"|"object_key">>();
     if (!asset || asset.owner_user_id !== auth.user!.id) return json({ ok: false, error: "Ficheiro não encontrado." }, 404);
+    const hasOrders = await db.prepare("SELECT oi.id FROM order_items oi JOIN products p ON p.id = oi.product_id WHERE p.asset_id = ? LIMIT 1").bind(id).first();
+    if (hasOrders) return json({ ok: false, error: "Este material já tem pedidos associados. Arquive-o em vez de o eliminar, para preservar o histórico de compras." }, 409);
     await db.prepare("DELETE FROM media_assets WHERE id = ?").bind(id).run();
     await env.MEDIA?.delete(asset.object_key).catch(() => undefined);
     return json({ ok: true });
@@ -439,7 +442,10 @@ async function api(request: Request, env: Env): Promise<Response> {
     if (!asset) return json({ ok: false, error: "Ficheiro não encontrado." }, 404);
     const user = await getSession(request, env);
     let allowed = Boolean(user && user.id === asset.owner_user_id);
-    if (!allowed && asset.visibility === "public" && action === "preview") allowed = true;
+    if (!allowed && asset.visibility === "public" && action === "preview") {
+      const ownerProfile = await db.prepare("SELECT premium_enabled, premium_until FROM profiles WHERE user_id = ?").bind(asset.owner_user_id).first<{premium_enabled:number;premium_until:string|null}>();
+      allowed = ownerProfile?.premium_enabled === 1 && (!ownerProfile.premium_until || ownerProfile.premium_until > nowIso());
+    }
     if (!allowed && user) {
       const owned = await db.prepare(`
         SELECT oi.id FROM order_items oi
