@@ -528,16 +528,14 @@ async function api(request: Request, env: Env): Promise<Response> {
   if (path === "/api/orders" && method === "GET") {
     const auth = await requireUser(request, env);
     if (auth.response) return auth.response;
-    const result = await db.prepare(`
-      SELECT o.id, o.order_number, o.total_aoa, o.status AS order_status, o.payment_method,
-             o.created_at, i.id AS invoice_id, i.invoice_number, i.status AS invoice_status,
-             i.due_date, i.multicaixa_entity_id, i.multicaixa_reference_number,
-             oi.title_snapshot AS product_title
-      FROM orders o JOIN invoices i ON i.order_id = o.id
-      JOIN order_items oi ON oi.order_id = o.id
-      WHERE o.buyer_user_id = ?
-      ORDER BY o.created_at DESC LIMIT 100
-    `).bind(auth.user!.id).all();
+    const result = await db.prepare(
+      "SELECT o.id, o.order_number, o.total_aoa, o.status AS order_status, o.payment_method, " +
+      "o.created_at, i.id AS invoice_id, i.invoice_number, i.status AS invoice_status, i.due_date, " +
+      "i.multicaixa_entity_id, i.multicaixa_reference_number, oi.title_snapshot AS product_title, " +
+      "oi.product_id, p.asset_id FROM orders o JOIN invoices i ON i.order_id = o.id " +
+      "JOIN order_items oi ON oi.order_id = o.id LEFT JOIN products p ON p.id = oi.product_id " +
+      "WHERE o.buyer_user_id = ? ORDER BY o.created_at DESC LIMIT 100"
+    ).bind(auth.user!.id).all();
     return json({ ok: true, orders: result.results || [] });
   }
 
@@ -545,49 +543,87 @@ async function api(request: Request, env: Env): Promise<Response> {
     if (!isSafeSameOrigin(request)) return json({ ok: false, error: "Pedido de origem não permitida." }, 403);
     const auth = await requireUser(request, env, ["creator", "brand"]);
     if (auth.response) return auth.response;
-    let body: { productId?: string; paymentMethod?: string; mobile?: string };
-    try { body = await request.json() as typeof body; } catch { return json({ ok: false, error: "Dados do pedido inválidos." }, 400); }
-    const productId = String(body.productId || "");
+    let body: { productIds?: string[]; productId?: string; paymentMethod?: string; mobile?: string };
+    try { body = await request.json() as typeof body; }
+    catch { return json({ ok: false, error: "Dados do pedido inválidos." }, 400); }
+
+    const requestedIds = Array.from(new Set(
+      (Array.isArray(body.productIds) ? body.productIds : [body.productId || ""])
+        .map((id) => String(id || "").trim()).filter(Boolean)
+    ));
+    if (!requestedIds.length || requestedIds.length > 20) {
+      return json({ ok: false, error: "Escolha entre 1 e 20 materiais por pedido." }, 400);
+    }
     const method = body.paymentMethod === "mcx_express" ? "mcx_express" : "multicaixa_reference";
-    const product = await db.prepare("SELECT p.id, p.creator_user_id, p.title, p.description, p.price_aoa, p.product_type, p.asset_id FROM products p WHERE p.id = ? AND p.status = 'published'").bind(productId).first<{ id:string;creator_user_id:string;title:string;description:string;price_aoa:number;product_type:string;asset_id:string }>();
-    if (!product) return json({ ok: false, error: "Material não encontrado ou indisponível." }, 404);
-    if (product.creator_user_id === auth.user!.id) return json({ ok: false, error: "Não pode comprar o seu próprio material." }, 400);
-    const existing = await db.prepare(`
-      SELECT o.id, o.order_number, i.id AS invoice_id, i.invoice_number, i.amount_aoa,
-             i.status, i.due_date, i.payment_method, i.provider, i.provider_reference_id,
-             i.provider_transaction_id, i.multicaixa_entity_id, i.multicaixa_reference_number
-      FROM orders o JOIN invoices i ON i.order_id = o.id
-      JOIN order_items oi ON oi.order_id = o.id
-      WHERE o.buyer_user_id = ? AND o.status = 'pending_payment' AND oi.product_id = ?
-      ORDER BY o.created_at DESC LIMIT 1
-    `).bind(auth.user!.id, productId).first<Record<string, unknown>>();
-    if (existing) {
-      const invoice: InvoiceRow = {
-        id:String(existing.invoice_id), order_id:String(existing.id), invoice_number:String(existing.invoice_number),
-        amount_aoa:Number(existing.amount_aoa), status:String(existing.status), due_date:String(existing.due_date),
-        payment_method:String(existing.payment_method), provider:existing.provider ? String(existing.provider) : null,
-        provider_reference_id:existing.provider_reference_id ? String(existing.provider_reference_id) : null,
-        provider_transaction_id:existing.provider_transaction_id ? String(existing.provider_transaction_id) : null,
-        multicaixa_entity_id:existing.multicaixa_entity_id ? String(existing.multicaixa_entity_id) : null,
-        multicaixa_reference_number:existing.multicaixa_reference_number ? String(existing.multicaixa_reference_number) : null,
-      };
-      return json({ ok: true, order:{id:invoice.order_id,order_number:String(existing.order_number),status:"pending_payment"}, invoice, payment:{status:invoice.multicaixa_reference_number?"pending":"not_configured",method:invoice.payment_method,message:"Já existe um pedido pendente deste material. Utilize a mesma factura para evitar cobranças duplicadas."} });
+    const placeholders = requestedIds.map(() => "?").join(",");
+    const productsResult = await db.prepare(
+      "SELECT p.id, p.creator_user_id, p.title, p.description, p.price_aoa, p.product_type, p.asset_id " +
+      "FROM products p JOIN users u ON u.id = p.creator_user_id " +
+      "WHERE p.id IN (" + placeholders + ") AND p.status = 'published' AND u.status = 'active'"
+    ).bind(...requestedIds).all<{
+      id:string;creator_user_id:string;title:string;description:string;price_aoa:number;product_type:string;asset_id:string
+    }>();
+    const products = productsResult.results || [];
+    if (products.length !== requestedIds.length) {
+      return json({ ok: false, error: "Um ou mais materiais já não estão disponíveis." }, 404);
+    }
+    if (products.some((product) => product.creator_user_id === auth.user!.id)) {
+      return json({ ok: false, error: "O carrinho contém um material seu. Remova-o antes de comprar." }, 400);
+    }
+    const amount = products.reduce((total, product) => total + Math.round(Number(product.price_aoa)), 0);
+    if (!Number.isSafeInteger(amount) || amount <= 0 || amount > 999999999) {
+      return json({ ok: false, error: "O total do pedido não é válido." }, 400);
+    }
+
+    if (products.length === 1) {
+      const existing = await db.prepare(
+        "SELECT o.id, o.order_number, i.id AS invoice_id, i.invoice_number, i.amount_aoa, i.status, " +
+        "i.due_date, i.payment_method, i.provider, i.provider_reference_id, i.provider_transaction_id, " +
+        "i.multicaixa_entity_id, i.multicaixa_reference_number FROM orders o " +
+        "JOIN invoices i ON i.order_id = o.id JOIN order_items oi ON oi.order_id = o.id " +
+        "WHERE o.buyer_user_id = ? AND o.status = 'pending_payment' AND oi.product_id = ? " +
+        "ORDER BY o.created_at DESC LIMIT 1"
+      ).bind(auth.user!.id, products[0].id).first<Record<string, unknown>>();
+      if (existing && Number(existing.amount_aoa) === amount) {
+        const invoice: InvoiceRow = {
+          id:String(existing.invoice_id), order_id:String(existing.id), invoice_number:String(existing.invoice_number),
+          amount_aoa:Number(existing.amount_aoa), status:String(existing.status), due_date:String(existing.due_date),
+          payment_method:String(existing.payment_method), provider:existing.provider ? String(existing.provider) : null,
+          provider_reference_id:existing.provider_reference_id ? String(existing.provider_reference_id) : null,
+          provider_transaction_id:existing.provider_transaction_id ? String(existing.provider_transaction_id) : null,
+          multicaixa_entity_id:existing.multicaixa_entity_id ? String(existing.multicaixa_entity_id) : null,
+          multicaixa_reference_number:existing.multicaixa_reference_number ? String(existing.multicaixa_reference_number) : null,
+        };
+        return json({
+          ok:true,
+          order:{id:invoice.order_id,order_number:String(existing.order_number),status:"pending_payment"},
+          invoice,
+          items:products.map((product) => ({title:product.title,price_aoa:Number(product.price_aoa)})),
+          payment:{status:invoice.multicaixa_reference_number?"pending":"not_configured",method:invoice.payment_method,message:"Já existe um pedido pendente deste material. Utilize a mesma factura para evitar cobranças duplicadas."}
+        });
+      }
     }
 
     const orderId = newId();
     const invoiceId = newId();
     const stamp = nowIso();
-    const orderNumber = `NC-${new Date().toISOString().slice(0,10).replace(/-/g,"")}-${crypto.randomUUID().slice(0,6).toUpperCase()}`;
-    const invoiceNumber = `FNC-${new Date().toISOString().slice(0,10).replace(/-/g,"")}-${crypto.randomUUID().slice(0,6).toUpperCase()}`;
+    const orderNumber = "NC-" + new Date().toISOString().slice(0,10).replace(/-/g,"") + "-" + crypto.randomUUID().slice(0,6).toUpperCase();
+    const invoiceNumber = "FNC-" + new Date().toISOString().slice(0,10).replace(/-/g,"") + "-" + crypto.randomUUID().slice(0,6).toUpperCase();
     const dueDate = datePlusDays(3);
-    const amount = Math.round(Number(product.price_aoa));
-    await db.batch([
+    const statements = [
       db.prepare("INSERT INTO orders (id, order_number, buyer_user_id, total_aoa, status, payment_method, created_at, updated_at) VALUES (?, ?, ?, ?, 'pending_payment', ?, ?, ?)").bind(orderId, orderNumber, auth.user!.id, amount, method, stamp, stamp),
-      db.prepare("INSERT INTO order_items (id, order_id, product_id, creator_user_id, title_snapshot, price_aoa, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)").bind(newId(), orderId, product.id, product.creator_user_id, product.title, amount, stamp),
+      ...products.map((product) => db.prepare("INSERT INTO order_items (id, order_id, product_id, item_type, creator_user_id, title_snapshot, price_aoa, created_at) VALUES (?, ?, ?, 'product', ?, ?, ?, ?)").bind(newId(), orderId, product.id, product.creator_user_id, product.title, Math.round(Number(product.price_aoa)), stamp)),
       db.prepare("INSERT INTO invoices (id, order_id, invoice_number, amount_aoa, status, due_date, payment_method, created_at, updated_at) VALUES (?, ?, ?, ?, 'pending', ?, ?, ?, ?)").bind(invoiceId, orderId, invoiceNumber, amount, dueDate, method, stamp, stamp),
-    ]);
+    ];
+    await db.batch(statements);
+
     let payment: Record<string, unknown>;
-    const invoice: InvoiceRow = { id:invoiceId, order_id:orderId, invoice_number:invoiceNumber, amount_aoa:amount, status:"pending", due_date:dueDate, payment_method:method, provider:null, provider_reference_id:null, provider_transaction_id:null, multicaixa_entity_id:null, multicaixa_reference_number:null };
+    const invoice: InvoiceRow = {
+      id:invoiceId, order_id:orderId, invoice_number:invoiceNumber, amount_aoa:amount,
+      status:"pending", due_date:dueDate, payment_method:method, provider:null,
+      provider_reference_id:null, provider_transaction_id:null,
+      multicaixa_entity_id:null, multicaixa_reference_number:null
+    };
     try {
       payment = method === "mcx_express"
         ? await createMcxExpressPayment(env, request, invoice, orderNumber, String(body.mobile || "").trim())
@@ -596,7 +632,13 @@ async function api(request: Request, env: Env): Promise<Response> {
       payment = { status:"provider_error", method, message:"O fornecedor de pagamento não respondeu. A factura foi criada, mas a referência não foi emitida." };
     }
     const fresh = await db.prepare("SELECT id, order_id, invoice_number, amount_aoa, status, due_date, payment_method, provider, provider_reference_id, provider_transaction_id, multicaixa_entity_id, multicaixa_reference_number FROM invoices WHERE id = ?").bind(invoiceId).first<InvoiceRow>();
-    return json({ ok:true, order:{id:orderId,order_number:orderNumber,status:"pending_payment"}, invoice:fresh || invoice, payment }, 201);
+    return json({
+      ok:true,
+      order:{id:orderId,order_number:orderNumber,status:"pending_payment"},
+      invoice:fresh || invoice,
+      items:products.map((product) => ({title:product.title,price_aoa:Number(product.price_aoa)})),
+      payment
+    }, 201);
   }
 
   const invoiceMatch = path.match(/^\/api\/invoices\/([^/]+)$/);
