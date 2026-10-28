@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { jsPDF } from 'jspdf';
 import { ArrowUpRight, BookOpen, Download, CreditCard, FileText, RefreshCw, ShoppingBag, ShieldCheck, AlertCircle, Trash2, ShoppingCart } from 'lucide-react';
 
 type Product = { id: string; title: string; description: string; price_aoa: number; asset_type: string; file_name?: string; creator_name?: string; career?: string; premium_enabled?: number };
@@ -68,7 +67,8 @@ export default function DigitalMarketplace({ onRequireAccess }: { onRequireAcces
     setCartIds((current) => current.includes(product.id) ? current.filter((id) => id !== product.id) : [...current, product.id]);
   };
 
-  const downloadInvoice = (item: CheckoutData) => {
+  const downloadInvoice = async (item: CheckoutData) => {
+    const { jsPDF } = await import('jspdf');
     const { order, invoice, payment } = item;
     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
     doc.setFont('helvetica','bold'); doc.setFontSize(22); doc.text('NOBRE CREATORS', 18, 22);
