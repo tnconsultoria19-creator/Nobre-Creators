@@ -44,18 +44,33 @@ export default function OpportunitiesBoard() {
 
   const filteredJobs = useMemo(() => selectedCategory === 'Todas' ? jobs : jobs.filter((job) => job.category === selectedCategory), [jobs, selectedCategory]);
 
-  const submitJob = (event: React.FormEvent<HTMLFormElement>) => {
+  const submitJob = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const job: Opportunity = {
       id: `local-${Date.now()}`, title: title.trim(), company: company.trim(), category,
       budget: budget.trim() || 'A combinar', location: location.trim() || 'A definir',
       deadline: deadline.trim() || 'A definir', brief: brief.trim(), demo: false,
     };
+    let sharedWithNetwork = false;
+    try {
+      const response = await fetch('/api/jobs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(job),
+      });
+      const result = await response.json().catch(() => null);
+      sharedWithNetwork = response.ok && Boolean(result?.ok || result?.success);
+    } catch {
+      sharedWithNetwork = false;
+    }
+
     const next = [job, ...jobs.filter((item) => !item.demo)];
     setJobs(next);
     try { window.localStorage.setItem('nobre-creators-opportunities', JSON.stringify(next)); } catch { /* Storage may be disabled. */ }
     setSelectedCategory('Todas');
-    setNotice('Oportunidade adicionada ao quadro neste dispositivo.');
+    setNotice(sharedWithNetwork
+      ? 'Oportunidade enviada à rede.'
+      : 'Rascunho guardado neste dispositivo. A partilha com toda a rede precisa da API de oportunidades.');
     setModalOpen(false);
     setTitle(''); setCompany(''); setBudget(''); setLocation(''); setDeadline(''); setBrief('');
   };
@@ -131,7 +146,7 @@ export default function OpportunitiesBoard() {
               <label className="text-xs font-semibold text-neutral-600 dark:text-neutral-300">Prazo<input value={deadline} onChange={(e) => setDeadline(e.target.value)} placeholder="Data ou a combinar" className="mt-1.5 w-full rounded-xl border border-neutral-200 bg-transparent px-3.5 py-3 text-sm dark:border-neutral-700 dark:text-white" /></label>
             </div>
             <label className="mt-4 block text-xs font-semibold text-neutral-600 dark:text-neutral-300">Descrição / briefing<textarea required rows={4} value={brief} onChange={(e) => setBrief(e.target.value)} placeholder="Descreva as entregas, o público e os requisitos." className="mt-1.5 w-full rounded-xl border border-neutral-200 bg-transparent px-3.5 py-3 text-sm dark:border-neutral-700 dark:text-white" /></label>
-            <p className="mt-3 text-[11px] leading-5 text-neutral-400">Os dados ficam guardados localmente neste protótipo. A distribuição a todos os membros será activada quando a API de oportunidades estiver ligada.</p>
+            <p className="mt-3 text-[11px] leading-5 text-neutral-400">Ao publicar, a oportunidade será enviada à API da rede. Se o serviço ainda não estiver ligado, fica guardada como rascunho neste dispositivo.</p>
             <button type="submit" className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#52c1b9] px-5 py-3.5 text-sm font-bold text-white transition hover:bg-[#2b9d96]">Adicionar oportunidade <ArrowUpRight className="h-4 w-4" /></button>
           </form>
         </div>
