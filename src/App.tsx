@@ -10,7 +10,7 @@ import FeaturedProfessionals from './components/FeaturedProfessionals';
 import ServicesSection from './components/ServicesSection';
 import OpportunitiesBoard from './components/OpportunitiesBoard';
 
-import { mockPosts, mockAuthors, mockCategories } from './data/mockData';
+import { mockPosts, mockAuthors } from './data/mockData';
 import { Post, Author } from './types';
 import { 
   ShieldCheck, Sparkles, Sliders, DollarSign, Play, Pause, CheckCircle, 
