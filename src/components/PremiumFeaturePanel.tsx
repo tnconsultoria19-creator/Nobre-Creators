@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { jsPDF } from 'jspdf';
 import { Crown, CreditCard, Download, RefreshCw, AlertCircle } from 'lucide-react';
 
 type PremiumState = { active: boolean; premiumUntil: string | null; priceAoa: number | null; billingConfigured: boolean };
@@ -60,8 +59,9 @@ export default function PremiumFeaturePanel() {
     }
   };
 
-  const downloadInvoice = () => {
+  const downloadInvoice = async () => {
     if (!checkout) return;
+    const { jsPDF } = await import('jspdf');
     const { order, invoice, payment } = checkout;
     const pdf = new jsPDF({ unit: 'mm', format: 'a4' });
     pdf.setFont('helvetica', 'bold'); pdf.setFontSize(22); pdf.text('NOBRE CREATORS', 18, 22);
