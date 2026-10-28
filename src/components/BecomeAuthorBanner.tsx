@@ -3,7 +3,7 @@ import { Award, CheckCircle, ArrowRight } from 'lucide-react';
 
 export default function BecomeAuthorBanner() {
   return (
-    <div className="section-become-author-banner py-16" id="submission">
+    <div className="section-become-author-banner py-16" id="publicidade">
       <div className="relative rounded-[40px] bg-emerald-500 overflow-hidden px-8 py-12 sm:px-16 sm:py-20 flex flex-col md:flex-row items-center justify-between gap-10 shadow-xl border border-emerald-600/20">
         
         {/* Background visual geometric accents */}
