@@ -7,7 +7,7 @@ type Asset = {
   id: string; title: string; description?: string; file_name: string; content_type: string;
   size_bytes: number; asset_type: AssetType; visibility: string; created_at: string; product_id?: string | null;
 };
-type CreatorProfile = { display_name: string; handle?: string; career?: string; niche?: string; bio?: string; location?: string; website?: string };
+type CreatorProfile = { display_name: string; handle?: string; career?: string; niche?: string; bio?: string; location?: string; website?: string; avatar_asset_id?: string | null; cover_asset_id?: string | null };
 
 const assetTypes: Array<{value:AssetType;label:string;description:string}> = [
   { value: 'portfolio', label: 'Portfólio público', description: 'Imagens e trabalhos que pode mostrar no perfil.' },
@@ -23,7 +23,7 @@ function formatSize(bytes: number) {
 
 export default function CreatorStudio() {
   const [assets, setAssets] = useState<Asset[]>([]);
-  const [profile, setProfile] = useState<CreatorProfile>({ display_name: '', career: '', niche: '', bio: '', location: '', website: '' });
+  const [profile, setProfile] = useState<CreatorProfile>({ display_name: '', career: '', niche: '', bio: '', location: '', website: '', avatar_asset_id: '', cover_asset_id: '' });
   const [activeTab, setActiveTab] = useState<'content'|'profile'>('content');
   const [assetType, setAssetType] = useState<AssetType>('portfolio');
   const [title, setTitle] = useState('');
@@ -46,7 +46,7 @@ export default function CreatorStudio() {
       const profileData = await profileResponse.json().catch(() => null);
       if (!assetResponse.ok || !profileResponse.ok) throw new Error(assetData?.error || profileData?.error || 'O painel de gestão precisa de uma sessão activa e da ligação Cloudflare.');
       setAssets(Array.isArray(assetData?.assets) ? assetData.assets : []);
-      if (profileData?.profile) setProfile({ display_name: profileData.profile.display_name || '', career: profileData.profile.career || '', niche: profileData.profile.niche || '', bio: profileData.profile.bio || '', location: profileData.profile.location || '', website: profileData.profile.website || '' });
+      if (profileData?.profile) setProfile({ display_name: profileData.profile.display_name || '', career: profileData.profile.career || '', niche: profileData.profile.niche || '', bio: profileData.profile.bio || '', location: profileData.profile.location || '', website: profileData.profile.website || '', avatar_asset_id: profileData.profile.avatar_asset_id || '', cover_asset_id: profileData.profile.cover_asset_id || '' });
       setError('');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Não foi possível carregar a biblioteca.');
@@ -95,7 +95,7 @@ export default function CreatorStudio() {
       const response = await fetch('/api/profile', { method:'PUT', credentials:'include', headers:{'Content-Type':'application/json'}, body:JSON.stringify(profile) });
       const result = await response.json().catch(() => null);
       if (!response.ok || !result?.profile) throw new Error(result?.error || 'Não foi possível guardar o perfil.');
-      setProfile({ display_name: result.profile.display_name || '', career: result.profile.career || '', niche: result.profile.niche || '', bio: result.profile.bio || '', location: result.profile.location || '', website: result.profile.website || '' });
+      setProfile({ display_name: result.profile.display_name || '', career: result.profile.career || '', niche: result.profile.niche || '', bio: result.profile.bio || '', location: result.profile.location || '', website: result.profile.website || '', avatar_asset_id: result.profile.avatar_asset_id || '', cover_asset_id: result.profile.cover_asset_id || '' });
       setNotice('Perfil guardado.');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Não foi possível guardar o perfil.');
@@ -178,6 +178,19 @@ export default function CreatorStudio() {
             <label className="text-xs font-semibold text-neutral-600 dark:text-neutral-300">Área de actividade<input value={profile.career || ''} onChange={(e) => setProfile((p) => ({...p,career:e.target.value}))} placeholder="Ex.: Criadora de conteúdo" className="mt-1.5 w-full rounded-xl border border-neutral-200 bg-white px-3.5 py-3 text-sm dark:border-neutral-700 dark:bg-neutral-950 dark:text-white" /></label>
             <label className="text-xs font-semibold text-neutral-600 dark:text-neutral-300">Especialidade / nicho<input value={profile.niche || ''} onChange={(e) => setProfile((p) => ({...p,niche:e.target.value}))} placeholder="Ex.: Lifestyle e beleza" className="mt-1.5 w-full rounded-xl border border-neutral-200 bg-white px-3.5 py-3 text-sm dark:border-neutral-700 dark:bg-neutral-950 dark:text-white" /></label>
             <label className="text-xs font-semibold text-neutral-600 dark:text-neutral-300">Localização<input value={profile.location || ''} onChange={(e) => setProfile((p) => ({...p,location:e.target.value}))} placeholder="Luanda, Angola" className="mt-1.5 w-full rounded-xl border border-neutral-200 bg-white px-3.5 py-3 text-sm dark:border-neutral-700 dark:bg-neutral-950 dark:text-white" /></label>
+            <label className="text-xs font-semibold text-neutral-600 dark:text-neutral-300">Fotografia de perfil
+              <select value={profile.avatar_asset_id || ''} onChange={(e) => setProfile((p) => ({...p,avatar_asset_id:e.target.value || null}))} className="mt-1.5 w-full rounded-xl border border-neutral-200 bg-white px-3.5 py-3 text-sm dark:border-neutral-700 dark:bg-neutral-950 dark:text-white">
+                <option value="">Usar iniciais (sem fotografia)</option>
+                {assets.filter((asset) => asset.asset_type === 'portfolio' && asset.content_type.startsWith('image/')).map((asset) => <option key={asset.id} value={asset.id}>{asset.title}</option>)}
+              </select>
+            </label>
+            <label className="text-xs font-semibold text-neutral-600 dark:text-neutral-300">Capa do perfil
+              <select value={profile.cover_asset_id || ''} onChange={(e) => setProfile((p) => ({...p,cover_asset_id:e.target.value || null}))} className="mt-1.5 w-full rounded-xl border border-neutral-200 bg-white px-3.5 py-3 text-sm dark:border-neutral-700 dark:bg-neutral-950 dark:text-white">
+                <option value="">Sem capa personalizada</option>
+                {assets.filter((asset) => asset.asset_type === 'portfolio' && asset.content_type.startsWith('image/')).map((asset) => <option key={asset.id} value={asset.id}>{asset.title}</option>)}
+              </select>
+              <span className="mt-1 block text-[10px] text-neutral-400">Carregue primeiro imagens na Biblioteca e seleccione-as aqui.</span>
+            </label>
             <label className="text-xs font-semibold text-neutral-600 dark:text-neutral-300 sm:col-span-2">Website / rede principal<input value={profile.website || ''} onChange={(e) => setProfile((p) => ({...p,website:e.target.value}))} placeholder="https://..." className="mt-1.5 w-full rounded-xl border border-neutral-200 bg-white px-3.5 py-3 text-sm dark:border-neutral-700 dark:bg-neutral-950 dark:text-white" /></label>
             <label className="text-xs font-semibold text-neutral-600 dark:text-neutral-300 sm:col-span-2">Biografia profissional<textarea required rows={5} maxLength={3000} value={profile.bio || ''} onChange={(e) => setProfile((p) => ({...p,bio:e.target.value}))} placeholder="Apresente o seu trabalho, experiência e o que os clientes podem contratar." className="mt-1.5 w-full rounded-xl border border-neutral-200 bg-white px-3.5 py-3 text-sm dark:border-neutral-700 dark:bg-neutral-950 dark:text-white" /><span className="mt-1 block text-[10px] text-neutral-400">Uma bio clara ajuda as marcas a perceber o que pode oferecer.</span></label>
             <div className="flex flex-wrap items-center gap-2 sm:col-span-2"><button type="submit" disabled={busy} className="rounded-full bg-[#52c1b9] px-5 py-3 text-sm font-bold text-white disabled:opacity-50">{busy ? 'A guardar…' : 'Guardar perfil'}</button><button type="button" onClick={() => void loadStudio()} className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 px-4 py-3 text-sm font-semibold text-neutral-600 dark:border-neutral-700 dark:text-neutral-300"><ExternalLink className="h-4 w-4" /> Recarregar dados</button></div>
