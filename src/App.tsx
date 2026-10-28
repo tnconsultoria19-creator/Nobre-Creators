@@ -882,6 +882,10 @@ export default function App() {
             
             <AdminOverview />
 
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs leading-5 text-amber-800 dark:border-amber-900/60 dark:bg-amber-950/20 dark:text-amber-200">
+              Nota de operação: os painéis de verificação, disputas e registos abaixo ainda contêm dados demonstrativos. Use os indicadores acima para métricas reais; não aprove pagamentos nem tome decisões sobre membros com base nas linhas de demonstração.
+            </div>
+
             {/* Verification pipeline and active systems */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               
