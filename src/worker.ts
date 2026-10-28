@@ -403,20 +403,21 @@ async function api(request: Request, env: Env): Promise<Response> {
     if (!["portfolio", "downloadable", "video", "lesson"].includes(assetType)) return json({ ok: false, error: "Tipo de conteúdo inválido." }, 400);
     const priceAoa = Number(asText(form.get("priceAoa"), 20) || "0");
     if (!Number.isSafeInteger(priceAoa) || priceAoa < 0 || priceAoa > 999999999) return json({ ok: false, error: "Preço inválido." }, 400);
-    if (assetType === "downloadable" && priceAoa > 0 && !title) return json({ ok: false, error: "Um material à venda precisa de título." }, 400);
+    if (assetType !== "portfolio" && priceAoa > 0 && !title) return json({ ok: false, error: "Um material à venda precisa de título." }, 400);
 
     const profile = await db.prepare("SELECT premium_enabled, premium_until FROM profiles WHERE user_id = ?").bind(auth.user!.id).first<{ premium_enabled:number; premium_until:string|null }>();
     const premiumActive = profile?.premium_enabled === 1 && (!profile.premium_until || profile.premium_until > nowIso());
     const visibility = assetType === "portfolio" && premiumActive ? "public" : "private";
     const id = newId();
-    const productId = assetType === "downloadable" && priceAoa > 0 ? newId() : null;
+    const productId = assetType !== "portfolio" && priceAoa > 0 ? newId() : null;
+    const productType = assetType === "lesson" ? "course" : assetType === "video" ? "video" : "download";
     const fileName = cleanFilename(file.name);
     const objectKey = `users/${auth.user!.id}/assets/${id}/${fileName}`;
     try {
       await env.MEDIA.put(objectKey, file.stream() as ReadableStream<Uint8Array>, { httpMetadata: { contentType: type } });
       await db.prepare("INSERT INTO media_assets (id, owner_user_id, title, description, file_name, object_key, content_type, size_bytes, asset_type, visibility, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)").bind(id, auth.user!.id, title, description, fileName, objectKey, type, file.size, assetType, visibility, nowIso()).run();
       if (productId) {
-        await db.prepare("INSERT INTO products (id, creator_user_id, asset_id, title, description, price_aoa, currency, product_type, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, 'AOA', 'download', 'published', ?, ?)").bind(productId, auth.user!.id, id, title, description, priceAoa, nowIso(), nowIso()).run();
+        await db.prepare("INSERT INTO products (id, creator_user_id, asset_id, title, description, price_aoa, currency, product_type, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, 'AOA', ?, 'published', ?, ?)").bind(productId, auth.user!.id, id, title, description, priceAoa, productType, nowIso(), nowIso()).run();
       }
     } catch {
       await env.MEDIA.delete(objectKey).catch(() => undefined);
