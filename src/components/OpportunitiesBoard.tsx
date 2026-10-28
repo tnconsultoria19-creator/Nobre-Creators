@@ -24,7 +24,7 @@ const examples: Opportunity[] = [
   { id: 'demo-4', title: 'Website para negócio em crescimento', company: 'Exemplo de briefing', category: 'Web & Presença Digital', budget: 'A combinar', location: 'Remoto', deadline: 'Prazo a definir', brief: 'Página profissional responsiva com apresentação de serviços e contacto directo.', demo: true },
 ];
 
-export default function OpportunitiesBoard() {
+export default function OpportunitiesBoard({ onRequireAccess }: { onRequireAccess?: () => void }) {
   const [selectedCategory, setSelectedCategory] = useState('Todas');
   const [jobs, setJobs] = useState<Opportunity[]>(() => {
     try {
@@ -81,10 +81,16 @@ export default function OpportunitiesBoard() {
     try {
       const response = await fetch('/api/jobs', {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(job),
       });
       const result = await response.json().catch(() => null);
+      if (response.status === 401) {
+        setNotice('Entre numa conta de marca/cliente para publicar esta oportunidade.');
+        onRequireAccess?.();
+        return;
+      }
       sharedWithNetwork = response.ok && Boolean(result?.ok || result?.success);
       if (sharedWithNetwork && result?.job) networkJob = { ...result.job, network: true, demo: false };
     } catch {
