@@ -3,7 +3,9 @@ import { Menu, X, ChevronDown, Users, UserRound, BriefcaseBusiness, Settings } f
 
 interface HeaderProps {
   currentRole?: string;
+  accountRole?: string;
   onChangeRole?: (role: string) => void;
+  onLogout?: () => void;
 }
 
 const roles = [
@@ -20,7 +22,7 @@ const navItems = [
   { label: 'Publicidade', href: '#publicidade' },
 ];
 
-export default function Header({ currentRole = 'visitor', onChangeRole }: HeaderProps) {
+export default function Header({ currentRole = 'visitor', accountRole, onChangeRole, onLogout }: HeaderProps) {
   const [showRoles, setShowRoles] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const activeRole = roles.find((role) => role.id === currentRole) || roles[0];
@@ -58,6 +60,9 @@ export default function Header({ currentRole = 'visitor', onChangeRole }: Header
                     const Icon = role.icon;
                     return <button key={role.id} type="button" onClick={() => { onChangeRole(role.id); setShowRoles(false); }} className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm transition ${currentRole === role.id ? 'bg-[#52c1b9]/10 font-bold text-[#258b84]' : 'text-neutral-600 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800'}`}><Icon className="h-4 w-4" />{role.label}</button>;
                   })}
+                  {accountRole && onLogout && (
+                    <button type="button" onClick={() => { setShowRoles(false); onLogout(); }} className="mt-1 flex w-full items-center gap-2.5 rounded-xl border-t border-neutral-100 px-3 py-2.5 text-left text-sm font-semibold text-red-600 transition hover:bg-red-50 dark:border-neutral-800 dark:text-red-400 dark:hover:bg-red-950/30">Terminar sessão</button>
+                  )}
                 </div>
               )}
             </div>
