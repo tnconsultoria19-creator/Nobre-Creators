@@ -10,7 +10,7 @@ interface CardLarge1Props {
 }
 
 export default function CardLarge1({ posts, onPlayAudio, playingPostId, onSelectCreator }: CardLarge1Props) {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(() => Math.max(0, posts.findIndex((post) => post.handle === 'diagnostico-canalizacao')));
 
   const handleNext = () => {
     setActiveIndex((prev) => (prev + 1) % posts.length);
