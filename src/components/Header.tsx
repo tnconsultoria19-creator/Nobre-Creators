@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Bell, Menu, Sun, Moon, Sparkles, ShieldCheck, User, Users, Briefcase, Settings } from 'lucide-react';
+import { Menu, X, ChevronDown, Users, UserRound, BriefcaseBusiness, Settings } from 'lucide-react';
 
 interface HeaderProps {
   currentRole?: string;
@@ -7,130 +7,76 @@ interface HeaderProps {
   onOpenInquiryModal?: () => void;
 }
 
-export default function Header({ currentRole = 'visitor', onChangeRole, onOpenInquiryModal }: HeaderProps) {
-  const [darkMode, setDarkMode] = useState(false);
-  const [showSearch, setShowSearch] = useState(false);
+const roles = [
+  { id: 'visitor', label: 'Visitante', icon: Users },
+  { id: 'creator', label: 'Criador', icon: UserRound },
+  { id: 'brand', label: 'Marca / Cliente', icon: BriefcaseBusiness },
+  { id: 'admin', label: 'Admin', icon: Settings },
+];
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    document.documentElement.classList.toggle('dark');
-  };
+const navItems = [
+  { label: 'Serviços', href: '#servicos' },
+  { label: 'Oportunidades', href: '#oportunidades' },
+  { label: 'Portfólios', href: '#portfolio' },
+  { label: 'Publicidade', href: '#publicidade' },
+];
 
-  const roles = [
-    { id: 'visitor', label: 'Visitante', icon: Users, color: 'text-neutral-600 dark:text-neutral-400' },
-    { id: 'creator', label: 'Profissional', icon: User, color: 'text-pink-600 dark:text-pink-400' },
-    { id: 'brand', label: 'Cliente / Empresa', icon: Briefcase, color: 'text-blue-600 dark:text-blue-400' },
-    { id: 'admin', label: 'Admin CRM', icon: Settings, color: 'text-amber-600 dark:text-amber-400' }
-  ];
+export default function Header({ currentRole = 'visitor', onChangeRole }: HeaderProps) {
+  const [showRoles, setShowRoles] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const activeRole = roles.find((role) => role.id === currentRole) || roles[0];
+  const ActiveIcon = activeRole.icon;
+
+  const closeMobileMenu = () => setMobileOpen(false);
 
   return (
-    <header className="header-2 sticky top-0 z-50 border-b border-neutral-200/80 bg-white/90 backdrop-blur-md dark:border-neutral-800/80 dark:bg-neutral-900/90 transition-colors">
-      <div className="container mx-auto px-4 lg:px-8 flex h-20 items-center justify-between max-w-7xl">
-        {/* Left section: Logo */}
-        <div className="flex items-center gap-x-4">
-          <a className="inline-block shrink-0" href="/" id="logo">
-            <span className="text-2xl font-black tracking-tight text-neutral-950 dark:text-white flex items-center">
-              kwanzaa<span className="text-[#52c1b9] font-extrabold">:</span>
-              <span className="hidden sm:inline-block ms-1.5 text-xs font-semibold uppercase tracking-widest text-neutral-400">North</span>
-            </span>
-          </a>
-          <div className="hidden md:block h-6 border-l border-neutral-200 dark:border-neutral-800"></div>
-          
-          {/* Quick Stats or slogan */}
-          <span className="hidden lg:inline-flex items-center gap-x-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
-            <Sparkles className="w-3.5 h-3.5" /> Engenharia • Construção • Materiais
-          </span>
-        </div>
+    <header className="sticky top-0 z-50 border-b border-neutral-200/80 bg-white/90 backdrop-blur-xl transition-colors dark:border-neutral-800/80 dark:bg-neutral-950/90">
+      <div className="mx-auto flex h-[68px] max-w-7xl items-center justify-between gap-4 px-4 lg:px-8">
+        <a href="/" id="logo" aria-label="Nobre Creators, início" className="shrink-0 text-xl font-black tracking-tight text-neutral-950 dark:text-white sm:text-2xl">
+          Nobre <span className="text-[#52c1b9]">Creators</span>
+        </a>
 
-        {/* Center section: Menu links */}
-        <div className="hidden xl:flex items-center justify-center space-x-1">
-          <a className="rounded-full px-4 py-2.5 text-sm font-semibold text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white transition-colors" href="#directorio">
-            Diretório
-          </a>
-          <a className="rounded-full px-4 py-2.5 text-sm font-semibold text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white transition-colors" href="#como-funciona">
-            Como Funciona
-          </a>
-          <a className="rounded-full px-4 py-2.5 text-sm font-semibold text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white transition-colors" href="#exigencias">
-            Padrões de Qualidade
-          </a>
-          <a className="rounded-full px-4 py-2.5 text-sm font-semibold text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white transition-colors" href="#escrow">
-            Pedidos de Orçamento
-          </a>
-          <button 
-            onClick={onOpenInquiryModal}
-            className="rounded-full px-4 py-2.5 text-sm font-semibold text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer"
-          >
-            Publicar Projecto
-          </button>
-        </div>
+        <nav aria-label="Navegação principal" className="hidden items-center gap-1 lg:flex">
+          {navItems.map((item) => (
+            <a key={item.href} href={item.href} className="rounded-full px-3.5 py-2 text-sm font-medium text-neutral-600 transition hover:bg-neutral-100 hover:text-neutral-950 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white">
+              {item.label}
+            </a>
+          ))}
+        </nav>
 
-        {/* Right section: Action Buttons & Role Selector Tabs */}
-        <div className="flex items-center gap-x-2.5">
-          {/* Active Role Selector Pill */}
+        <div className="flex shrink-0 items-center gap-2">
+          <a href="#oportunidades" className="hidden rounded-full bg-[#52c1b9] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#2b9d96] sm:inline-flex">
+            Publicar trabalho
+          </a>
           {onChangeRole && (
-            <div className="flex items-center gap-x-1 rounded-full bg-neutral-100 dark:bg-neutral-800 p-1 border border-neutral-200/50 dark:border-neutral-700/50">
-              {roles.map((r) => {
-                const isSelected = currentRole === r.id;
-                const IconComp = r.icon;
-                return (
-                  <button
-                    key={r.id}
-                    onClick={() => onChangeRole(r.id)}
-                    className={`inline-flex items-center gap-x-1 rounded-full px-3 py-1.5 text-xs font-bold transition-all cursor-pointer ${
-                      isSelected
-                        ? 'bg-[#52c1b9] text-white shadow-sm'
-                        : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
-                    }`}
-                    title={`Mudar para visão: ${r.label}`}
-                  >
-                    <IconComp className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">{r.label}</span>
-                  </button>
-                );
-              })}
+            <div className="relative">
+              <button type="button" onClick={() => setShowRoles((open) => !open)} aria-expanded={showRoles} className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-3 py-2.5 text-xs font-semibold text-neutral-700 transition hover:border-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200">
+                <ActiveIcon className="h-4 w-4" /><span className="hidden sm:inline">{activeRole.label}</span><ChevronDown className="h-3.5 w-3.5" />
+              </button>
+              {showRoles && (
+                <div className="absolute right-0 top-full mt-2 w-48 overflow-hidden rounded-2xl border border-neutral-200 bg-white p-1.5 shadow-xl dark:border-neutral-700 dark:bg-neutral-900">
+                  {roles.map((role) => {
+                    const Icon = role.icon;
+                    return <button key={role.id} type="button" onClick={() => { onChangeRole(role.id); setShowRoles(false); }} className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm transition ${currentRole === role.id ? 'bg-[#52c1b9]/10 font-bold text-[#258b84]' : 'text-neutral-600 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800'}`}><Icon className="h-4 w-4" />{role.label}</button>;
+                  })}
+                </div>
+              )}
             </div>
           )}
-
-          {/* Quick Search trigger */}
-          <div className="relative">
-            <button
-              onClick={() => setShowSearch(!showSearch)}
-              className="relative inline-flex items-center justify-center rounded-full p-2.5 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 transition-colors cursor-pointer"
-              aria-label="Pesquisar"
-            >
-              <Search className="w-5 h-5" />
-            </button>
-            {showSearch && (
-              <div className="absolute top-full right-0 mt-2 w-72 bg-white dark:bg-neutral-800 p-3 rounded-2xl shadow-xl border border-neutral-100 dark:border-neutral-700 z-50">
-                <input
-                  type="text"
-                  placeholder="Pesquisar profissionais, especialidades, cidades..."
-                  className="w-full px-4 py-2 text-sm border border-neutral-200 dark:border-neutral-700 rounded-full focus:outline-none focus:ring-2 focus:ring-[#52c1b9] bg-transparent dark:text-white"
-                />
-              </div>
-            )}
-          </div>
-
-          {/* Dark Mode toggle */}
-          <button
-            onClick={toggleDarkMode}
-            className="relative inline-flex items-center justify-center rounded-full p-2.5 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 transition-colors cursor-pointer"
-            aria-label="Alternar modo escuro"
-          >
-            {darkMode ? <Sun className="w-5 h-5 text-yellow-500" /> : <Moon className="w-5 h-5" />}
+          <button type="button" aria-label={mobileOpen ? 'Fechar menu' : 'Abrir menu'} aria-expanded={mobileOpen} onClick={() => setMobileOpen((open) => !open)} className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-neutral-200 text-neutral-700 dark:border-neutral-700 dark:text-neutral-200 lg:hidden">
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
-
-          {/* User profile marker/badge */}
-          <div className="relative flex items-center shrink-0">
-            <img
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=75&w=100&auto=format&fit=crop"
-              alt="avatar"
-              className="w-10 h-10 rounded-full object-cover ring-2 ring-[#52c1b9]"
-            />
-            <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white dark:border-neutral-900" title="Verificado"></span>
-          </div>
         </div>
       </div>
+
+      {mobileOpen && (
+        <div className="border-t border-neutral-100 bg-white px-4 py-3 shadow-lg dark:border-neutral-800 dark:bg-neutral-950 lg:hidden">
+          <nav aria-label="Navegação móvel" className="mx-auto flex max-w-7xl flex-col gap-1">
+            {navItems.map((item) => <a key={item.href} href={item.href} onClick={closeMobileMenu} className="rounded-xl px-3 py-3 text-sm font-semibold text-neutral-700 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800">{item.label}</a>)}
+            <a href="#oportunidades" onClick={closeMobileMenu} className="mt-2 inline-flex justify-center rounded-full bg-[#52c1b9] px-4 py-3 text-sm font-bold text-white">Publicar trabalho</a>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
