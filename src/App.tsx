@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CardLarge1 from './components/CardLarge1';
@@ -7,6 +7,9 @@ import BecomeAuthorBanner from './components/BecomeAuthorBanner';
 import NewsletterBanner from './components/NewsletterBanner';
 import AudioPlayerBottom from './components/AudioPlayerBottom';
 import CreatorNetworkGrid from './components/CreatorNetworkGrid';
+import CreatorStudio from './components/CreatorStudio';
+import DigitalMarketplace from './components/DigitalMarketplace';
+import AccountAccessModal from './components/AccountAccessModal';
 import ServicesSection from './components/ServicesSection';
 import OpportunitiesBoard from './components/OpportunitiesBoard';
 
@@ -36,6 +39,57 @@ export default function App() {
   const [playingPost, setPlayingPost] = useState<Post | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeRole, setActiveRole] = useState<string>('visitor'); // visitor | creator | brand | admin
+  const [currentUser, setCurrentUser] = useState<{ id:string; email:string; displayName:string; role:'creator'|'brand'|'admin' } | null>(null);
+  const [accessModalOpen, setAccessModalOpen] = useState(false);
+  const [requestedRole, setRequestedRole] = useState<'creator'|'brand'|'admin'>('creator');
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/auth/me', { credentials: 'include' })
+      .then(async (response) => response.ok ? response.json() : null)
+      .then((data) => {
+        if (cancelled || !data?.user) return;
+        setCurrentUser(data.user);
+        setActiveRole(data.user.role);
+      })
+      .catch(() => { /* Public browsing remains available without a session. */ });
+    return () => { cancelled = true; };
+  }, []);
+
+  const handleRoleChange = (role: string) => {
+    if (role === 'visitor') {
+      setActiveRole('visitor');
+      return;
+    }
+    if (currentUser?.role === role) {
+      setActiveRole(role);
+      document.getElementById('workspace-panel')?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    setRequestedRole(role as 'creator'|'brand'|'admin');
+    if (currentUser && currentUser.role !== role) {
+      void fetch('/api/auth/logout', { method: 'POST', credentials: 'include' }).finally(() => {
+        setCurrentUser(null);
+        setActiveRole('visitor');
+        setAccessModalOpen(true);
+      });
+      return;
+    }
+    setAccessModalOpen(true);
+  };
+
+  const handleAuthenticated = (user: { id:string; email:string; displayName:string; role:'creator'|'brand'|'admin' }) => {
+    setCurrentUser(user);
+    setActiveRole(user.role);
+    setAccessModalOpen(false);
+    setTimeout(() => document.getElementById('workspace-panel')?.scrollIntoView({ behavior: 'smooth' }), 100);
+  };
+
+  const handleLogout = async () => {
+    try { await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' }); } catch { /* Local session state is still cleared. */ }
+    setCurrentUser(null);
+    setActiveRole('visitor');
+  };
+
   const [selectedCreator, setSelectedCreator] = useState<Author | null>(null);
   
   // Interactive Campaign State for Escrow Workflows
@@ -256,17 +310,11 @@ export default function App() {
     <div className="min-h-screen bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 selection:bg-[#52c1b9] selection:text-white transition-colors duration-300">
       
       {/* Interactive Brand Header with role integration */}
-      <Header 
-        currentRole={activeRole} 
-        onChangeRole={(role) => {
-          setActiveRole(role);
-          // Auto scroll to workspaces if dashboard chosen
-          if (role !== 'visitor') {
-            setTimeout(() => {
-              document.getElementById('workspace-panel')?.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-          }
-        }} 
+      <Header
+        currentRole={activeRole}
+        accountRole={currentUser?.role}
+        onLogout={handleLogout}
+        onChangeRole={handleRoleChange}
       />
 
       {/* Main Content Areas */}
@@ -312,7 +360,10 @@ export default function App() {
             />
 
             {/* Category-based opportunities for creators and vendors */}
-            <OpportunitiesBoard />
+            <OpportunitiesBoard onRequireAccess={() => { setRequestedRole('brand'); setAccessModalOpen(true); }} />
+
+            {/* Purchasable digital resources and invoice checkout */}
+            <DigitalMarketplace onRequireAccess={() => { setRequestedRole('brand'); setAccessModalOpen(true); }} />
 
             {/* Gallery Posts (Sessões & Lookbooks) */}
             <TheGalleryPosts 
@@ -369,6 +420,8 @@ export default function App() {
                 </div>
               </div>
             </div>
+
+            <CreatorStudio />
 
             {/* Main grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -1262,6 +1315,14 @@ export default function App() {
       <div className="mt-20">
         <Footer />
       </div>
+
+      {accessModalOpen && (
+        <AccountAccessModal
+          requestedRole={requestedRole}
+          onClose={() => setAccessModalOpen(false)}
+          onAuthenticated={handleAuthenticated}
+        />
+      )}
 
       {/* Sticky bottom live audio presentation player */}
       <AudioPlayerBottom
