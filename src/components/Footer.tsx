@@ -11,11 +11,11 @@ export default function Footer() {
           <div className="col-span-2 md:col-span-1">
             <a className="inline-block shrink-0 text-emerald-500 w-14 h-9" href="/">
               <span className="text-2xl font-black tracking-tight text-neutral-900 dark:text-white">
-                kwanzaa<span className="text-emerald-500">:</span>
+                Nobre <span className="text-emerald-500">Creators</span>
               </span>
             </a>
             <p className="mt-4 text-xs text-neutral-500 dark:text-neutral-400">
-              A Kwanzaa North liga clientes a profissionais de engenharia, arquitectura, construção, manutenção e fornecimento de materiais.
+              A Nobre Creators liga marcas a criadores, produtores, especialistas digitais e parceiros de comunicação.
             </p>
           </div>
           <div className="col-span-2 flex items-center md:col-span-3 lg:mt-4">
@@ -38,19 +38,19 @@ export default function Footer() {
 
         {/* Column 2: Niches */}
         <div className="text-sm">
-          <h2 className="font-semibold text-neutral-900 dark:text-neutral-100">Especialidades Profissionais</h2>
+          <h2 className="font-semibold text-neutral-900 dark:text-neutral-100">Serviços</h2>
           <ul className="mt-5 space-y-4 text-neutral-600 dark:text-neutral-400 font-medium">
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Engenharia Civil & Fiscalização</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Arquitectura & Projectos</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Construção & Gestão de Obra</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Electricidade & Canalização</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Interiores & Acabamentos</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Produção de conteúdo & eventos</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Gestão de redes sociais</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Websites & presença digital</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Publicidade paga</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Criadores e influenciadores</a></li>
           </ul>
         </div>
 
         {/* Column 3: Soluções */}
         <div className="text-sm">
-          <h2 className="font-semibold text-neutral-900 dark:text-neutral-100">Soluções Kwanzaa North</h2>
+          <h2 className="font-semibold text-neutral-900 dark:text-neutral-100">Soluções Nobre Creators</h2>
           <ul className="mt-5 space-y-4 text-neutral-600 dark:text-neutral-400 font-medium">
             <li><a className="hover:text-black dark:hover:text-white" href="/">Condições de Pagamento</a></li>
             <li><a className="hover:text-black dark:hover:text-white" href="/">Pedidos de Projecto e Orçamentos</a></li>
@@ -78,7 +78,7 @@ export default function Footer() {
           <ul className="mt-5 space-y-4 text-neutral-600 dark:text-neutral-400 font-medium">
             <li><a className="hover:text-black dark:hover:text-white" href="/">Termos de Uso</a></li>
             <li><a className="hover:text-black dark:hover:text-white" href="/">Política de Privacidade</a></li>
-            <li><a className="hover:text-black dark:hover:text-white" href="/">Termos Kwanzaa North</a></li>
+            <li><a className="hover:text-black dark:hover:text-white" href="/">Termos Nobre Creators</a></li>
             <li><a className="hover:text-black dark:hover:text-white" href="/">Apoio ao Cliente</a></li>
             <li><a className="hover:text-black dark:hover:text-white" href="/">Perguntas Frequentes</a></li>
           </ul>
