@@ -428,6 +428,21 @@ async function api(request: Request, env: Env): Promise<Response> {
     return json({ ok: true, asset, product: productId ? { id: productId, title, price_aoa: priceAoa } : null }, 201);
   }
 
+  const archiveAssetMatch = path.match(/^\/api\/assets\/([^/]+)\/archive$/);
+  if (archiveAssetMatch && method === "POST") {
+    if (!isSafeSameOrigin(request)) return json({ ok:false,error:"Pedido de origem não permitida." },403);
+    const auth = await requireUser(request,env,["creator"]);
+    if (auth.response) return auth.response;
+    const id = decodeURIComponent(archiveAssetMatch[1]);
+    const asset = await db.prepare("SELECT id, owner_user_id FROM media_assets WHERE id = ?").bind(id).first<{id:string;owner_user_id:string}>();
+    if (!asset || asset.owner_user_id !== auth.user!.id) return json({ok:false,error:"Ficheiro não encontrado."},404);
+    await db.batch([
+      db.prepare("UPDATE media_assets SET visibility = 'private' WHERE id = ?").bind(id),
+      db.prepare("UPDATE products SET status = 'archived', updated_at = ? WHERE asset_id = ?").bind(nowIso(),id),
+    ]);
+    return json({ok:true});
+  }
+
   const assetMatch = path.match(/^\/api\/assets\/([^/]+)(?:\/(download|preview))?$/);
   if (assetMatch && method === "DELETE" && !assetMatch[2]) {
     if (!isSafeSameOrigin(request)) return json({ ok: false, error: "Pedido de origem não permitida." }, 403);
