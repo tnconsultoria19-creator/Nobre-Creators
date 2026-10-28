@@ -64,7 +64,7 @@ export default function OpportunitiesBoard() {
       sharedWithNetwork = false;
     }
 
-    const next = [job, ...jobs.filter((item) => !item.demo)];
+    const next = [job, ...jobs];
     setJobs(next);
     try { window.localStorage.setItem('nobre-creators-opportunities', JSON.stringify(next)); } catch { /* Storage may be disabled. */ }
     setSelectedCategory('Todas');
