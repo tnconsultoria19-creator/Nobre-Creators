@@ -1,6 +1,31 @@
+interface SqlRow {
+  [key: string]: string | number | null;
+}
+
+interface SqlResult {
+  toArray(): SqlRow[];
+}
+
+interface SqlStorage {
+  exec(query: string, ...bindings: unknown[]): SqlResult;
+}
+
+interface DurableStateLike {
+  storage: { sql: SqlStorage };
+}
+
+interface DurableNamespaceLike {
+  idFromName(name: string): unknown;
+  get(id: unknown): { fetch(request: Request): Promise<Response> };
+}
+
+interface AssetFetcherLike {
+  fetch(request: Request): Promise<Response>;
+}
+
 interface Env {
-  ASSETS: Fetcher;
-  STATE: DurableObjectNamespace;
+  ASSETS: AssetFetcherLike;
+  STATE: DurableNamespaceLike;
   RESEND_API_KEY?: string;
   NEWSLETTER_FROM?: string;
   MAGAZINE_URL?: string;
@@ -35,7 +60,7 @@ export default {
 };
 
 export class NobreState {
-  constructor(private ctx: DurableObjectState, private env: Env) {
+  constructor(private ctx: DurableStateLike, private env: Env) {
     this.ctx.storage.sql.exec(`
       CREATE TABLE IF NOT EXISTS newsletter_subscribers (
         email TEXT PRIMARY KEY,
@@ -66,7 +91,7 @@ export class NobreState {
     if (url.pathname === "/api/jobs" && request.method === "POST") return this.createJob(request);
     if (url.pathname === "/api/magazine/send" && request.method === "POST") return this.sendMagazine(request);
     if (url.pathname === "/api/health" && request.method === "GET") {
-      const subscribers = this.ctx.storage.sql.exec("SELECT COUNT(*) AS count FROM newsletter_subscribers").toArray()[0] as { count: number };
+      const subscribers = this.ctx.storage.sql.exec("SELECT COUNT(*) AS count FROM newsletter_subscribers").toArray()[0] as unknown as { count: number };
       const opportunities = this.ctx.storage.sql.exec("SELECT COUNT(*) AS count FROM opportunities").toArray()[0] as { count: number };
       return json({ ok: true, service: "nobre-creators-api", subscribers: Number(subscribers?.count || 0), opportunities: Number(opportunities?.count || 0) });
     }
@@ -166,7 +191,7 @@ export class NobreState {
       issueUrl = parsed.toString();
     } catch { return json({ ok: false, error: "A valid HTTPS magazine URL is required." }, 400); }
 
-    const subscribers = this.ctx.storage.sql.exec("SELECT email FROM newsletter_subscribers ORDER BY subscribed_at").toArray() as Array<{ email: string }>;
+    const subscribers = this.ctx.storage.sql.exec("SELECT email FROM newsletter_subscribers ORDER BY subscribed_at").toArray() as unknown as Array<{ email: string }>;
     let sent = 0;
     let failed = 0;
     for (const subscriber of subscribers) {
