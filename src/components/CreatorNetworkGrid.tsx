@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CheckCircle, Crown, MapPin, Star, ArrowUpRight, Heart } from 'lucide-react';
 import { Author } from '../types';
 
@@ -8,7 +8,42 @@ interface CreatorNetworkGridProps {
 }
 
 export default function CreatorNetworkGrid({ authors, onSelectCreator }: CreatorNetworkGridProps) {
-  const creators = authors.slice(0, 10);
+  const [liveCreators, setLiveCreators] = useState<Author[]>([]);
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/creators')
+      .then(async (response) => response.ok ? response.json() : null)
+      .then((result) => {
+        if (cancelled || !Array.isArray(result?.creators) || result.creators.length === 0) return;
+        const mapped: Author[] = result.creators.map((item: Record<string, unknown>, index: number) => {
+          const avatarId = typeof item.avatar_asset_id === 'string' ? item.avatar_asset_id : '';
+          const fallback = authors[index % Math.max(1, authors.length)];
+          return {
+            id: String(item.user_id || item.id || 'creator-' + index),
+            name: String(item.display_name || 'Criador Nobre'),
+            handle: String(item.handle || ''),
+            career: String(item.career || 'Criador de conteúdo'),
+            niche: String(item.niche || ''),
+            bio: String(item.bio || ''),
+            location: String(item.location || 'Angola'),
+            avatar: avatarId ? '/api/assets/' + encodeURIComponent(avatarId) + '/preview' : '',
+            cover: fallback?.cover || '',
+            count: 0,
+            followers: '',
+            engagement: '',
+            verified: false,
+            premium: Number(item.premium_enabled) === 1,
+            featured: true,
+            rating: '',
+          };
+        });
+        setLiveCreators(mapped);
+      })
+      .catch(() => { /* Sample profiles remain available before D1 is connected. */ });
+    return () => { cancelled = true; };
+  }, [authors]);
+
+  const creators = (liveCreators.length ? liveCreators : authors).slice(0, 10);
   const [following, setFollowing] = useState<Record<string, boolean>>({});
 
   return (
@@ -29,7 +64,11 @@ export default function CreatorNetworkGrid({ authors, onSelectCreator }: Creator
             {creator.premium && <span className="absolute right-2.5 top-2.5 text-amber-500" title="Perfil Premium"><Crown className="h-3.5 w-3.5" /></span>}
             <button type="button" onClick={() => onSelectCreator?.(creator)} className="mx-auto flex w-full flex-col items-center">
               <div className="relative">
-                <img src={creator.avatar} alt={creator.name} loading="lazy" className="h-14 w-14 rounded-full object-cover ring-2 ring-neutral-100 transition group-hover:ring-[#52c1b9]/40 dark:ring-neutral-800 sm:h-[66px] sm:w-[66px]" />
+                {creator.avatar ? (
+                  <img src={creator.avatar} alt={creator.name} loading="lazy" onError={(event) => { (event.currentTarget as HTMLImageElement).style.display = 'none'; }} className="h-14 w-14 rounded-full object-cover ring-2 ring-neutral-100 transition group-hover:ring-[#52c1b9]/40 dark:ring-neutral-800 sm:h-[66px] sm:w-[66px]" />
+                ) : (
+                  <span aria-label={creator.name} className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#52c1b9]/25 to-indigo-200 text-base font-black text-neutral-700 ring-2 ring-neutral-100 dark:from-[#52c1b9]/20 dark:to-neutral-700 dark:text-white dark:ring-neutral-800 sm:h-[66px] sm:w-[66px]">{creator.name.split(/\s+/).slice(0, 2).map((part) => part[0]).join('').toUpperCase()}</span>
+                )}
                 {creator.verified && <span className="absolute bottom-0 right-0 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-[#52c1b9] text-[8px] font-black text-white dark:border-neutral-900"><CheckCircle className="h-3 w-3" /></span>}
               </div>
               <h3 className="mt-2.5 w-full truncate text-[11px] font-bold text-neutral-950 dark:text-white sm:text-xs">{creator.name}</h3>
