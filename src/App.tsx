@@ -6,7 +6,7 @@ import TheGalleryPosts from './components/TheGalleryPosts';
 import BecomeAuthorBanner from './components/BecomeAuthorBanner';
 import NewsletterBanner from './components/NewsletterBanner';
 import AudioPlayerBottom from './components/AudioPlayerBottom';
-import FeaturedProfessionals from './components/FeaturedProfessionals';
+import CreatorNetworkGrid from './components/CreatorNetworkGrid';
 import ServicesSection from './components/ServicesSection';
 import OpportunitiesBoard from './components/OpportunitiesBoard';
 
@@ -291,7 +291,7 @@ export default function App() {
             />
 
             {/* Rotating professionals immediately below the hero */}
-            <FeaturedProfessionals
+            <CreatorNetworkGrid
               authors={verifiedAuthorsState}
               onSelectCreator={(creator) => {
                 setSelectedCreator(creator);
@@ -974,12 +974,12 @@ export default function App() {
             {/* Dark background overlay */}
             <div className="absolute inset-0 bg-neutral-950/40 backdrop-blur-sm transition-opacity" onClick={() => setSelectedCreator(null)}></div>
 
-            <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
-              <div className="pointer-events-auto w-screen max-w-lg">
+            <div className="pointer-events-none fixed inset-y-0 right-0 flex w-full max-w-full pl-0 sm:pl-6">
+              <div className="pointer-events-auto w-screen max-w-5xl">
                 <div className="flex h-full flex-col overflow-y-scroll bg-white dark:bg-neutral-900 shadow-2xl border-l border-neutral-150 dark:border-neutral-800 font-sans">
                   
                   {/* Slider cover and close */}
-                  <div className="relative shrink-0 h-44 bg-neutral-100">
+                  <div className="relative h-56 shrink-0 bg-neutral-100 sm:h-72 lg:h-80">
                     <img src={selectedCreator.cover} alt="Cover" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 to-transparent"></div>
                     <button 
@@ -990,26 +990,26 @@ export default function App() {
                     </button>
 
                     {/* Profile Overlay Name */}
-                    <div className="absolute bottom-4 left-6 flex items-end space-x-3">
+                    <div className="absolute bottom-5 left-5 flex items-end space-x-4 sm:bottom-7 sm:left-8">
                       <div className="relative">
                         <img 
                           src={selectedCreator.avatar} 
                           alt={selectedCreator.name} 
-                          className="w-16 h-16 rounded-full object-cover border-4 border-white dark:border-neutral-900 shadow-md"
+                          className="h-20 w-20 rounded-full border-4 border-white object-cover shadow-md sm:h-24 sm:w-24 dark:border-neutral-900"
                         />
                         {selectedCreator.verified && (
                           <span className="absolute bottom-0 right-0 w-4 h-4 bg-[#52c1b9] text-white text-[9px] flex items-center justify-center rounded-full ring-2 ring-white">✓</span>
                         )}
                       </div>
                       <div className="pb-1.5 text-left">
-                        <h3 className="text-lg font-bold text-white">{selectedCreator.name}</h3>
-                        <p className="text-xs text-neutral-300">{selectedCreator.career}</p>
+                        <h3 className="text-xl font-bold text-white sm:text-2xl">{selectedCreator.name}</h3>
+                        <p className="text-sm text-neutral-300">{selectedCreator.career}</p>
                       </div>
                     </div>
                   </div>
 
                   {/* Profile content details */}
-                  <div className="p-6 space-y-6 text-left grow">
+                  <div className="grow space-y-7 p-5 text-left sm:p-8 lg:p-10">
                     {/* Basic details tags */}
                     <div className="flex flex-wrap gap-2 pt-2">
                       <span className="bg-pink-50 text-pink-600 dark:bg-pink-950/20 dark:text-pink-400 px-3 py-1 rounded-full text-xs font-bold">
@@ -1031,7 +1031,7 @@ export default function App() {
                     {/* Bio */}
                     <div className="space-y-1.5">
                       <h4 className="font-bold text-xs text-neutral-400 uppercase tracking-wider">Apresentação</h4>
-                      <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                      <p className="text-sm leading-7 text-neutral-600 dark:text-neutral-400 sm:text-base">
                         {selectedCreator.bio || 'Perfil demonstrativo para serviços técnicos. Confirme especialidade, qualificações, disponibilidade, prazos e requisitos antes de contratar.'}
                       </p>
                     </div>
