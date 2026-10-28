@@ -10,6 +10,7 @@ import CreatorNetworkGrid from './components/CreatorNetworkGrid';
 import CreatorStudio from './components/CreatorStudio';
 import DigitalMarketplace from './components/DigitalMarketplace';
 import AccountAccessModal from './components/AccountAccessModal';
+import AdminOverview from './components/AdminOverview';
 import ServicesSection from './components/ServicesSection';
 import OpportunitiesBoard from './components/OpportunitiesBoard';
 
@@ -879,40 +880,7 @@ export default function App() {
         {activeRole === 'admin' && (
           <main className="container mx-auto px-4 lg:px-8 space-y-12 max-w-7xl py-10 font-sans">
             
-            {/* Global system overview */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
-              <div className="p-6 rounded-3xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800 space-y-2">
-                <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Valor total em projectos</span>
-                <p className="text-2xl font-black text-neutral-950 dark:text-white">780.000 Kz</p>
-                <div className="flex items-center space-x-1 text-xs text-emerald-500 font-bold">
-                  <span>✓ 100% Blindado</span>
-                </div>
-              </div>
-
-              <div className="p-6 rounded-3xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800 space-y-2">
-                <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Receita Estimada de Taxa (12%)</span>
-                <p className="text-2xl font-black text-[#52c1b9]">93.600 Kz</p>
-                <div className="flex items-center space-x-1 text-xs text-neutral-400">
-                  <span>Faturação de intermediação</span>
-                </div>
-              </div>
-
-              <div className="p-6 rounded-3xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800 space-y-2">
-                <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Profissionais activos na base</span>
-                <p className="text-2xl font-black text-neutral-950 dark:text-white">12 Perfis</p>
-                <div className="flex items-center space-x-1 text-xs text-[#52c1b9] font-bold">
-                  <span>★ 100% Qualificados</span>
-                </div>
-              </div>
-
-              <div className="p-6 rounded-3xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800 space-y-2">
-                <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Taxa de Sucesso de Entrega</span>
-                <p className="text-2xl font-black text-emerald-500">98.2%</p>
-                <div className="flex items-center space-x-1 text-xs text-neutral-400">
-                  <span>Menos de 1.8% disputas</span>
-                </div>
-              </div>
-            </div>
+            <AdminOverview />
 
             {/* Verification pipeline and active systems */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
