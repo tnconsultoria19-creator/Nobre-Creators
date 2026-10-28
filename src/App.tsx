@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CardLarge1 from './components/CardLarge1';
-import NewestAuthors from './components/NewestAuthors';
-import ExploreCategories from './components/ExploreCategories';
 import TheGalleryPosts from './components/TheGalleryPosts';
 import BecomeAuthorBanner from './components/BecomeAuthorBanner';
-import TopAuthors from './components/TopAuthors';
 import NewsletterBanner from './components/NewsletterBanner';
 import AudioPlayerBottom from './components/AudioPlayerBottom';
+import FeaturedProfessionals from './components/FeaturedProfessionals';
+import ServicesSection from './components/ServicesSection';
+import OpportunitiesBoard from './components/OpportunitiesBoard';
 
 import { mockPosts, mockAuthors, mockCategories } from './data/mockData';
-import { Post, Author, Category } from './types';
+import { Post, Author } from './types';
 import { 
   ShieldCheck, Sparkles, Sliders, DollarSign, Play, Pause, CheckCircle, 
   Upload, X, Star, MapPin, Award, ArrowRight, AlertCircle, RefreshCw, 
@@ -76,12 +76,6 @@ export default function App() {
       date: '28 Ago 2026'
     }
   ]);
-
-  // Creator directory categorization/filtering
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
-  const filteredCreators = selectedCategory
-    ? mockAuthors.filter(a => a.career.toLowerCase().includes(selectedCategory.handle) || a.niche?.toLowerCase().includes(selectedCategory.name.toLowerCase()))
-    : mockAuthors;
 
   // Calculadora de Cachê State inside creator profile / dashboard
   const [calcReels, setCalcReels] = useState(1);
@@ -162,7 +156,7 @@ export default function App() {
     const newCamp: Campaign = {
       id: `camp-${Date.now()}`,
       title: customBrief ? `Projecto: ${customBrief.slice(0, 30)}...` : `Pedido de projecto técnico`,
-      brandName: 'Cliente Kwanzaa North',
+      brandName: 'Cliente Nobre Creators',
       creator: creator,
       budget: totalAOA || 150000,
       deliverable: `${calcReels > 0 ? calcReels + ' consultoria(s) ' : ''}${calcTikToks > 0 ? calcTikToks + ' vistoria(s) ' : ''}${calcPhotos > 0 ? calcPhotos + ' pranchas técnicas' : ''}`,
@@ -273,12 +267,6 @@ export default function App() {
             }, 100);
           }
         }} 
-        onOpenInquiryModal={() => {
-          setActiveRole('brand');
-          setTimeout(() => {
-            setNewCampaignModalOpen(true);
-          }, 150);
-        }}
       />
 
       {/* Main Content Areas */}
@@ -302,9 +290,9 @@ export default function App() {
               }}
             />
 
-            {/* Slider de Criadores Ativos */}
-            <NewestAuthors 
-              authors={verifiedAuthorsState} 
+            {/* Rotating professionals immediately below the hero */}
+            <FeaturedProfessionals
+              authors={verifiedAuthorsState}
               onSelectCreator={(creator) => {
                 setSelectedCreator(creator);
                 setCalcReels(1);
@@ -313,32 +301,22 @@ export default function App() {
               }}
             />
 
-            {/* Explore Categories / Niches */}
-            <ExploreCategories 
-              categories={mockCategories} 
-              selectedCategory={selectedCategory}
-              onSelectCategory={(cat) => setSelectedCategory(cat)}
+            {/* Four core Nobre Creators services */}
+            <ServicesSection
+              onRequestService={(service) => {
+                setNewCampTitle(service);
+                setNewCampDeliverable(service);
+                setActiveRole('brand');
+                setTimeout(() => setNewCampaignModalOpen(true), 150);
+              }}
             />
 
-            {/* If niche filtered, show filtered creators count */}
-            {selectedCategory && (
-              <div className="p-4 rounded-2xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-[#52c1b9]/30 text-left flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-bold text-neutral-800 dark:text-white">Filtrado por: <span className="text-[#52c1b9] font-black">#{selectedCategory.name}</span></p>
-                  <p className="text-xs text-neutral-400">A mostrar {filteredCreators.length} profissionais correspondentes.</p>
-                </div>
-                <button 
-                  onClick={() => setSelectedCategory(null)}
-                  className="text-xs font-bold text-[#52c1b9] hover:underline cursor-pointer"
-                >
-                  Limpar Filtro
-                </button>
-              </div>
-            )}
+            {/* Category-based opportunities for creators and vendors */}
+            <OpportunitiesBoard />
 
             {/* Gallery Posts (Sessões & Lookbooks) */}
             <TheGalleryPosts 
-              posts={mockPosts} 
+              authors={verifiedAuthorsState} 
               onSelectCreator={(creator) => {
                 setSelectedCreator(creator);
                 setCalcReels(1);
@@ -349,17 +327,6 @@ export default function App() {
 
             {/* Become Author Banner */}
             <BecomeAuthorBanner />
-
-            {/* Top Authors ranked list */}
-            <TopAuthors 
-              authors={verifiedAuthorsState} 
-              onSelectCreator={(creator) => {
-                setSelectedCreator(creator);
-                setCalcReels(1);
-                setCalcPhotos(5);
-                setCalcTikToks(0);
-              }}
-            />
 
             {/* Newsletter Subscription Banner */}
             <NewsletterBanner />
@@ -532,7 +499,7 @@ export default function App() {
                 {/* Calculadora de Cachê Widget */}
                 <div className="rounded-3xl border border-neutral-200/60 dark:border-neutral-800 bg-white dark:bg-neutral-900/40 p-6 shadow-sm space-y-6">
                   <div className="border-b border-neutral-100 dark:border-neutral-800 pb-3">
-                    <h3 className="font-bold text-neutral-950 dark:text-white text-base">Estimador de Orçamento Kwanzaa North</h3>
+                    <h3 className="font-bold text-neutral-950 dark:text-white text-base">Estimador de Orçamento Nobre Creators</h3>
                     <p className="text-xs text-neutral-400 mt-1">Prepare uma estimativa inicial dos serviços seleccionados.</p>
                   </div>
 
@@ -604,10 +571,10 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Framework Checklist "10 Princípios Kwanzaa North" */}
+                {/* Framework Checklist "10 Princípios Nobre Creators" */}
                 <div className="rounded-3xl border border-neutral-200/60 dark:border-neutral-800 bg-white dark:bg-neutral-900/40 p-6 shadow-sm space-y-5" id="quality-exigencias">
                   <div className="border-b border-neutral-100 dark:border-neutral-800 pb-3">
-                    <h3 className="font-bold text-neutral-950 dark:text-white text-base">10 Princípios Kwanzaa North</h3>
+                    <h3 className="font-bold text-neutral-950 dark:text-white text-base">10 Princípios Nobre Creators</h3>
                     <p className="text-xs text-neutral-400 mt-1">Checklist de verificação antes da aprovação de uma entrega</p>
                   </div>
 
@@ -1074,7 +1041,7 @@ export default function App() {
                       <div className="border-b border-neutral-100 dark:border-neutral-800/80 pb-2 flex items-center justify-between">
                         <h4 className="font-bold text-sm text-neutral-900 dark:text-white flex items-center gap-1.5">
                           <Sliders className="w-4 h-4 text-[#52c1b9]" />
-                          <span>Estimador de Orçamento Kwanzaa North</span>
+                          <span>Estimador de Orçamento Nobre Creators</span>
                         </h4>
                         <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Live Quotation</span>
                       </div>
