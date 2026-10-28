@@ -1,32 +1,65 @@
 import React from 'react';
-import { ArrowRight, Megaphone, Target, BarChart3, MousePointerClick } from 'lucide-react';
+import { Award, CheckCircle, ArrowRight } from 'lucide-react';
 
 export default function BecomeAuthorBanner() {
   return (
-    <section id="publicidade" className="py-12 sm:py-16">
-      <div className="relative overflow-hidden rounded-[32px] bg-neutral-950 px-6 py-9 text-white sm:px-10 sm:py-12 lg:px-14">
-        <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-[#52c1b9]/20 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-24 left-1/4 h-56 w-56 rounded-full bg-indigo-500/10 blur-3xl" />
-        <div className="relative z-10 grid items-center gap-9 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="max-w-xl text-left">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-[#8fe4dd]"><Megaphone className="h-4 w-4" /> Publicidade</span>
-            <h2 className="mt-5 text-3xl font-bold tracking-tight sm:text-4xl">Faça a sua marca chegar mais longe.</h2>
-            <p className="mt-4 text-sm leading-6 text-neutral-300 sm:text-base">Criamos campanhas de publicidade paga nas redes sociais, com públicos bem definidos, criativos relevantes e acompanhamento para optimizar o investimento.</p>
-            <a href="#servicos" className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#52c1b9] px-5 py-3 text-sm font-bold text-neutral-950 transition hover:bg-white">Explorar publicidade paga <ArrowRight className="h-4 w-4" /></a>
+    <div className="section-become-author-banner py-16" id="submission">
+      <div className="relative rounded-[40px] bg-emerald-500 overflow-hidden px-8 py-12 sm:px-16 sm:py-20 flex flex-col md:flex-row items-center justify-between gap-10 shadow-xl border border-emerald-600/20">
+        
+        {/* Background visual geometric accents */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400/20 rounded-full blur-3xl"></div>
+        <div className="absolute -left-20 -bottom-20 w-80 h-80 bg-teal-400/20 rounded-full blur-3xl"></div>
+
+        {/* Content column */}
+        <div className="relative z-10 text-white max-w-xl text-left space-y-6">
+          <span className="inline-flex items-center gap-x-2 rounded-full bg-white/20 text-white px-3.5 py-1 text-xs font-bold uppercase tracking-wider backdrop-blur-sm">
+            <Award className="w-4 h-4" /> PUBLICIDADE
+          </span>
+          <div className="space-y-4">
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+              Publicidade para a sua marca
+            </h2>
+            <p className="text-sm sm:text-base text-emerald-50 font-normal leading-relaxed">
+              Promova a sua marca com anúncios pagos nas redes sociais, campanhas direccionadas e conteúdos que ajudam a transformar alcance em resultados.
+            </p>
           </div>
-          <div className="relative mx-auto w-full max-w-md rounded-3xl border border-white/10 bg-white/[0.06] p-5 backdrop-blur sm:p-6">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
-              <div><p className="text-xs font-semibold text-neutral-300">Campanha digital</p><p className="mt-1 text-lg font-bold text-white">Planeada para a sua marca</p></div>
-              <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#52c1b9]/15 text-[#8fe4dd]"><Target className="h-5 w-5" /></span>
+          <button className="inline-flex items-center justify-center gap-x-2 rounded-full bg-white text-emerald-600 px-6 py-3 text-sm font-bold shadow-lg hover:bg-neutral-50 hover:scale-[1.02] active:scale-[0.98] transition-all">
+            <span>Conhecer serviços de publicidade</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* Visual graphic card overlapping on the right */}
+        <div className="relative z-10 w-full md:w-1/2 lg:w-2/5 flex items-center justify-center">
+          <div className="relative rounded-3xl bg-white/10 border border-white/20 p-6 sm:p-8 backdrop-blur-md shadow-2xl w-full max-w-sm text-left text-white transform rotate-2 hover:rotate-0 transition-transform duration-500">
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                <CheckCircle className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h4 className="font-bold text-sm">Campanhas digitais</h4>
+                <p className="text-[10px] text-emerald-100 font-medium">Publicidade Nobre Creators</p>
+              </div>
             </div>
-            <div className="mt-5 space-y-4">
-              <div className="flex items-start gap-3"><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/10 text-[#8fe4dd]"><Target className="h-4 w-4" /></span><div><p className="text-sm font-semibold">Público certo</p><p className="mt-1 text-xs leading-5 text-neutral-400">Segmentação por objectivos e audiência.</p></div></div>
-              <div className="flex items-start gap-3"><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/10 text-[#8fe4dd]"><MousePointerClick className="h-4 w-4" /></span><div><p className="text-sm font-semibold">Criativos que comunicam</p><p className="mt-1 text-xs leading-5 text-neutral-400">Anúncios alinhados com a mensagem da marca.</p></div></div>
-              <div className="flex items-start gap-3"><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/10 text-[#8fe4dd]"><BarChart3 className="h-4 w-4" /></span><div><p className="text-sm font-semibold">Acompanhamento de resultados</p><p className="mt-1 text-xs leading-5 text-neutral-400">Leitura de desempenho e optimização contínua.</p></div></div>
+            
+            <div className="space-y-3.5 text-xs text-emerald-50">
+              <div className="flex items-start">
+                <span className="w-1.5 h-1.5 bg-white rounded-full mt-1.5 mr-2 shrink-0"></span>
+                <span>Definição do público e dos objectivos da campanha.</span>
+              </div>
+              <div className="flex items-start">
+                <span className="w-1.5 h-1.5 bg-white rounded-full mt-1.5 mr-2 shrink-0"></span>
+                <span>Criação de anúncios e conteúdos alinhados com a sua marca.</span>
+              </div>
+              <div className="flex items-start">
+                <span className="w-1.5 h-1.5 bg-white rounded-full mt-1.5 mr-2 shrink-0"></span>
+                <span>Acompanhamento de resultados e optimização do investimento.</span>
+              </div>
             </div>
           </div>
         </div>
+
       </div>
-    </section>
+    </div>
   );
 }
