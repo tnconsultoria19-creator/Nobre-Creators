@@ -54,6 +54,17 @@ interface Env {
   NEWSLETTER_ADMIN_TOKEN?: string;
 }
 
+type OpportunityInput = {
+  id?: string;
+  title?: string;
+  company?: string;
+  category?: string;
+  budget?: string;
+  location?: string;
+  deadline?: string;
+  brief?: string;
+};
+
 type Role = "creator" | "brand" | "admin";
 type UserRow = { id: string; email: string; display_name: string; role: Role; status: string };
 type AssetRow = {
