@@ -7,6 +7,7 @@ export default function NewsletterBanner() {
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [deliveryNotice, setDeliveryNotice] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,11 +20,20 @@ export default function NewsletterBanner() {
         body: JSON.stringify({ email: email.trim(), source: 'revista-nobre-creators' }),
       });
       const result = await response.json().catch(() => null);
+      if (result?.subscribed) {
+        setSubmitted(true);
+        setEmail('');
+        setDeliveryNotice(result.deliverySent
+          ? 'A sua subscrição está confirmada e a edição digital foi enviada para o seu e-mail.'
+          : 'O seu e-mail foi registado. O envio automático da revista será activado assim que a entrega por e-mail estiver configurada.');
+        return;
+      }
       if (!response.ok || !(result?.ok || result?.success)) {
         throw new Error('Newsletter backend did not confirm the subscription.');
       }
       setSubmitted(true);
       setEmail('');
+      setDeliveryNotice('Subscrição confirmada. Obrigado por se juntar à Nobre Creators.');
     } catch {
       setError('A subscrição ainda não está disponível. Tente novamente mais tarde.');
     } finally {
@@ -51,7 +61,7 @@ export default function NewsletterBanner() {
 
           {submitted ? (
             <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 font-semibold text-sm">
-              Subscrição confirmada. Obrigado por se juntar à Nobre Creators.
+              {deliveryNotice || 'Subscrição confirmada. Obrigado por se juntar à Nobre Creators.'}
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="relative flex items-center w-full max-w-md">
