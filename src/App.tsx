@@ -2,9 +2,15 @@ import React, { useState } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CardLarge1 from './components/CardLarge1';
+import NewestAuthors from './components/NewestAuthors';
+import ExploreCategories from './components/ExploreCategories';
+import TheGalleryPosts from './components/TheGalleryPosts';
+import BecomeAuthorBanner from './components/BecomeAuthorBanner';
+import TopAuthors from './components/TopAuthors';
+import NewsletterBanner from './components/NewsletterBanner';
 import AudioPlayerBottom from './components/AudioPlayerBottom';
 
-import { mockPosts, mockAuthors } from './data/mockData';
+import { mockPosts, mockAuthors, mockCategories } from './data/mockData';
 import { Post, Author, Category } from './types';
 import { 
   ShieldCheck, Sparkles, Sliders, DollarSign, Play, Pause, CheckCircle, 
@@ -296,7 +302,69 @@ export default function App() {
               }}
             />
 
-</main>
+            {/* Slider de Criadores Ativos */}
+            <NewestAuthors 
+              authors={verifiedAuthorsState} 
+              onSelectCreator={(creator) => {
+                setSelectedCreator(creator);
+                setCalcReels(1);
+                setCalcPhotos(5);
+                setCalcTikToks(0);
+              }}
+            />
+
+            {/* Explore Categories / Niches */}
+            <ExploreCategories 
+              categories={mockCategories} 
+              selectedCategory={selectedCategory}
+              onSelectCategory={(cat) => setSelectedCategory(cat)}
+            />
+
+            {/* If niche filtered, show filtered creators count */}
+            {selectedCategory && (
+              <div className="p-4 rounded-2xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-[#52c1b9]/30 text-left flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-bold text-neutral-800 dark:text-white">Filtrado por: <span className="text-[#52c1b9] font-black">#{selectedCategory.name}</span></p>
+                  <p className="text-xs text-neutral-400">A mostrar {filteredCreators.length} profissionais correspondentes.</p>
+                </div>
+                <button 
+                  onClick={() => setSelectedCategory(null)}
+                  className="text-xs font-bold text-[#52c1b9] hover:underline cursor-pointer"
+                >
+                  Limpar Filtro
+                </button>
+              </div>
+            )}
+
+            {/* Gallery Posts (Sessões & Lookbooks) */}
+            <TheGalleryPosts 
+              posts={mockPosts} 
+              onSelectCreator={(creator) => {
+                setSelectedCreator(creator);
+                setCalcReels(1);
+                setCalcPhotos(5);
+                setCalcTikToks(0);
+              }}
+            />
+
+            {/* Become Author Banner */}
+            <BecomeAuthorBanner />
+
+            {/* Top Authors ranked list */}
+            <TopAuthors 
+              authors={verifiedAuthorsState} 
+              onSelectCreator={(creator) => {
+                setSelectedCreator(creator);
+                setCalcReels(1);
+                setCalcPhotos(5);
+                setCalcTikToks(0);
+              }}
+            />
+
+            {/* Newsletter Subscription Banner */}
+            <NewsletterBanner />
+
+          </main>
         )}
 
 
