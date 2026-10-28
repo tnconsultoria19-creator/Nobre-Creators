@@ -18,6 +18,7 @@ const roles = [
 const navItems = [
   { label: 'Serviços', href: '#servicos' },
   { label: 'Oportunidades', href: '#oportunidades' },
+  { label: 'Materiais', href: '#materiais' },
   { label: 'Portfólios', href: '#portfolio' },
   { label: 'Publicidade', href: '#publicidade' },
 ];
