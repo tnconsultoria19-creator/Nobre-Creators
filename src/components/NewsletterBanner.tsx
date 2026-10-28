@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { Mail, ArrowRight, BookOpen, Send } from 'lucide-react';
+import { Mail, ArrowRight, Sparkles } from 'lucide-react';
 
 export default function NewsletterBanner() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setError('');
     setSubmitting(true);
     try {
@@ -19,48 +20,92 @@ export default function NewsletterBanner() {
       });
       const result = await response.json().catch(() => null);
       if (!response.ok || !(result?.ok || result?.success)) {
-        throw new Error('Newsletter endpoint unavailable');
+        throw new Error('Newsletter backend did not confirm the subscription.');
       }
       setSubmitted(true);
       setEmail('');
     } catch {
-      setError('A subscrição ainda não foi concluída. O serviço de subscrição da revista precisa de ser ligado.');
+      setError('A subscrição ainda não está disponível. Tente novamente mais tarde.');
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <section id="radar" className="section-newsletter py-12 sm:py-16">
-      <div className="relative flex flex-col items-center justify-between gap-10 overflow-hidden rounded-[32px] border border-neutral-200/70 bg-neutral-100/70 px-6 py-9 transition-colors dark:border-neutral-800 dark:bg-neutral-900/60 sm:px-10 sm:py-12 lg:flex-row lg:px-14">
-        <div className="relative z-10 w-full max-w-xl text-left">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-[#258b84] dark:bg-neutral-800"><BookOpen className="h-4 w-4" /> Revista Nobre Creators</span>
-          <h2 className="mt-5 text-2xl font-bold tracking-tight text-neutral-950 dark:text-white sm:text-3xl">Receba a revista e as novidades da rede.</h2>
-          <p className="mt-3 text-sm leading-6 text-neutral-600 dark:text-neutral-400 sm:text-base">Edições, ideias criativas, tendências de conteúdo, oportunidades e dicas para marcas e criadores — directamente no seu e-mail.</p>
+    <div className="section-newsletter py-16">
+      <div className="relative rounded-[40px] bg-neutral-100/70 dark:bg-neutral-800/20 overflow-hidden px-6 py-12 sm:p-16 flex flex-col lg:flex-row items-center justify-between gap-12 transition-colors">
+        
+        {/* Left column Content & Sign-up Form */}
+        <div className="max-w-xl text-left space-y-6 lg:w-1/2 relative z-10">
+          <span className="inline-flex items-center gap-x-2 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 px-3.5 py-1 text-xs font-bold uppercase tracking-wider">
+            <Sparkles className="w-4 h-4 text-emerald-500" /> REVISTA NOBRE CREATORS
+          </span>
+          <div className="space-y-4">
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-950 dark:text-white leading-tight">
+              Receba a revista Nobre Creators
+            </h2>
+            <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400">
+              Receba a nossa revista digital, ideias criativas, tendências, oportunidades e novidades para marcas e criadores directamente no seu e-mail.
+            </p>
+          </div>
 
           {submitted ? (
-            <div className="mt-5 rounded-2xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-200">Subscrição confirmada. Obrigado por se juntar à Nobre Creators.</div>
+            <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 font-semibold text-sm">
+              Subscrição confirmada. Obrigado por se juntar à Nobre Creators.
+            </div>
           ) : (
-            <form onSubmit={handleSubmit} className="mt-6 flex w-full max-w-md items-center gap-2">
-              <label className="sr-only" htmlFor="newsletter-email">O seu e-mail</label>
-              <input id="newsletter-email" type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="O seu e-mail" className="min-w-0 flex-1 rounded-full border border-neutral-200 bg-white px-5 py-3.5 text-sm text-neutral-900 shadow-sm outline-none focus:ring-2 focus:ring-[#52c1b9] dark:border-neutral-700 dark:bg-neutral-950 dark:text-white" />
-              <button type="submit" disabled={submitting} aria-label="Subscrever revista" className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-neutral-950 text-white transition hover:bg-[#2b9d96] disabled:opacity-60 dark:bg-white dark:text-neutral-950"><Send className="h-4 w-4" /></button>
+            <form onSubmit={handleSubmit} className="relative flex items-center w-full max-w-md">
+              <input
+                type="email"
+                required
+                disabled={submitting}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="O seu melhor e-mail"
+                className="w-full pl-5 pr-14 py-4 rounded-full border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm dark:text-white shadow-sm"
+              />
+              <button
+                type="submit"
+                disabled={submitting}
+                className="absolute right-2 p-3 rounded-full bg-neutral-950 hover:bg-emerald-500 text-white dark:bg-white dark:text-neutral-950 dark:hover:bg-emerald-500 dark:hover:text-white transition-all shadow-md"
+                aria-label="Subscrever"
+              >
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </form>
           )}
-          {error && <p role="alert" className="mt-3 text-xs leading-5 text-red-600 dark:text-red-400">{error}</p>}
-          <p className="mt-3 text-[11px] text-neutral-400">Pode cancelar a subscrição a qualquer momento.</p>
-        </div>
 
-        <div className="relative flex min-h-[220px] w-full max-w-sm items-center justify-center lg:w-1/2">
-          <div className="absolute h-56 w-56 rounded-full bg-[#52c1b9]/10" />
-          <div className="relative w-64 rotate-[-3deg] rounded-3xl border border-neutral-200 bg-white p-5 shadow-xl transition duration-500 hover:rotate-0 dark:border-neutral-700 dark:bg-neutral-950">
-            <div className="flex items-center justify-between"><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#52c1b9]/10 text-[#258b84]"><Mail className="h-5 w-5" /></span><span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Edição digital</span></div>
-            <p className="mt-5 text-lg font-extrabold leading-tight text-neutral-950 dark:text-white">Nobre Creators</p>
-            <p className="mt-2 text-xs leading-5 text-neutral-500 dark:text-neutral-400">Histórias, talento, campanhas e ideias para dar vida às marcas.</p>
-            <div className="mt-5 border-t border-neutral-100 pt-3 text-[10px] font-semibold text-[#258b84] dark:border-neutral-800">CRIATIVIDADE • CONTEÚDO • CRESCIMENTO</div>
+          {error && <p role="alert" className="text-xs text-red-600 dark:text-red-400">{error}</p>}
+          <div className="text-[11px] text-neutral-400 flex items-center gap-x-1.5">
+            <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+            <span>Ao registar-se, aceita os nossos Termos de Serviço e Política de Privacidade.</span>
           </div>
         </div>
+
+        {/* Right column: Graphic illustration of features */}
+        <div className="lg:w-1/2 flex items-center justify-center relative z-10 w-full">
+          <div className="relative w-full max-w-sm aspect-square bg-gradient-to-tr from-emerald-500/10 to-indigo-500/10 rounded-full flex items-center justify-center border border-emerald-500/5">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 shadow-2xl w-72 text-left space-y-4">
+              <div className="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                <Mail className="w-5 h-5" />
+              </div>
+              <div className="space-y-1.5">
+                <h4 className="font-bold text-neutral-900 dark:text-white text-sm">Revista Nobre Creators</h4>
+                <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">Conteúdo sobre criação, redes sociais, produção, publicidade e oportunidades para a comunidade.</p>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Edição digital</span>
+              </div>
+            </div>
+            
+            {/* Ambient background circles */}
+            <div className="absolute top-10 right-10 w-8 h-8 rounded-full bg-emerald-400/40 blur-sm"></div>
+            <div className="absolute bottom-10 left-10 w-12 h-12 rounded-full bg-indigo-400/30 blur-sm"></div>
+          </div>
+        </div>
+
       </div>
-    </section>
+    </div>
   );
 }
