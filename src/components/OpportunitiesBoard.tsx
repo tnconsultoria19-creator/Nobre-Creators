@@ -110,19 +110,46 @@ export default function OpportunitiesBoard({ onRequireAccess }: { onRequireAcces
   };
 
   return (
-    <section id="oportunidades" className="py-12 sm:py-16 border-y border-neutral-100 dark:border-neutral-800">
-      <div className="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#2b9d96]">Oportunidades da rede</p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-neutral-950 sm:text-3xl dark:text-white">Encontre o próximo trabalho</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-neutral-500 sm:text-base dark:text-neutral-400">Explore oportunidades por área ou prepare um briefing para encontrar o talento certo.</p>
+    <section id="oportunidades" className="relative overflow-hidden border-y border-[#d9eeeb] bg-[#edf7f6] py-12 dark:border-neutral-800 dark:bg-[#101e20] sm:py-16">
+      <div className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-[#52c1b9]/15 blur-3xl" />
+      <div className="relative mx-auto max-w-7xl">
+        <div className="overflow-hidden rounded-[28px] border border-[#d4e9e6] bg-white shadow-sm dark:border-neutral-700 dark:bg-neutral-900">
+          <div className="grid lg:grid-cols-[1.35fr_0.65fr]">
+            <div className="p-6 sm:p-9 lg:p-10">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#bde4df] bg-[#effaf8] px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.15em] text-[#217e78] dark:border-teal-900 dark:bg-teal-950/40 dark:text-teal-300">
+                <BriefcaseBusiness className="h-3.5 w-3.5" /> Portal de trabalhos · Marcas e clientes
+              </div>
+              <h2 className="mt-5 max-w-2xl text-3xl font-bold leading-tight tracking-tight text-neutral-950 sm:text-4xl dark:text-white">Publique um trabalho. <span className="text-[#258b84]">Encontre o talento certo.</span></h2>
+              <p className="mt-4 max-w-2xl text-sm leading-6 text-neutral-600 sm:text-base dark:text-neutral-300">Este espaço é para marcas, empresas e clientes publicarem tarefas e briefings para profissionais da rede. Descreva o que precisa, indique o orçamento e partilhe a oportunidade.</p>
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+                <button onClick={() => { setNotice(''); setModalOpen(true); }} className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#258b84] px-5 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#1d716c]">
+                  <Plus className="h-4 w-4" /> Publicar um trabalho
+                </button>
+                <span className="text-xs text-neutral-500 dark:text-neutral-400">Crie um briefing e defina o orçamento do trabalho</span>
+              </div>
+            </div>
+            <div className="flex flex-col justify-between gap-5 border-t border-[#e3efed] bg-[#f7fbfa] p-6 dark:border-neutral-800 dark:bg-neutral-950/50 sm:p-8 lg:border-l lg:border-t-0">
+              <div>
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#258b84]">Como funciona</p>
+                <h3 className="mt-2 text-lg font-bold text-neutral-950 dark:text-white">Do pedido à oportunidade</h3>
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#dff3f0] text-xs font-extrabold text-[#217e78]">01</span><div><p className="text-sm font-bold text-neutral-800 dark:text-neutral-100">Descreva a tarefa</p><p className="mt-0.5 text-xs leading-5 text-neutral-500 dark:text-neutral-400">Explique as entregas e o que procura.</p></div></div>
+                <div className="flex items-start gap-3"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#dff3f0] text-xs font-extrabold text-[#217e78]">02</span><div><p className="text-sm font-bold text-neutral-800 dark:text-neutral-100">Defina os detalhes</p><p className="mt-0.5 text-xs leading-5 text-neutral-500 dark:text-neutral-400">Área, orçamento, local e prazo.</p></div></div>
+                <div className="flex items-start gap-3"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#dff3f0] text-xs font-extrabold text-[#217e78]">03</span><div><p className="text-sm font-bold text-neutral-800 dark:text-neutral-100">Partilhe com a rede</p><p className="mt-0.5 text-xs leading-5 text-neutral-500 dark:text-neutral-400">A publicação partilhada depende da ligação à rede.</p></div></div>
+              </div>
+              <div className="rounded-2xl border border-[#d8ebe8] bg-white p-3.5 dark:border-neutral-800 dark:bg-neutral-900"><p className="text-xs font-bold text-neutral-800 dark:text-neutral-100">Tem um trabalho para publicar?</p><p className="mt-1 text-[11px] leading-5 text-neutral-500 dark:text-neutral-400">Crie um briefing claro para os profissionais saberem o que é necessário.</p></div>
+            </div>
+          </div>
         </div>
-        <button onClick={() => { setNotice(''); setModalOpen(true); }} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-neutral-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#2b9d96] dark:bg-white dark:text-neutral-950">
-          <Plus className="h-4 w-4" /> Publicar oportunidade
-        </button>
+
+        <div className="mb-5 mt-9 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div><p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#258b84]">Explorar a rede</p><h3 className="mt-1.5 text-xl font-bold text-neutral-950 sm:text-2xl dark:text-white">Trabalhos e briefings publicados</h3><p className="mt-1.5 text-sm text-neutral-600 dark:text-neutral-400">Filtre por área para encontrar oportunidades relevantes.</p></div>
+          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-[#cfe7e3] bg-white px-3.5 py-2 text-xs font-semibold text-neutral-600 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300"><BriefcaseBusiness className="h-3.5 w-3.5 text-[#258b84]" /> {jobs.filter((job) => !job.demo).length} publicações não demonstrativas</span>
+        </div>
       </div>
 
-      <div className="mb-6 flex gap-2 overflow-x-auto pb-2">
+      <div className="relative mb-6 flex gap-2 overflow-x-auto pb-2">
         {categories.map((item, index) => (
           <button key={item} onClick={() => setSelectedCategory(item)} className={`shrink-0 rounded-full border px-3.5 py-2 text-xs font-semibold transition ${selectedCategory === item ? 'border-[#52c1b9] bg-[#52c1b9]/10 text-[#258b84]' : 'border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400'}`}>
             <span className="mr-1.5 text-[10px] opacity-60">#{String(index + 1).padStart(2, '0')}</span>{item}
@@ -130,12 +157,12 @@ export default function OpportunitiesBoard({ onRequireAccess }: { onRequireAcces
         ))}
       </div>
 
-      {notice && <p className="mb-4 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:bg-amber-950/20 dark:text-amber-200">{notice} A publicação para todos os membros requer a API de oportunidades.</p>}
+      {notice && <p role="status" className={`relative mb-4 rounded-xl px-4 py-3 text-sm ${notice.includes('Rascunho') || notice.includes('não foi confirmada') ? 'bg-amber-50 text-amber-800 dark:bg-amber-950/20 dark:text-amber-200' : 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/20 dark:text-emerald-200'}`}>{notice}</p>}
 
       {filteredJobs.length ? (
         <div className="grid gap-4 lg:grid-cols-2">
           {filteredJobs.map((job) => (
-            <article key={job.id} className="rounded-2xl border border-neutral-200/80 bg-white p-5 dark:border-neutral-800 dark:bg-neutral-900 sm:p-6">
+            <article key={job.id} className="rounded-2xl border border-[#d7e8e6] bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-[#9ed8d2] hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900 sm:p-6">
               <div className="flex items-start justify-between gap-3">
                 <span className="rounded-full bg-[#52c1b9]/10 px-3 py-1 text-[11px] font-bold text-[#258b84]">{job.category}</span>
                 {job.network ? <span className="text-[10px] font-semibold uppercase tracking-wider text-emerald-600">Na rede</span> : job.demo ? <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400">Exemplo</span> : <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-600">Rascunho local</span>}
