@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { UploadCloud, FileImage, FileVideo, FileText, Download, Trash2, RefreshCw, UserRound, CheckCircle2, AlertCircle, ExternalLink } from 'lucide-react';
+import { UploadCloud, FileImage, FileVideo, FileText, Download, Trash2, Archive, RefreshCw, UserRound, CheckCircle2, AlertCircle, ExternalLink } from 'lucide-react';
 import PremiumFeaturePanel from './PremiumFeaturePanel';
 
 type AssetType = 'portfolio' | 'downloadable' | 'video' | 'lesson';
@@ -103,16 +103,23 @@ export default function CreatorStudio() {
   };
 
   const deleteAsset = async (asset: Asset) => {
-    if (!window.confirm(`Eliminar "${asset.title}" da biblioteca?`)) return;
+    const isPublished = Boolean(asset.product_id);
+    const confirmText = isPublished
+      ? `Arquivar "${asset.title}"? O material deixa de aparecer no catálogo, mas o histórico de compras é preservado.`
+      : `Eliminar "${asset.title}" da biblioteca?`;
+    if (!window.confirm(confirmText)) return;
     setError(''); setNotice('');
     try {
-      const response = await fetch(`/api/assets/${encodeURIComponent(asset.id)}`, { method:'DELETE', credentials:'include' });
+      const response = await fetch(
+        isPublished ? `/api/assets/${encodeURIComponent(asset.id)}/archive` : `/api/assets/${encodeURIComponent(asset.id)}`,
+        { method: isPublished ? 'POST' : 'DELETE', credentials:'include' }
+      );
       const result = await response.json().catch(() => null);
-      if (!response.ok || !result?.ok) throw new Error(result?.error || 'Não foi possível eliminar o ficheiro.');
+      if (!response.ok || !result?.ok) throw new Error(result?.error || 'Não foi possível actualizar o ficheiro.');
       setAssets((current) => current.filter((item) => item.id !== asset.id));
-      setNotice('Ficheiro eliminado.');
+      setNotice(isPublished ? 'Material arquivado; histórico preservado.' : 'Ficheiro eliminado.');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Não foi possível eliminar o ficheiro.');
+      setError(err instanceof Error ? err.message : 'Não foi possível actualizar o ficheiro.');
     }
   };
 
@@ -165,7 +172,7 @@ export default function CreatorStudio() {
                     return <article key={asset.id} className="flex items-start gap-3 rounded-2xl border border-neutral-100 p-3.5 dark:border-neutral-800 sm:p-4">
                       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300"><Icon className="h-5 w-5" /></span>
                       <div className="min-w-0 flex-1"><p className="truncate text-xs font-bold text-neutral-950 dark:text-white">{asset.title}</p><p className="mt-1 truncate text-[10px] text-neutral-500 dark:text-neutral-400">{asset.file_name} · {formatSize(asset.size_bytes)}</p><div className="mt-2 flex flex-wrap gap-1.5"><span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[9px] font-semibold text-neutral-500 dark:bg-neutral-800">{asset.asset_type}</span><span className={`rounded-full px-2 py-0.5 text-[9px] font-semibold ${asset.visibility === 'public' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300' : 'bg-neutral-100 text-neutral-500 dark:bg-neutral-800'}`}>{asset.visibility === 'public' ? 'Público' : 'Privado'}</span>{asset.product_id && <span className="rounded-full bg-[#52c1b9]/10 px-2 py-0.5 text-[9px] font-semibold text-[#258b84]">No catálogo</span>}</div></div>
-                      <div className="flex shrink-0 gap-1"><a href={`/api/assets/${encodeURIComponent(asset.id)}/download`} className="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-200 text-neutral-600 hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800" aria-label="Descarregar ficheiro"><Download className="h-4 w-4" /></a><button onClick={() => void deleteAsset(asset)} className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-400 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/30" aria-label="Eliminar ficheiro"><Trash2 className="h-4 w-4" /></button></div>
+                      <div className="flex shrink-0 gap-1"><a href={`/api/assets/${encodeURIComponent(asset.id)}/download`} className="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-200 text-neutral-600 hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800" aria-label="Descarregar ficheiro"><Download className="h-4 w-4" /></a><button onClick={() => void deleteAsset(asset)} className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-400 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/30" aria-label={asset.product_id ? 'Arquivar material' : 'Eliminar ficheiro'}>{asset.product_id ? <Archive className="h-4 w-4" /> : <Trash2 className="h-4 w-4" />}</button></div>
                     </article>;
                   })}
                 </div>
