@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowUpRight, BriefcaseBusiness, Plus, X, CalendarDays, MapPin } from 'lucide-react';
 
 type Opportunity = {
@@ -11,6 +11,8 @@ type Opportunity = {
   deadline: string;
   brief: string;
   demo?: boolean;
+  network?: boolean;
+  createdAt?: string;
 };
 
 const categories = ['Todas', 'Estúdio & Podcast', 'Eventos', 'Redes Sociais', 'Web & Presença Digital', 'Publicidade Paga', 'Criadores & Influencers'];
@@ -42,6 +44,29 @@ export default function OpportunitiesBoard() {
   const [deadline, setDeadline] = useState('');
   const [brief, setBrief] = useState('');
 
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/jobs')
+      .then(async (response) => {
+        if (!response.ok) return null;
+        return response.json().catch(() => null);
+      })
+      .then((result) => {
+        if (cancelled || !result?.ok || !Array.isArray(result.jobs)) return;
+        const networkJobs = result.jobs.map((job: Opportunity) => ({ ...job, network: true, demo: false }));
+        setJobs((current) => {
+          const networkIds = new Set(networkJobs.map((job: Opportunity) => job.id));
+          const drafts = current.filter((job) => !job.demo && !job.network && !networkIds.has(job.id));
+          const demoJobs = current.filter((job) => job.demo);
+          return [...networkJobs, ...drafts, ...demoJobs];
+        });
+      })
+      .catch(() => {
+        // The local demonstration board remains usable if the network API is unavailable.
+      });
+    return () => { cancelled = true; };
+  }, []);
+
   const filteredJobs = useMemo(() => selectedCategory === 'Todas' ? jobs : jobs.filter((job) => job.category === selectedCategory), [jobs, selectedCategory]);
 
   const submitJob = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -52,6 +77,7 @@ export default function OpportunitiesBoard() {
       deadline: deadline.trim() || 'A definir', brief: brief.trim(), demo: false,
     };
     let sharedWithNetwork = false;
+    let networkJob: Opportunity | null = null;
     try {
       const response = await fetch('/api/jobs', {
         method: 'POST',
@@ -60,17 +86,19 @@ export default function OpportunitiesBoard() {
       });
       const result = await response.json().catch(() => null);
       sharedWithNetwork = response.ok && Boolean(result?.ok || result?.success);
+      if (sharedWithNetwork && result?.job) networkJob = { ...result.job, network: true, demo: false };
     } catch {
       sharedWithNetwork = false;
     }
 
-    const next = [job, ...jobs];
+    const displayJob = sharedWithNetwork ? { ...(networkJob || job), network: true } : job;
+    const next = [displayJob, ...jobs.filter((item) => item.id !== displayJob.id)];
     setJobs(next);
     try { window.localStorage.setItem('nobre-creators-opportunities', JSON.stringify(next)); } catch { /* Storage may be disabled. */ }
     setSelectedCategory('Todas');
     setNotice(sharedWithNetwork
-      ? 'Oportunidade enviada à rede.'
-      : 'Rascunho guardado neste dispositivo. A partilha com toda a rede precisa da API de oportunidades.');
+      ? 'Oportunidade publicada para toda a rede.'
+      : 'Rascunho guardado neste dispositivo. A publicação partilhada não foi confirmada pelo servidor.');
     setModalOpen(false);
     setTitle(''); setCompany(''); setBudget(''); setLocation(''); setDeadline(''); setBrief('');
   };
@@ -104,7 +132,7 @@ export default function OpportunitiesBoard() {
             <article key={job.id} className="rounded-2xl border border-neutral-200/80 bg-white p-5 dark:border-neutral-800 dark:bg-neutral-900 sm:p-6">
               <div className="flex items-start justify-between gap-3">
                 <span className="rounded-full bg-[#52c1b9]/10 px-3 py-1 text-[11px] font-bold text-[#258b84]">{job.category}</span>
-                {job.demo ? <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400">Exemplo</span> : <span className="text-[10px] font-semibold uppercase tracking-wider text-emerald-600">Rascunho local</span>}
+                {job.network ? <span className="text-[10px] font-semibold uppercase tracking-wider text-emerald-600">Na rede</span> : job.demo ? <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400">Exemplo</span> : <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-600">Rascunho local</span>}
               </div>
               <h3 className="mt-4 text-lg font-bold text-neutral-950 dark:text-white">{job.title}</h3>
               <p className="mt-1 text-xs font-semibold text-neutral-500 dark:text-neutral-400">{job.company}</p>
